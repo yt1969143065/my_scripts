@@ -15,12 +15,15 @@
 # repeat_in_queue_reg
 # repeat_stop_fetch_reg
 #
-# repeat_sequnce_over = repeat_mode AND repeat_rem_insn_num_reg = pop_insn_num
+# repeat_need_partial_reg
+#
+# repeat_ignore: $counter=0/1 $insn_num=0
+# repeat_sequence_over = repeat_mode AND repeat_rem_insn_num_reg = pop_insn_num
 
 #------------------------------------------------------------------------------------
 # cycle when a REPEAT be dispathed
 #------------------------------------------------------------------------------------
-repeat_valid   = a_repeat_insn AND (NOT repeat_ignore)
+repeat_valid = a_repeat_insn AND (NOT repeat_ignore)
 
 WHEN repeat_valid:
 	repeat_mode_reg         <= "1"           
@@ -29,8 +32,8 @@ WHEN repeat_valid:
 	repeat_all_insn_num_reg <= insn_num      
 	repeat_rem_insn_num_reg <= insn_num      
 
-# repeat_in_rem: repeat_sequnce already in queue 
-repeat_in_rem  = repeat_valid AND insn_num < rem_insn_num_reg
+# repeat_in_rem: repeat_sequence already in queue 
+repeat_in_rem = repeat_valid AND insn_num < rem_insn_num_reg
 
 WHEN repeat_in_rem:
 	rem_insn_num_reg        <= insn_num
@@ -38,21 +41,21 @@ WHEN repeat_in_rem:
 	repeat_in_queue_reg     <= "1"
 	repeat_stop_fetch_reg   <= "1"
 
-# repeat_in_que: repeat_sequnce partially in queue but completetly finally
+# repeat_in_que: repeat_sequence partially in queue but completetly finally
 repeat_in_que  = repeat_valid AND 
                  insn_num > rem_insn_num_reg AND 
-                 insn_num < Q_DEPTH
+                 insn_num <= Q_DEPTH
 
 WHEN repeat_in_rem:
 	repeat_in_queue_reg     <= "1"
 
 #------------------------------------------------------------------------------------
-# cycle when a repeat_sequnce finish a non-last roll dispatch
+# cycle when a repeat_sequence finish a non-last roll dispatch
 #------------------------------------------------------------------------------------
 repeat_non_last_roll = repeat_counter_reg > "1"
 
 # repeat_in_queue_reg TRUE
-repeat_q_back = repeat_sequnce_over AND 
+repeat_q_back = repeat_sequence_over AND 
                 repeat_non_last_roll AND 
                 repeat_in_queue_reg
 
@@ -63,7 +66,7 @@ WHEN repeat_q_back:
 	pop_pt_reg              <= pop_pt_reg - repeat_all_insn_num_reg
 
 # repeat_in_queue_reg FALSE
-repeat_q_next = repeat_sequnce_over AND 
+repeat_q_next = repeat_sequence_over AND 
                 repeat_non_last_roll AND 
                 NOT repeat_in_queue_reg
 
@@ -72,18 +75,17 @@ WHEN repeat_q_next:
 	repeat_rem_insn_num_reg <= repeat_all_insn_num_reg
 
 #------------------------------------------------------------------------------------
-# cycle when a repeat_sequnce finish a last roll dispatch
+# cycle when a repeat_sequence finish a last roll dispatch
 #------------------------------------------------------------------------------------
 repeat_last_roll = repeat_counter_reg = "1"
 
-repeat_finish = repeat_last_roll AND repeat_sequnce_over
+repeat_finish = repeat_last_roll AND repeat_sequence_over
 
 WHEN repeat_finish:
+    repeat_mode_reg         <= "0"
 	repeat_counter_reg      <= repeat_counter_reg - "1"
 	repeat_rem_insn_num_reg <= "0"
-	rem_insn_num_reg        <= "0"
 	repeat_in_queue_reg     <= "0"
-	repeat_stop_fetch_reg   <= "0"
 
 
 #------------------------------------------------------------------------------------
@@ -92,34 +94,24 @@ WHEN repeat_finish:
 repeat_last_butone_roll = repeat_counter_reg = "2"
 clear_repeat_stop_fetch = repeat_stop_fetch_reg AND
                           repeat_last_butone_roll AND
-                          repeat_sequnce_over
+                          repeat_sequence_over
 WHEN clear_repeat_stop_fetch:
 	repeat_stop_fetch_reg   <= "0"
 
 #------------------------------------------------------------------------------------
-# cycle to clear repeat_mode
-#------------------------------------------------------------------------------------
-#repeat_mode_reg set untill no possible repeat_mode recorver
-clear_repeat_mode = repeat_mode_reg AND
-                    repeat_last_roll AND 
-                    repeat_rem_insn_num_reg = "0" AND 
-                    NOT alive_ld_reg 
-
-WHEN clear_repeat_mode:
-	repeat_mode_reg <= "0"
-
-
-#------------------------------------------------------------------------------------
 # fetch request
 #------------------------------------------------------------------------------------
-fall_fetch_req = NOT repeat_stop_fetch_reg AND
-                 rem_insn_num <= Q_EMIT_NUM AND
-                 NOT wait_fetch_resp_reg 
+fall_fetch_req = rem_insn_num <= Q_EMIT_NUM AND
+                 NOT wait_fetch_resp_reg AND
+                 NOT jump_fetch_req AND
+                 NOT resart_fetch_req AND
+                 NOT repeat_stop_fetch_reg
 
 from_repeat_addr = NOT repeat_in_queue_reg AND
+                   repeat_non_last_roll AND 
                    repeat_rem_insn_num_reg = rem_insn_num_reg  
 
-fall_fetch_addr = repeat_fetch_addr_reg WHEN from_repeat_addr ELSE
+fall_fetch_addr = repeat_addr_reg WHEN from_repeat_addr ELSE
                   next_fetch_addr
 
 #------------------------------------------------------------------------------------
@@ -128,26 +120,68 @@ fall_fetch_addr = repeat_fetch_addr_reg WHEN from_repeat_addr ELSE
 # en_fetch_in
 # addr_fetch_in
 # line_fetch_in
-en_fetch_receive = NOT repeat_stop_fetch_reg AND
-                   NOT restart AND
-                   NOT jump AND
-                   NOT rem_insn_num > Q_EMIT_NUM AND
-                   NOT (restore AND rem_insn_restore > Q_EMIT_NUM) 
+en_fetch_receive = NOT restart_fetch_req AND
+                   NOT jump_fetch_req AND
+                   NOT rem_insn_num_reg > Q_EMIT_NUM AND
+                   NOT (restore AND rem_insn_restore > Q_EMIT_NUM) AND 
+                   NOT repeat_stop_fetch_reg
 en_fetch_resp = en_fetch_in AND
                 en_fetch_receive
                 
-fetch_push_insn_num = fetch_insn_num WHEN fetch_insn_num < repeat_rem_insn_num ELSE
-                      repeat_rem_insn_num_reg
+repeat_max_push_insn_num = repeat_rem_insn_num_reg - rem_insn_num_reg
+repeat_seq_ok = rem_insn_num_reg < repeat_rem_insn_num_reg AND
+                fetch_insn_num >= repeat_max_push_insn_num
 
-set_repeat_stop_fetch = repeat_in_queue_reg AND
-                        fetch_insn_num >= repeat_rem_insn_num_reg
-WHEN set_repeat_stop_fetch:
-	repeat_stop_fetch_reg   <= "1"
+fetch_push_insn_num = repeat_max_push_insn_num WHEN repeat_seq_ok ELSE
+                      fetch_insn_num
 
 WHEN en_fetch_resp:
 	push_pt_reg             <= push_pt_reg      + fetch_push_insn_num
 	rem_insn_num_reg        <= rem_insn_num_reg + fetch_push_insn_num
 
+# when repeat_sequence all come, stop fetch
+set_repeat_stop_fetch = repeat_in_queue_reg AND
+                        en_fetch_resp AND
+                        repeat_seq_ok 
+WHEN set_repeat_stop_fetch:
+	repeat_stop_fetch_reg   <= "1"
 
+
+#------------------------------------------------------------------------------------
+# REPEAT deal when interrupt
+#------------------------------------------------------------------------------------
+WHEN interrupt:
+	SAVE repeat_mode_reg
+	SAVE repeat_addr_reg
+	SAVE repeat_counter_reg
+	SAVE repeat_all_insn_num_reg
+	SAVE repeat_rem_insn_num_reg
+	repeat_mode_reg         <= "0"
+	repeat_counter_reg      <= "0"
+	repeat_all_insn_num_reg <= "0"
+	repeat_rem_insn_num_reg <= "0"
+	repeat_in_queue_reg     <= "0"
+	repeat_stop_fetch_reg   <= "0"
+   
+WHEN return_from_interrupt:
+	repeat_mode_reg         <= repeat_mode_saved
+	repeat_addr_reg         <= repeat_addr_saved
+	repeat_counter_reg      <= repeat_counter_saved
+	repeat_all_insn_num_reg <= repeat_all_insn_num_saved
+	repeat_rem_insn_num_reg <= repeat_rem_insn_num_saved
+	repeat_in_queue_reg     <= "0"
+	repeat_stop_fetch_reg   <= "0"
+	repeat_left_partial_reg <= repeat_all_insn_num_saved <= Q_DEPTH AND
+                               repeat_counter_saved > "2" AND
+                               repeat_mode_saved 
+
+# repeat_left_partial insn comes set repeat_in_queue_reg
+left_partial_come_after_int = repeat_left_partial_reg AND
+                              en_fetch_resp AND
+                              fetch_insn_num >= repeat_max_push_insn_num
+WHEN left_partial_come_afer_int:
+    repeat_in_queue_reg     <= "1"
+	repeat_left_partial_reg <= "0"
+                                              
 
 
