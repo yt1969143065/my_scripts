@@ -53,6 +53,14 @@ WHEN repeat_in_que:
 	repeat_in_queue_reg     <= "1"
 
 #------------------------------------------------------------------------------------
+# when repeat_sequence all in queue, stop fetch
+#------------------------------------------------------------------------------------
+set_repeat_stop_fetch = repeat_in_queue_reg AND
+                        repeat_tail_come
+WHEN set_repeat_stop_fetch:
+	repeat_stop_fetch_reg   <= "1"
+
+#------------------------------------------------------------------------------------
 # cycle when a repeat_sequence finish a non-last roll dispatch
 #------------------------------------------------------------------------------------
 repeat_non_last_roll = repeat_counter_reg > "1"
@@ -119,6 +127,9 @@ WHEN interrupt:
 	repeat_stop_fetch_reg   <= "0"
    
 WHEN return_from_interrupt:
+	repeat_in_que_no_head = repeat_mode_saved AND
+                            repeat_counter_saved > "2" AND
+                            repeat_all_insn_num_saved <= Q_DEPTH
 	repeat_mode_reg         <= repeat_mode_saved
 	repeat_addr_reg         <= repeat_addr_saved
 	repeat_counter_reg      <= repeat_counter_saved
@@ -126,22 +137,28 @@ WHEN return_from_interrupt:
 	repeat_rem_insn_num_reg <= repeat_rem_insn_num_saved
 	repeat_in_queue_reg     <= "0"
 	repeat_stop_fetch_reg   <= "0"
-	repeat_left_partial_reg <= repeat_all_insn_num_saved <= Q_DEPTH AND
-                               repeat_counter_saved > "2" AND
-                               repeat_mode_saved 
+	repeat_left_partial_reg <= repeat_in_que_no_head
 
 # repeat_left_partial insn comes set repeat_in_queue_reg
 left_partial_come_after_int = repeat_left_partial_reg AND
                               repeat_tail_come
 WHEN left_partial_come_afer_int:
 	repeat_partial_come_reg <= "1"
+	repeat_left_partial_reg <= "0"
                                               
+# stop_fetch when a new roll isnn all come  
+set_repeat_stop_fetch_by_retfi = repeat_partial_come_reg AND
+                                 repeat_tail_come
+WHEN set_repeat_stop_fetch_by_retfi:
+	repeat_in_queue_reg     <= "1"
+	repeat_stop_fetch_reg   <= "1"
+	repeat_partial_come_reg <= "0"
 
 
 #------------------------------------------------------------------------------------
 # fetch request
 #------------------------------------------------------------------------------------
-fall_fetch_req = rem_insn_num <= Q_EMIT_NUM AND
+fall_fetch_req = rem_insn_num_reg <= Q_EMIT_NUM AND
                  NOT wait_fetch_resp_reg AND
                  NOT jump_fetch_req AND
                  NOT resart_fetch_req AND
@@ -178,18 +195,4 @@ fetch_push_insn_num = repeat_max_push_insn_num WHEN repeat_tail_come ELSE
 WHEN en_fetch_resp:
 	push_pt_reg             <= push_pt_reg      + fetch_push_insn_num
 	rem_insn_num_reg        <= rem_insn_num_reg + fetch_push_insn_num
-
-# when repeat_sequence all in queue, stop fetch
-set_repeat_stop_fetch = (repeat_in_queue_reg  OR repeat_partial_come_reg) AND
-                        repeat_tail_come
-WHEN set_repeat_stop_fetch:
-	repeat_stop_fetch_reg   <= "1"
-
-# re-set repeat_in_queue after return-from-interrupt
-reset_repeat_in_queue = repeat_partial_come_reg AND
-                        repeat_tail_come
-
-WHEN reset_repeat_in_queue:
-	repeat_in_queue_reg     <= "1"
-	repeat_partial_come_reg <= "0"
 
