@@ -1,0 +1,161 @@
+\documentclass{article}
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@Preface
+
+Most books on operating systems are strong on thoery and weak on practice. 
+This one aims to provide a better balance between the two.
+It covers al the fundamental principles in great detail, 
+including processes, interprocess communication, semaphores, monitors, message passing, 
+scheduling algorithms, input/output, deadlocks, device driver, memory management, paging algorithms,
+file system design, security, and protection mechanisms.
+But it also discusses one particular system MINIX 3a UNIX-compatible operating system in detail, 
+and even provides a source code listing for study.
+This arrangement allows the reader not only to learn the principles, but also to see how they are applied in a real operating system.
+
+When the first edition of this book appeared in 1987, it caused something of a small revolution in the way operating systems coursed were taight.
+Untill then, most coursed just covered theory.
+With the appearance of MINIX, many schools began to have laboratory courses in which students examined a real operating system to see how it worked inside.
+We consoder this trend highly desirable and hope it continues.
+
+It its first 10 years, MINIX underwent many changes.
+The original code was designed for a 256K 8088-based IBM PC with two diskette drivers and no hard disk.
+It was also based on UBIX Version 7. 
+As time went on, MINIX evolved in many ways: it supported 32-bit protected mode machined with large memories and hard disks.
+It also changed from being based on Version 7, to being based on the international POSIX standard (IEEE 1003.1 and ISO 9945-1).
+Finally, many new features were added, perhaps too many in our view, but too few in the view of some other people, which led to the creation of Linux.
+In addition, MINIX was ported to many other platforms, including the Macintosh, Amiga, Atari, and SPARC.
+A second edition of the book, covering this system, was published in 1997 and was widely used at universities.
+
+The popularity of MINIX has continued, as can be observed by examining the number of hits for MINIX found by Google.
+ 
+This third edition of the book has many changes throughout.
+Nearly all of the material on principles has been revised, and considerable new material has been added.
+However, the main change is the discussion of the new version of the system, called MINIX 3, and the inclusion of the new code in this book.
+Although loosely based on MINIX 2, MINIX 3is fundamentally different in many key ways.
+
+The design of MINIX 3 was inspired by the observation that operating system are becoming bloated, slow, and unreliable. 
+They crash far more often than other electronic devices such as televisons, cell phones, and DVD players 
+and have so many features and options that practically nobody can understand them fully or manage them well.
+And of cource, computer viruses, worms, spyware, spam, and other forms of ,alware have become epidemic.
+
+To a large extent, many of these problems are caused by a fundamental design flaw in current operating systems: their lack of modularity. 
+The entire operating system is typically millions of lines of C/C++ code compiled into a single massive executable program run in kernrl mode.
+A bug in any one of those millions of lines of code can cause the system to malfunction.
+Getting all this code correct is impossible, especially when about 70\% consists of device drivers, written by third parties, 
+and outside the purview of the people maintaining the operating system.
+
+With MINIX 3, we demonstrate that this monolithic design is not the only possibility. 
+The MINIX 3 kernel is only about 4000 lines of executable code, not the millions found in Windows, Linux, Mac OSX, or FreeBSD.
+The rest of the system, including all the device drivers(except the clock driver), is a collection of small, modular, user-mode processes, 
+each of which is tightly restricted in what it can do and with which other processes it may communicate.
+
+While MINIX 3 is a work in progress, we believe that this model of building an operating system as a collection of highly-encapsulated user-mode 
+processes holds promise for building more reliable system in the future.
+MINIX 3 is especially focused on smaller PCs
+(such as those commonly found in Third-World countries and on embedded systems, which are always resource constrained).
+In any event, this design makes it much easier for students to lear how an operating system works than attempting to study a huge monolithic system.
+
+The CD-ROM that is included in this book is a live CD. 
+You can put it in your CD-ROM drive, reboot the computer, and MINIX 3 will give a login prompt within a few seconds. 
+You can log in as root and give the system a try without first having to install it on your hard disk.
+Of course, it can also be installed on the hard disk.
+Detailed installation instructions are given in Appendix A.
+
+As suggested above, MINIX 3is rapidly evolving, with new versions being issued frequently.
+To download the current CD-ROM image file for burning, please go to the offical Website: www.minix3.org.
+This site also contains a large amount of new software, documentation, and news about MINIX 3 development.
+For discussions about MINIX 3, or to ask questions, there is a USENET newsgroup: comp.os.minix.
+People without newsreaders can follow discussions on the Web at http://groups.google.com/group/comp.os.minix.
+
+As an alternative to installing MINIX 3 on your hard disk, it is possible to run it on any one of several PC simulators now available.
+Some of these are listed on the main page of the Website.
+
+Instructors who are using the book as the text for a university course can get the problem solutions from their local Prentice Hall representative. 
+The book has ints own Website.
+It can be found by going to www.prenhall.com/tanenbaum and selecting this title.
+
+We have been extremely fortunate in having the help of many people during the course of this project.
+First and doremost, Ben Gras and Jorrit Herder have done most of the programming of the new version.
+They did a great job under tight time constraints, including responseding to e-mail well after midnight on many occasions. 
+They also read the manuscript and made many useful comments.
+Our deepest appreciation to both of them.
+
+Kees Bot also helped greatly with previous versions, giving us a good base to work with.
+Kees wrote large chunks of code for versions up to 2.0.4, repaired bugs, and answered numerous questions.
+Philip Homburg wrote most of the networking code as well as helping out in numerous other useful ways, 
+especially providing detailed feedback on the manuscript.
+
+People too numerous to list contributed code to the every early versions, helping to get MINIX off the ground in the first place.
+There were so many of them and their contributions have been so varied that we cannot even begin to list them all here,
+so the best we can do is a generic thank you to all of them.
+
+Several people read parts of the manuscript and made suggestions.
+We would like to give our special thanks to Gojko Babic, Michael Crowley, Joseph M. Kizza, Sam Kohn Alexander Manov, and Du Zhang for their help.
+
+Finally, we would like to thank our families. 
+Suzanne has been through this 16 times now. 
+Barbara has been through it 15 times now.
+Marvin has been through it 14 times now.
+It's kind of getting to be routine, but the love and support is still much appreciated.(AST)
+
+AI's Barbara has been through this twice now.
+Her support, patience, and good humor were essential.
+Gordon has been a patient listenser.
+It is still a delight to have a son who understands and cares about the things that fascinate me.
+Finally, step-grandson Zain's first birsday coincides with the release of MINIX 3.
+Some day he will appreciate this.(ASW)
+
+Andrew S. Tanenbaum
+
+Albert S. Woodhull
+
+
+@1 instruduction
+
+Without its software, a computer is basically a useless lump of metal.
+With its software, a computer can store , process, and retrieve information; 
+play music and videos; send e-mail, search the Internet; and engage in many other valuable activities to earn its keep.
+Computer software can be divided into two kinds: system programs, which manage the operation of the computer itself, 
+and application programs, which perform the actual work the user wants.
+The most fundamental system program is the operating system, whose job is to control all the computer's resources and 
+provide a base upon which the application programs can be written.
+Operating systems are the topic of this book.
+In particular, and operating system called MINIX 3 is used as a model, to illustrate design principles and the realities of implementing a design.
+
+A modern computer system consists of one or more processors, some main memory, disks, 
+printers, a keyboard, a display, network interfacees, and other input/output devices. 
+All in all, a complex system.
+Writing programs that keep track of all these components and use them correctly, let alone optimally, is an extremely difficult job.
+If every programmer had to be concerned with how disk drives work, and with all the dozons of things that could go wrong when reading a disk block, 
+it is unlikely that many programs could be written at all.
+
+Many years ago it became abundantly clear that some way had to be found to shield programmers from the complexity of the hardware.
+The way that has evolved gradually is to put a layer of software on top of the bare hardware, 
+to manage all parts of the system, and present the user with an interface or virtual machine that easier to understand and program.
+This layer of software is the operating system.
+
+The placement of the operating system is shown in Fiq. 1-1.
+At the bottom is the hardware, which, in many cases, is itself composed of two or more levels (or layers).
+The lowest level contains physical devices, consisting of integrated circuit chips, wires, power supplies, cathode ray tubes, and similar physical devices.
+How these are constructed and how they work is the province of the electrical engineer.
+
+Next comes the microarchitecture level, in which the physical devices are grouped together to form functional units.
+Typically this level contains some registers internal to the CPU (Central Processing Unit) and a data path containing an arithmetic logic unit.
+In each clock cycle, one or two operands are fetched from the registers and combined in the arithmetic logic unit 
+(for example, by addition or Boolean AND) .
+The result is stored in one or more registers.
+On some machines, the operation of the data path is controlled by software, called microprogram.
+On the other machines, it is controlled directly by hardware circuits.
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}
+
