@@ -1,4 +1,5 @@
-\documentclass{article}
+\documentclass{book}
+\newcommand {\kw} [1] {\textbf{#1}}
 \begin{document}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 @Preface
@@ -111,14 +112,13 @@ Andrew S. Tanenbaum
 Albert S. Woodhull
 
 
-@1 instruduction
-
+\chapter{Introduction}
 Without its software, a computer is basically a useless lump of metal.
 With its software, a computer can store , process, and retrieve information; 
 play music and videos; send e-mail, search the Internet; and engage in many other valuable activities to earn its keep.
 Computer software can be divided into two kinds: system programs, which manage the operation of the computer itself, 
 and application programs, which perform the actual work the user wants.
-The most fundamental system program is the operating system, whose job is to control all the computer's resources and 
+The most fundamental system program is the \kw{operating system}, whose job is to control all the computer's resources and 
 provide a base upon which the application programs can be written.
 Operating systems are the topic of this book.
 In particular, and operating system called MINIX 3 is used as a model, to illustrate design principles and the realities of implementing a design.
@@ -132,7 +132,7 @@ it is unlikely that many programs could be written at all.
 
 Many years ago it became abundantly clear that some way had to be found to shield programmers from the complexity of the hardware.
 The way that has evolved gradually is to put a layer of software on top of the bare hardware, 
-to manage all parts of the system, and present the user with an interface or virtual machine that easier to understand and program.
+to manage all parts of the system, and present the user with an interface or \kw{virtual machine} that easier to understand and program.
 This layer of software is the operating system.
 
 The placement of the operating system is shown in Fiq. 1-1.
@@ -140,13 +140,267 @@ At the bottom is the hardware, which, in many cases, is itself composed of two o
 The lowest level contains physical devices, consisting of integrated circuit chips, wires, power supplies, cathode ray tubes, and similar physical devices.
 How these are constructed and how they work is the province of the electrical engineer.
 
-Next comes the microarchitecture level, in which the physical devices are grouped together to form functional units.
+Next comes the \kw{microarchitecture level}, in which the physical devices are grouped together to form functional units.
 Typically this level contains some registers internal to the CPU (Central Processing Unit) and a data path containing an arithmetic logic unit.
 In each clock cycle, one or two operands are fetched from the registers and combined in the arithmetic logic unit 
 (for example, by addition or Boolean AND) .
 The result is stored in one or more registers.
-On some machines, the operation of the data path is controlled by software, called microprogram.
+On some machines, the operation of the data path is controlled by software, called \kw{microprogram}.
 On the other machines, it is controlled directly by hardware circuits.
+
+The purpose of the data path is to execute some set of instructions.
+Some of these can be carried out in one data path cycle; others may require multiple data path cycles.
+These instructions may use registers or other hardware facilities.
+Together, the hardware and instructions visible to an assembly language programmer form the \kw{ISA (Instruction Set Architecture)}.
+This level is often called \kw{machine language}.
+
+The machine language typically has between 50 and 300 instructions, mostly for moving data around the machine, doing arithmetic, and comparing values.
+In this level, the input/output devices are controlled by loading the values into special \kw{device registers}.
+For example, a disk can be commanded to read by loading the values of the disk address, main memory address, byte count, 
+and direction (read or write) into its registers.
+In practice, many more parameters are needed, and the status returned by the device after an operation may be complex.
+Furthermore, for many I/O (Input/Output) devices, timing plays an important role in the programming.
+
+A major function of the operating system is to hide all this complexity and give the programmer a more conveninent set of instructions to work with.
+For example, read block from file is conceptually much simple than having to worry about the details of moving disk heads, 
+waiting for them to settle down, and so on.
+
+On top of the operating system is the rest of the system software.
+Here we find the command interpreter (shell), window system, compilers, editors, and similar application-independent programs.
+It is important to realize that these programs are definitely not part of the operating system, 
+even though they are typically supplied preinstalled by the computer manufacturer, 
+or in a package with the operating system if it is installed after purchase.
+This is a crucial, but subtle, point.
+The operating system is (usaully) that portion of the software that run in \kw{kernel mode} or \kw{supervisor mode}.
+It is protected from user tampering by the hardware 
+(ignoring for the moment some older or low-end microprocessors that do not have hardware protection at all).
+Compilers and editors run in \kw{user mode}.
+If a user does not like a particular compiler, he is free to write his own if he so chooses; 
+he is not free to write his own clock interrupt handler, which is part of the operating system 
+and is normally protected by hardware against attempts by user to modify it.
+
+This distinction, however, is sometimes blurred in embedded systems (which may not have kernel mode) 
+or interpreted systems (such as Java-based systems that use interpretation, not hardware , to seperate the components).
+Still, for traditional computers, the operating system is what runs in kernel mode.
+
+That said, in many systems there are programs that run in user mode but which help the operating sytem or perform privileged functions.
+For example, there is often a program that allows users to change their passwords.
+This program is not part of the operating system and does not run in kernel mode, but it clearly carries out a sensitive function 
+and has to be protected in a specail way.
+
+In some systems, including MINIX 3, this idea is carried to an extreme form, 
+and pieces of what is traditionally considered to be the operating system (such as the file system) run in user space.
+In such systems, it is difficult to draw a clear boundary.
+Everything runing in kernel mode is clearly part of the operating system, 
+but some programs running outside it are arguably also part of it, or at least closely associated with it.
+For example, in MINIX 3, the file system is simply a big C program running in uer-mode.
+
+Finally, above the system programs come the application programs.
+These programs are purchased (or written by) the user to solve their particular problems, 
+such as word processing, spreadsheets, engineering calculations, or storing information in a database.
+
+\section{What Is an Operating System?}
+Most computer users have had some experience with an operating system, but it is difficult to pin down precisely what an operating system is.
+Part of the problem is that operating systems perform two basically unreleated functions, extending the machine and managing resources, 
+and depending on who is doding the talking, you hear mostly about one function or the other.
+Let us now look at both.
+
+\subsection{The Operating System as an Extended Machine}
+As mentioned earlier, the architecture (instruction set, memory organization, I/O, and bus structure) of most computers 
+at the machine language level is primitive and awkward to program, especially for input/output.
+To make this point more concrete, let us briefly look at how floppy disk I/O is done 
+using the NEC PD765 compatible controller chips used on many Intel-based personal computers.
+(Throughout this book we will use the term "floppy disk" and "diskette" interchangeably.)
+The PD765 has 16 commands, each specified by loading between 1 and 9 bytes into a device register.
+Those commands are for reading and writing data, moving the disk arm, and formatting tracks, 
+as well as initializing, sensing, resetting, and recalibrating the controller and the drives.
+
+The most basic commands are read and write, each of which requires 13 parameters, packed into 9 bytes.
+These parameters specify such items as the address of the disk block to be read, the number of sectors per track, 
+the recording mode used on the physical medium, the intersector gap spacing, and what to do with a deleted-data-address-mark.
+If you do not understand this mumbo jumbo, do not worry; that is precisely the pointit is rather esoteric.
+When the operation is completed, the controller chip returns 23 status and error fields packed into 7 bytes.
+As if this were enough, the floppy disk programmer must also be constantly aware of whether the motor is on or off.
+If the motor is off, it must be turned on (with a long startip delay) before data can be read or write.
+The motor cannot be left on too long, however, or the floppy disk will wear out.
+The programmer is thus forced to deal with the trade-off between long startup delays versus wearing out floppy disks (and losing the data on them).
+
+Without going the real details, it should be clear that the average programmer probably does not want to 
+get too intimately involved with the programming of floppy disks (or hard disks, which are just as complex and quite different).
+Instead, what the programmer wants is a simpple, highlevel abstraction to deal with.
+In the case of disks, a typical abstraction would be that the disk contains a collection of named files.
+Each file can be opened for reading or writing, then read or written, and finally closed.
+Details such as whether or not recording should use modified frequency modulation and 
+what the current state of the motor is should not appear in the abstraction presented to the user.
+
+The program that hides the truth about the hardware from the programmer and 
+presents a nice, simple view of named files can be read and written is, of course, the operating system.
+Just as the operating system shields the programmer from the disk hardware and presents a simple file-oriented interface, 
+it also conceals a lot of unpleasant business concerning interrupts, timers, memory management, and other low-level features.
+In each case, the abstraction offered by the operating system is simpler and easier to use than that offered by the underlying hardware.
+
+In this view, the function of the operating system is to present the user with the equivalent of an \kw{extended machine} or \kw{virtual machine} 
+that is easier to program than the underlying hardware.
+How the operating system achives this goal is a long story, which we will study in detail throuout this book.
+To summarize it in a nutshell, the operating system provides a variety of services 
+that programs can obtain using special instructions called system calls.
+We will examine some of the more common system calls later in this chapter.
+
+\subsection{The Operating System as a Resource Manager}
+The concept of the operating system as primarily providing its users with a convient interface is a top-down view.
+An alternative, bottom-up, wiew hols that the operating system is there to manage all the pieces of a complex system. 
+Modern computers consist of processors, memories, timers, disks, mice, network interfaces, printers, and a wide variety of other devices.
+In the alternative view, the job of the operating system is to provide for an orderly and controlled allocation 
+of the processors, memories, and I/O devices among the various programs competing for them.
+
+Imagine what would happen if three programs running on some computer all tried to print their output simultaneously on the same printer.
+The first few lines of printout might be from program 1, the next few from program 2, then some from program 3, and so forth.
+The result would be chaos.
+The operating system can bring order to the potential chaos by buffering all the output destined for the printer on the disk.
+When one program is finished, the operating system can then copy its output from the disk file where it has been stored to the printer, 
+while at the same time the other program can continue generating more output, 
+oblivious to the fact that the output is not really going to the printer (yet).
+
+When a computer (or network) has multiple users, the need for managing and protecting the memory, I/O devices, and other resources is even greater, 
+since the users might otherwise interface with one another.
+In addition, users often need to share not only hardware, but information (files, databases, etc.) as well.
+In short, this view of the operating system holds that its primary task is to keep track of who is using which resource, 
+to grant resource requests, to account for usage, and to mediate conflicting requests from different program and users.
+
+Resource management includes multiplexing (sharing) resources in two ways: in time and in space.
+When a resource is time multiolexed, different programs or users turns using it.
+First one of them gets to use the resource, then another, and so on.
+For example, with only one CPU and multiple programs that want to run on it, the operating system first allocates the CPU to one program, 
+then after it has run long enough, another one gets to use the CPU, then another, and then eventually the first one again.
+Determining how the resource is time multiplexed, who goes nexti,  and for how long is the task of the operating system.
+Another example of time multiplexing is sharing the printer.
+When multiple print jobs are queued up for printing on a single printer, a decision has to be made about which one is to be printed next.
+
+The other kind of multiplexing is space multiplexing. 
+Instead of the customers taking turns, each one gets part of the resource.
+For example, main memory is normally divided up among several running programs, so each one can be resident at the same time 
+(for example, in order to take turns using the CPU).
+Assuming there is enough memory to hold multiple programs, 
+it is more efficient to hold several programs in memory at once rather than give one of them all of it, 
+especially if it only needs a small fraction of the total.
+Of course, this raises issues of fairness, protection, and so on, and it is up to the operating system to solve them.
+Another resource that is space multiplexed is the (hard) disk.
+In many systems a single disk can hold files from many users at the same time.
+Allocating disk space and keeping track of who is using which disk blocks is a typical operating system resource management task.
+
+\section{History of Operating Systems}
+Operating systems have been evolving through the years.
+In the following sections we will breifly look at a few of the highlights.
+Since operating systems have historically been closely tied to the architecture of the computers on which they run, 
+we will look at successive generations of computers to see what their operating systems were like.
+This mapping of operating system generations to computer generations is crude, but it dose provide some structure where there would otherwise be none.
+
+The first true digital computer was designed by the English mathematician Charles Babbage(1792-1871).
+Although Babbage spent most of his life and fortune trying to build his "analytical engine", 
+he never got it working properly because it was purely mechanical, 
+and the technology of his day could not produce the required wheels, gears, and cogs to the high precision that he needed.
+Needless to say, the analytical engine did not have an operating system.
+
+As an intersting historical aside, Babbage realized that he would need software for his analytical engine, 
+so he hired a young woman naned Ada Lovelace, who was the daughter of the famed British poet Lord Byron, as the world's first programmer.
+The programming language Ada was named after her.
+
+\subsection{The First Generation(195565) Vacuum Tubes and Plugboards}
+After Babbage's unsuccessful efforts, little progress was made in constructing digital computers untill World War II.
+Around the mid-1940s, Howard Aiken at Harvard University, John Von Neumann at the Institute for Advanced Study in Princeton, 
+J. Presper Eckert and John Mauchley at the University of Pennsylvania, and Konrad Zuse in Germany, 
+among others, all succeeded in building caculating engines.
+The first ones used mechanical relays but were very slow, with cycle times measured in seconds.
+Relays were later replaced by vacuum tubes.
+These machines were enormous, filling up entire rooms with tens of thousands of vacuum tubes, 
+but they were still millions of times slower than even the cheapest personal computers available today.
+
+In these early days, a single group of people designed, built, programmed, operated, and maintained each machine.
+All programming was done in absolute machine language, often by wiring up plugboards to control the machine's basic functions.
+Programming labguages were unknown (even assembly language was unknow).
+Operating systems were unheard of.
+The usual mode of operation was for the programmer to sign up for a block of time on the signup sheet on the wall, 
+then come down to the machine room, insert his or her plugboard into the computer, 
+and spend the next few hours hoping that none of the 20,000 or so vacuum tubes would burn out during the run.
+Virtually all the problems were straitforward numerical calculations, such as grinding out tables of sines, cosines, and logarithms.
+
+By the early 1950s, the routine had improved somewhat within the introduction of punched cards.
+It was now possible to write programs on card and read them in instead of using plugboards; otherwise, the procedure was the same.
+
+\subsection{The Second Generation(195565) Transistors and Batch Systems}
+The introduction of the transistor in the mid-1950s changed the picture radically.
+Computers became reliable enough that they could be manufactured and sold to paying customers with the expectation 
+that they would continue to function long enough to get some useful work done.
+For the first time, there was a clear separation between designers, builders, operators, programmers, and maintenance personnel.
+
+These machines, now called \kw{mainframes}, were locked away in specially airconditioned computer rooms, 
+with staffs of special-trained professional operators to run them.
+Only big corporation or major government agencies or universities could afford their multimillion dollar price tags.
+To run a \kw{job}(i.e., a program or set of programs), a programmer would first write the program on paper 
+(in FORTRAN or possibly even in assembly language), then punch it on cards.
+He would then bring the card deck down to the input room and hand it to one of the operators and go drink coffee untill the output was ready.
+
+When the computer finished whatever job it was currently running, an operator would go over to the printer and tear off the output i
+and carry it over to the output-room, so that the programmer could collect it later. 
+Then he would take one of the card decks that had been brought from the input room and read it in.
+If the FORTRAN compiler was needed, the operator would have to get it from a file cabinet and read it in.
+Much computer time was wasted while operators were walking around the machine room.
+
+Given the high cost of the equipment, it is not surprising that people quickly looked for ways to reduce the wasted time.
+The solution generally adopted was the \kw{batch system}.
+The idea behind using a small (relatively) inexpensive computer, such as the IBM 1401, 
+which was very good at reading cards, copying tapes, and printing output, but not at all good at numerical calculations.
+Others, much more expensive machines, such as the IBM 7094, were used for the real computing.
+THis solution is show in Fig.1-2.
+
+After about an hour of collecting a batch of jobs, the tape was rewound and brought into the machine room, where it was mounted on a tape drive.
+The operator then loaded a special program (the ancestor of today's operating system), which read the first job from tape and ran it.
+The output was written onto a second tape, instead of being printed.
+After each job finished, the operating system automatically read the next job from the tape and began running it.
+When the whole batch was done, the operator removed the input and output tapes, replaced the input tape with the next batch, 
+and brought the output tape to a 1401 for printing \kw{off line} (i.e., not connected to the main computer).
+
+The structure of atypical input job is show in Fig.1-3.
+It started out with a \$JOB card, specifying the maximum run times in minutes, the account number to be charged, and the programmer's name.
+Then came a \$FORTRAN card, telling the operating system to load FORTRAN compiler from the system tape.
+It was followed by the program to be compiled, and then a \$LOAD card, directing the operating system to load the object program just compiled.
+(Compileed programs were often written on scratch tapes and had to be loaded explicitly.)
+Next came the \$RUN card, telling the operating system to run the program with the data following it.
+Finally, the \$END card marked the end of the job.
+These primitive control cards were the forerunners of modern job control language and command interpreters.
+
+Large second-generation computers were used mostly for scientific and engineering calculations, 
+such as solving the partial differential equations that often occur in physics and engineering.
+They were largely programmed in FORTRAN and assembly labguage.
+Typical operating systems were FMS (the Fortran Monitor System) and IBSYS, IBM'S operating system for the 7094.
+
+\subsection{The Third Generation (19651980) ICs and Multiprogramming}
+By the early 1960s, most computer manufactures had two distinct, and totally incompatible, product lines.
+On the one hand there were the word-oriented, large-scale scientific computers, such as the 7094, 
+which were used for numerical caculations in science and engineering.
+On the other hand, there were the character-oriented, commercial computers, such as the 1401, 
+which were widely used for tape sorting and printing by banks and insurance companies.
+
+Developing, maintaining, and marketing two completely different product lines was expensive proposition for the computer manufactures.
+In addition, many new computer customers initially needed a small machine but later outgrew it and wanted a bigger machine 
+that had the same architectures as their current one so it could run all their old programs, but faster.
+
+IBM attempted to solve both of these problems at a single stroke by introducing the System/360.
+The 360 was a series of software-compatible machines ranging from 1401-size to much more powerful than the 7094.
+The machines differed only in price and performance (maximum memory, processor speed, number of I/O devices permitted, and so forth).
+Since all themachines had the same architecture and instruction set, programs written for one machine could run on all the others, at least in theory.
+Furthermore, the 360 was designed to handle both scientific (i.e., numerical) and commertial computing.
+Thus a single family of machines could satisfy the needs of all customers.
+In subsequent years, IBM has come out with compatible successors to the 360 line, using more modern technology, 
+known as the 370, 4300, 3080, 3090, and Z series.
+
+The 360 was the first major computer line to use (small-scale) Integrated Circuits (ICs), 
+thus providing a major price/performance advantage over the second-generation machines, which were built up from individual transistors.
+It was an immediate success, and the idea of a family of compatible cpmputers was soon adopted by all the other major manufactures.
+The descendants of these machines are still use at computer centers today.
+Nowadays they are often used for managing huge databases (e/g., for airline reservation systems) 
+or as servers for World Wide Web sites that must process thousands of requests per second.
+
 
 
 
