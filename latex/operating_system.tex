@@ -1,5 +1,8 @@
 \documentclass{book}
-\newcommand {\kw} [1] {\textbf{#1}}
+\newcommand {\kw}  [1] {\textbf{#1}}
+\newcommand {\www} [1] {\texttt{#1}}
+\newcommand {\sys} [1] {\textsl{#1}}
+\newcommand {\cmd} [1] {\textsl{#1}}
 \begin{document}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 @Preface
@@ -400,6 +403,362 @@ It was an immediate success, and the idea of a family of compatible cpmputers wa
 The descendants of these machines are still use at computer centers today.
 Nowadays they are often used for managing huge databases (e/g., for airline reservation systems) 
 or as servers for World Wide Web sites that must process thousands of requests per second.
+
+The greatest strenth of the "one family" idea was simultaneously its greatest weakness.
+The intention was that all software, including the operating system, \kw{OS/360}, had to work on all models.
+It had to run on samll system, which often just replaced 1401s for copying cards to tape, 
+and on very large systems, which often replaced 7094s for doing weather forecasting and other heavy computing.
+It had to be good on systems with few peripherals and on systems with many peripherals.
+It had to work in commercial environments and in scientific environments.
+Above all, it had to be efficient for all of these different uses.
+
+There was no way that IBM(or anybody else) could write a piece of software to meet all those conflicting requirements.
+The result was an enormous and extraordinarily complex operating system, probably two to three orders of magnitude larger than FMS.
+It consisted of millions of lines of assembly language written by thousands of programmers, 
+and contained thousands upon thousands of bugs, which necessitated a continuous stream of new releases in an attempt to correct them.
+Each new release fixed some bugs and introduced new ones, so the number of bugs probably remained constant in time.
+
+One of the designers of OS/360, Fred Brooks, subsequently wrote a witty and incisive book describing his experiences with OS/360 (Brooks, 1995).
+While it would be impossible to summarize the book here, suffice it to say that the cover shows a herd of prehistoric beasts stuck in a tar pit.
+The cover of Silberschatz et al.(2004) makes a similar point about operating systems being dinosaurs.
+
+Despite its enormous size and problems, OS/360 and the similar third-generation operating systems produced by other computer manufacturers 
+actually satisfied most of their customers reasonably well.
+They also popularized several key techniques absent in second-generation operating systems.
+Probably the most important of these was \kw{multiprogramming}.
+On the 7094, when the current job paused to wait for a tape or other I/O operation to complete, the CPU simply sat idle untill the I/O finished.
+With heavily CPU-bound scientific caculations, I/O is infrequent, so this wasted time is not significant.
+WIth commercial data processing, the I/O wait time can often be 80 or 90 oercent of the total time, 
+so something had to be done to avoid having the (expensive) CPU be idle so much.
+
+The solution that evolved was to partition memory into several pieces, with different job in each partition, as shown in Fig. 1-4.
+While one job was waiting for I/O to complete, another job could be using the CPU.
+If enough jobs could be held in main memory at once, the CPU could be kept busy nearly 100 percent of the time.
+Having multiple jobs safely in memory at onece requires special hardware to protect each job against snooping and mischief by the other ones,
+but the 360 and other third-generation systems were equipped with this hardware.
+
+Another major feature present in third-generation operating systems was the ability to read jobs from cards onto the disk 
+as soon as they were brought to the computer room.
+Then, whenever a running job finished, the operating system could load a new job from the disk into the now-empty partion and run it.
+This technique is called \kw{spooling} (from Simultaneous Peripheral Operation On Line) and was used for output.
+With spooling, the 140qs were no longer needed, and much carrying of tapes disappeared.
+
+Although third-generation operating systems were well suited for big scientific caculations and massive commercial data processing runs, 
+they were still basically batch systems.
+Many programmers pined for the first-generation days when they had the machine all to themselves for a few hours, 
+so they could debug their programs quickly.
+With third-generation systems, the time between submitting a job and getting back the output was often hours, 
+so a single misplaced comma could cause compilation to fail, and the programmer to waste half day.
+The desire for quick response time paved the way for \kw{timesharing}, a variant of multiprogramming, inwhich each user has an online terminal.
+In a timesharing system, if 20 users are logged in and 17 of them are thinking or talking or drinking coffee, 
+the CPU can be allocated in turn to the three jobs that want service.
+Since people debugging programs usually issue short commands (e.g., compile a five-page procesure) 
+rather than long ones (e.g., sort a million-record file), the computer can provide fast, 
+interactive service to a number of users and perhaps also work on big batch jobs in the backgroud when the CPU is otherwise idle.
+The first serious timesharing system, \kw{CTSS} (Compatible Time Sharing System), was developed at M.I.T.
+In a special modified 7094 (Corbato et al., 1962). 
+However, timesharing did not really become popular until the necessary protection hardware became widespread during the third generation. 
+
+After the success of the CTSS system, MITM Bell Labs, and General Electric (then a major computer manufacturer) decided to embark on 
+the development of a "computer utility", a machine that would support hundreds of simultaneous timesharing users.
+Their model was the electricity distribution system:
+when you need electric power, you just stick a plug in the wall, and within reason, as much power as you need will be there.
+The designer of this system, known as \kw{MULTICS} (MULTiplexed Information and Computing Service), 
+envisioned one huge machine providing computing power for everyone in the Boston area.
+The idea that machines far more powerful than their GE-645 mainframe wwould be sold for under a thousand dollars by the millions only 30 years later 
+was pure science fiction, like the idea of supersonic trans-Atlantic underse a trains would be now.
+
+MULTICS was a mixed success.
+It was designed to support hundreds of users on a machine only slightly more powerful than an Intel 80386-base PC,
+although it had much more I/O capacity.
+This is not quite as crazy as it sounds, since people knew how to write small, efficent programs in those days, a skill that has subsequntly been lost.
+There were many reasons that MULTICS did bot take over the world, not the least of which is that it was written in PL/I, 
+and the PL/I compiler was years late and barely worked at all when it finally arrived.
+In addition, MULTICS was enormously ambitious for its time, much like Charles Babbage's analytical engine in the nineteenth century.
+
+MULTICS introduced many seminal ideas into the computer literature, 
+but turning it into a serious products and commercial success was a lot harder than anyone had expected.
+Bell Labs dropped out of the project, and General Electric quit the computer business altogether.
+However, M.I.T. persisted and eventually got MULTICS working.
+It was ultimately sold as a commertial product by the company that bought GE's computer business (Honeywell) 
+and installed by about 80 major companies and universities worldwide.
+While their numbers were small, MULTICS users were fiercely loyal.
+General Motors, Ford, and the U.S. National Security Agency, for example, only shut down their MULTICS systems in the late 1990s.
+The last MULTICS running, at the Canadian Department of National Defence, shut down in October 2000.
+Despite its lack of commertial success, MULTICS had huge influence on subsequent operating systems.
+A great deal of information about it exists (Corbato et al., 1972; Corbato and Vyssotsky, 1965; Daley and Dennis, 1968; Organick, 1972l and Saltzerm 1974).
+It also has a stillactive Web site, \www{www.multicians.org}, with a great deal of information about the system, its designers, and its users.
+
+The phrase "computer utility" is no longer heard, but the idea has gained new life in recent years.
+In its simplest form, PCs or workstation (high-end PCs) in a business or a classromm 
+may be connected via a \kw{LAN (Local Area Network)} to a \kw{file server} on which all programs and data are stored.
+An administrator then has to install an protect only one set of programs and data, 
+and can easily reinstall local software on a malfunctioning PC or workstation without worrying about retrieving or preserving local data.
+In more heterogeneous environments, a class software called \kw{middleware} has evolved 
+to bridge the gap betwwen local users and the files, programs, and databases they use on remote servers.
+Middleware makes networked computers look local to individual user' PCs or workstations 
+and presents a consistent user interface even though there may be a wide variety of different servers, PCs, and workstations in use.
+The World Wide Web is an example.
+A web brower presents documents to a user in a uniform way, and a document as seen on a user's brower can consist of next from one server 
+and graphics from another server, presented in a format determined by a style sheet on yet another sever.
+Businesses and universities commonly use a web interface to access databases and run programs on a computer in another building or even another city.
+Middleware appears to be the operating system of a \kw{distributed system}, 
+but it is not really an operating system at all, and is beyond the scope of this book.
+For more on distributed systems see Tanenbaum and Van Steen (2002).
+
+Another major development during the third generation was the phenomental growth of minicompputers, 
+starting with the Digital Equipment Company (DEC) PDP-1 in 1961.
+The PDP-1 had only 4K of 18-bit words, but at \$120,000 per machine (less than 5 percent of the price of a 7094), it sold like hotcakes.
+For certain kinds of nonnumerical work, it was almost as fast as the 7094 and gave birth to a whole new industry.
+It was quickly followed by a series of other PDPs (unlike IBM's family all incompatible) culminating in the PDP-11.
+
+One of the computer scientists at Bell Labs who had worked on the MULTICS project, Ken Thompson, 
+subsequently found a small PDP-7 minicomputer that no one was using and set out to write a stripped-down, one-user version of MULTICS.
+This work later developed into the \kw{UNIX} operating system, which became popular in the academic world, 
+with government agencies, and with many companies.
+
+The history of UNIX has been told elsewhere (e.g., Salus, 1994).
+Because the source code was widely available, various organizations developed their own (incompatible) versions, which lead to chaos.
+Two major versions developed, \kw{System V}, from AT\&T, and \kw{BSD}, (Berkeley Software Distribution) from the University of California at Berkeley.
+These had minor variants as well, now including FreeBSD, OpenBSD, and NetBSD.
+To make it possible to write programs that could run on any UNIX system, IEEE developed a standard for UNIX, called \kw{POSIX},
+that most versions of UNIX now support.
+In fact, some other operating system now also support the POSIX interface.
+The information needed to write POSIX-compliant software is available in books (IEEE, 1990; Lewine, 1991),
+and online as the Open Group's "Single UNIX Specification" at \www{www.unix.org}.
+Later in this chapter, when we refer to UNIX, we mean all of these systems as well, unless stated otherwise.
+While they differ internally, all of them support the POSIX X standard, so to the programmer they are quite similar.
+
+\subsection{The Fourth Generation (1980Present) Personal Computers}
+With the development of LSI (Large Scale Integration) circuits, chips containing thousands of transistors on a square centimeter of silicon,
+the age of the \kw{microprocessor}-based personal computer dawned.
+In terms of architecture, personal computers (initially called \kw{microcomputers}) were not all that different from minicomputers of the PDP-11 class, 
+but in terms of price they vertainly were different.
+The minicomputer made it possible for a department in a cpmpany or university to have its own computer.
+The microcomputer made it possible for an individual to have his or her own computer.
+
+There were several families of microcomputers.
+Intel came out with the 8080, the first general-purpose 8-bit microprocessor, in 1974.
+A number of companies produced complete systems using the 8080 (or the compatible Zilog Z80) 
+and the \kw{CP/M} (Control Program for Microcomputers) operating system from a company called Digital Research was widely used with these.
+Many application programs were written to run on CP/M, and it dominated the personal computing world for about 5 years.
+
+Motorola also produced an 8-bit microprocessor, the 6800.
+A group of Motorola engineers left to form MOS Technology and manufacture the 6502 CPU after Motorola rejected their suggested improvements to the 6800.
+The 65-2 was the CPU of several early systems.
+One of these, the Apple II, became a major competitor for CP/M systems in the home and educational markets.
+But CP/M was so popular that many owners of Apple II computers purchased Z-80 coprocessor add-on cards to run CP/M, 
+since the 6502 CPU was not compatible with CP/M.
+The CP/M cards were sold by little company called Microsoft, which also had a market niche supplying BASIC interpreters 
+used by a number of microcomputers running CP/M.
+
+The next generation of microprocessors were 16-bit systems.
+Intel came out with the 8086, and in the early 1980s, IBM designed the IBM PC around Intel's 8088 (an 8086 on the inside, with an 8bit external data path).
+Microsoft offered IBM a package which included Microsoft's BASIC and an operating system, 
+\kw{DOS} (Disk Operating System) originally developed by another company.
+Microsoft bought the product and hired the original author to improve it.
+The revised system was renamed \kw{MS-DS} (MicroSoft Disk Operating System) and quickly came to dominate the IBM PC market.
+
+CP/M, MS-DOS, and the Apple DOS were all command-line systems: user typed commands at the keyboard.
+Years earlier, Doug Engelbart at Stanford Research Institute had invented the \kw{GUI (Graphical User Interface)}, pronounced "gooey", 
+complete with windows, icons, menus, and mouse.
+Apple's Steve Jobs saw the possibility of a truly \kw{user-friendly} personal computer 
+(for users who knew nothing about computers and did not want to learn), and the Apple Macintosh was announced in early 1984.
+It used Motorola's 16-bit 68000 CPU, and had 64KB of \kw{ROM (Read Only Memory)}, to support the GUI.
+The Macintosh has envolved over the years.
+Subsequent Motorola CPUs were true 32-bit systems, and later still Apple moved to IBM PowerPC CPUs, with RISC 32-bit (and later, 64-bit) architecture.
+In 2001 Apple made a major operating system change, releasing \kw{Mac OS X}, with a new version of the Macintosh GUI on top of Berkeley UNIX.
+And in 2005 Apple announced that it would be switching to Intel processors.
+
+To compete with the Macintosh, Microsoft invented Windows.
+Originally Windows was just a graphical environment on top of 16-bit MS-DOS (i.e., it was more like a shell than a true operating system).
+However, current versions of Windows are descendant of Windows NT, a full 32-bit system, rewritten from scratch.
+
+The other major contender in the personal computer world is UNIX (and its various derivatives).
+UNIX is strongest on workstations and other high-end computers, such as network servers.
+It is especially popular on machines powerd by high-performance RISC chips.
+On Pentium-based computers, Linux is becoming a popular alternative to Windows for students and increasingly many corporate users.
+(Throughout this book we will use the term "Pentium" to means the entire Pentium family, 
+including the low-end Celeron, the gigh end Xeon, and compatible AMD microprocessors).
+
+Although many UNIX users, especially experienced programmers, prefer a command-based interface to a GUI, 
+nearly all UNIX systems support a windowing system called \kw{X Window} system developed at M.I.T.
+This system handles the basic window management, allowing users to create, delete, move, and resize windows using a mouse.
+Often a complete GUI, such as \kw{Motif}, is available to run on top of the X Window system 
+giving UNIX a look and feel something like the Macintosh or Microsoft Windowns for those UNIX users who want such a thing.
+
+An intresting development that began taking place during the mid-1980s is the growth of 
+networks of personal computers running \kw{network operating systems} and \kw{distributed operating systems} (Tanenbauand Van Steen, 2002).
+In a network operating system, the users are aware of the existence of multiple computers 
+and can log in to remote machines and copy files from one machine to another.
+Each machine runs its own local operating system and has its own local user (or users).
+Basically, the machines are independent of one another.
+
+Network operating systems are not fundamentally different from single-processor operating systems.
+They obviously need a network interface controller and some low-level software to drive it, 
+as well as programs to achieve remote login and remote file access, 
+but these additions do not change the essential structure of the operating system.
+
+A distributed operating system, in contrast, is one that appears to its users as a traditional uniprocessor system, 
+even though it is composed of multiple processors.
+The users shpuld not be aware of where their programs are being run or where their files are located;
+that should all be handled automatically and efficently by the operating system.
+
+True distributed operating systems require more than just adding a little code to a uniprocessor operating system, 
+because distributed and centralized systems differ in critical ways.
+Distributed system, for example, often allow applications to run on several processors at the same time, 
+thus requiring more complex processor scheduling algorithms in order to optimize the amount of parallelism.
+
+Communication delays within the network often mean that these (and other) algorithms must run with incomplete, outdated, or even incorrect information.
+This situation is radically different from a single-processor system in which the operating system has complete information about the system state.
+
+
+\subsection{History of MINIX 3}
+When UNIX was young (Version 6), the source code was widely available, under AT\&T license, and frequently studied.
+John Lions, of the University of New South Wales in Australia, even wrote a little booklet describing its operation, line by line (Lions, 1996).
+This booklet was used (with permission of AT\&T) as atext in many university operating system courses.
+
+When AT\&T released Verion 7, it dimly began realize that UNIX was a valuable commercial product, 
+so it issued Version 7 with a license that prohibited the source code from being studied in courses, 
+in order to avoid endangering its status as a trade secret. 
+Many universities complied by simply dropping the study of UNIX and teching only theory.
+
+Unfortunately, teaching only theory leaves the student with a lopsided view of what an operating system is really like.
+The theoretical topics that are usually covered in great detail in courses and books on operating systems, 
+such as scheduling algorithms, are in practice not really that important. 
+Subjects that really are important, such as I/O and file systems, are generally neglected because there is little about them.
+
+To remedy this situation, one of the authors of this book (Tanenbaum) decided to write a new operating system from scratch 
+that would be compatible with UNIX from the user's point of view,  but completely different on the inside.
+By not using even one line of AT\&T code, this ystem avoided the licensing restrictions, so it could be used for class or individual study.
+In this manner, readers could dissect a real operating system to see what is inside, just as biology students dissect frogs.
+It was called \kw{MINIX} and was released in 1987 with its complete source code for anyone to study or modify.
+The name MINIX stands for mini-UNIX because it is small enough that even a nonguru can understand how it works.
+
+In additionto the advantage of eliminating the legal problems, MINIX had another advantage over UNIX.
+It was written a decade after UNIX and was structured in a more modular way.
+For instance, from the very first release of MINIX the file system and the memory manager 
+were not part of the operating system at all but as user programs.
+In the current release (MINIX 3) this modularization has been extended to the I/O device drivers, 
+which (with the exception of the clock driver) all run as user programs.
+Another difference is that UNIX was designed to be efficient; MINIX was designed to be readable 
+(inasmuch as one can speak of any program hundreds of pages long as being readable).
+The MINIX code, for example, has thousands of comments in it.
+
+MINIX was originally designed for compatibility with Version 7 (V7) UNIX. Version 7 was used as the model because of its simplicity and elegance.
+It is cometimes said that Version 7 was an improvement not only over all its predecessors, but also over all its successors.
+With the advent of POSIX, MINIX began evolving toward the new standard, while maintaining backward compatibility with existing programs.
+This kind of evolution is common in the computer industry, as no vendor wants to introduce a new system 
+that none of its existing customers can use without great upheaval.
+The version of MINIX described in this book, MINIX 3, is based on the POSIX standard.
+
+Like UNIX, MINIX was written in the C programing language and intented to be easy to port to various computers.
+The initial implementation was for the IBM PC.
+MINIX was subsequently ported to several other platforms.
+In keeping with the "Small is Beautiful" philosophy, MINIX originally did not even require a hard disk to run 
+(in the mid-1980s hard disks were still an expensive novelty).
+As MINIX grew in functionality and size, it eventually got the point that a hard disk was needed for PCs,
+but in keeping with the MINIX philisophy, a 200-MB partion is sufficient (for embedded applications, no hard disk is reuired ehough).
+In contrast, even small Linux systems require 500-MB of disk space, and several GB will needed to install common applications.
+
+To the average user sitting at an IBM PC, running MINIX is similar to runing UNIX.
+All of the basic programs, such as \sys{cat, grep, ls, make}, and the shell are present and perform the same functions as their UNIX counterparts. 
+Like the operating system itself, all these utility programs have been rewritten completely from scratch by the author, 
+his students, and some other dedicated people, with no AT\&T or other proprietary code.
+Many other freely-distributable programs now exist, and in many cases these have been successfully ported (recompiled) on MINIX.
+
+MINIX continued to develop for a decade and MINIX2 was released in 1997, together with the second edition of this book, which described the new release.
+The changes between Versions 1 and 2 were substantial (e.g., from 16-bit real mode on an 8088 using floppy disks 
+to 32-bit protected mode on a 386 using a hard disk) but evolutionary.
+
+Development continued slowly but systematically until 2004, when Tanenbaum became convinced the software was getting too bloated and unreliable
+and decide to pick up the slightly-dormant MINIX thread again.
+Together with his students and programmers at the Vrije Universiteit in Amsterdam, he produced MINIX 3,
+a major redesign of the system, greatly restructuring the kernel, reducing its size, and emphasizing modularity and reliability.
+The new version was intended both for PCs and embedded systems, where compactness, modularity, and reliability are crucial.
+While some people in the group called for a completely new name, it was eventually decide to call it MINIX 3 
+since the name MINIX was already well known.
+By way of analogy, when Apple abandoned it own operating system, Mac OS 9 and replaced it with a variant of Berkeley UNIX, 
+the name chosen was Mac OS X rather than APPLIX or something like that.
+Similar fundamental changes have happened in the Windows family while retaining the Windows name.
+
+The MINIX kernel is well under 4000 lines of executable code, compared to millions of executable lines of code for Windows, Linux, FreeBSD, and other operating systems.
+Small kernel size is important because kernel bugs are far more devastating than bugs in user-mode programs and more code means more bugs.
+One careful study has shown that the number of \sys{detected} bugs per 1000 executable lines of code varies from 6 to 16 (Basili and Perricone, 1984).
+The actual number of bugs is probably much higher since the researchers could only count reported bugs, not unreported bugs.
+Yet another study (Ostrand et al., 2004) showed that even after more than a dozen releases, on the average 6\% of all files contained bugs 
+that were later reported and after a certain point the bug level tends to stabilize rather than go asymptotically to zero.
+This result is supported by the fact that when a very simple, automated, model-checker was let loose on stable versions of Linux and Open BSD, 
+it found hundreds of kernel bugs, overwhelmingly in device drivers (Chou et al., 2001; and Engler et al., 2001).
+THis is the reason the device drivers were moved out of the kernel in MINIX 3; they can do less damage in user mode.
+
+Throughout this book MINIX 3 will be used as an example.
+Most of the comments about the MINIX 3 system calls, however (as opposed to comments abount the actual code), also apply to other UNIX systems.
+This remark should be kept in mind when reading the text.
+
+A few words about Linux and its relationship to MINIX may possibly be of interest to some reader.
+Shortly after MINIX released, a USENET newgroup, \www{comp.os.minix}, was formed to discuss it.
+Within weeks, it had 40,000 subscribers, most of whom wanted to add vast numbers of new features to MINIX 
+to make it bigger and better (well, at least bigger).
+Every day, several hundred of them offered suggestions, ideas, and frequently snippets of source code.
+The author of MINIX was able to successfully resist this onslaught for several years, 
+in order to keep MINIX clean enough for students to understand and small enough that it could run on computers that students could afford.
+For people who thought little of MS-DOS, the existence of MINIX (with source code) as an alternative was even a reason fo finally go out and buy a PC.
+
+One of these people was a Finnish student named Linus Torvalds.
+Torvalds installed MINIX on his new PC and studied the source code carefully.
+Torvalds wants to read USENET newsgroups (such as \www{comp.os.minix}) on his own PC rather than his university, 
+but some features he needed were lacking in MINIX, so he wrote a program to do that, but soon discovered he needed a different terminal driver,
+so he wrote that too.
+Then he wanted to download and save postings, so he wrote a disk driver, and then a file system.
+By Aug. 1991 he had produced a primitive kernel.
+On Aug. 25, 1991, he announced it on \www{comp.os.minix}.
+This announcement attracted other people to help him, and on March 13, 1994 Linux 1.0 was released.
+Thus was Linux born.
+
+Linux has become one of the notable successes of the \kw{open source} movement (which MINIX helped start).
+Linux is challenging UNIX (and Windows) in many environments, partly because commodity PCs which support Linux are now available with performance that rivals the proprietary RISC systems required by some UNIX implementations.
+Other open source software, notably the Apache Web server and the MySQL database, 
+and the open source Perl and PHP programming labguages are often used together on Web servers and sometimes referred to by the acronym \kw{LAMP}.
+For more on the history of Linux and open source software see DiBona et al. (1999), Moody (2001), and Naughton (2000).
+
+\section{Operating System Concepts}
+The interface between the operating system and the user programs is defined by the set of "extended instructions" that the operating system provides.
+These extended instructions have been traditionally known as \kw{system call}, although they can be implemented in several ways.
+To really understand what operating system do, we must examine this interface closely.
+The calls available in the interface vary from operating system to operating system (although the underlying concepts tend to be similar).
+
+We are thus forced to make a choice between (1) vague generalities ("operating systems have system calls for reading files")
+and (2) sime specific system ("MINIX 3 has a \cmd{read} system call with three parameters: 
+one to specify the file, one to tell where the data are to be put, and one to tell how many bytes to read").
+
+We have chose the latter approach.
+It's more work that way, but it gives more insight into what operating systems really do.
+In Sec. 1.4 we will look closely at the basic system calls present in UNIX (including the various version of BSD), Linux, and MINIX 3.
+For simplicity's sake, we will refer only to MINIX 3, but the corresponding UNIX and Linux system calls are based on POSIX in most cases.
+Before we look at the actual system calls, however, it is worth taking a bird's-eye view of MINIX 3, 
+to get a general fell for what an operating system is all about.
+this overview applies equally well to UNIX and Linux, as mentioned above.
+
+The MINIX 3 system calls fall roughly in two broad categories: those dealing with processes and those dealing with the file system.
+We will now examine each of these in turn.
+
+\subsection{Processes}
+A key concept in MINIX 3, and in all operating systems, is the \kw{process}.
+A process is basically a program in execution.
+Associated with each process is its \kw{address space}, a list of memory locations from some minimum (usually 0) to some maximum,
+which the process can read and write.
+The address space contains the executable program, the program's data, and its stack.
+Also associated with each process is some set of registers, including the program counter, stack pointer, and other hardware registers, 
+and all the other information needed to run the program.
+ 
+We will come back to the process concept in much more detail in Chap.2, but for the time being, 
+the easiest way to get a good intuitive feel for a process is to think about multiprogramming systems.
+Periodically, the operating system decides to stop running one process and start running another, for example, 
+because the first one has had more than its share of CPU time in the past second.
+
+
+
 
 
 
