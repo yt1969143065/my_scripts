@@ -2,7 +2,8 @@
 \newcommand {\kw}  [1] {\textbf{#1}}
 \newcommand {\www} [1] {\texttt{#1}}
 \newcommand {\sys} [1] {\textsl{#1}}
-\newcommand {\cmd} [1] {\textsl{#1}}
+\newcommand {\cmd} [1] {\texttt{#1}}
+%\newcommand {\cmd} [1] {{\color{Blue}#1}}
 \begin{document}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 @Preface
@@ -213,7 +214,7 @@ As mentioned earlier, the architecture (instruction set, memory organization, I/
 at the machine language level is primitive and awkward to program, especially for input/output.
 To make this point more concrete, let us briefly look at how floppy disk I/O is done 
 using the NEC PD765 compatible controller chips used on many Intel-based personal computers.
-(Throughout this book we will use the term "floppy disk" and "diskette" interchangeably.)
+(Throughout this book we will use the term``floppy disk'' and ``diskette'' interchangeably.)
 The PD765 has 16 commands, each specified by loading between 1 and 9 bytes into a device register.
 Those commands are for reading and writing data, moving the disk arm, and formatting tracks, 
 as well as initializing, sensing, resetting, and recalibrating the controller and the drives.
@@ -299,7 +300,7 @@ we will look at successive generations of computers to see what their operating 
 This mapping of operating system generations to computer generations is crude, but it dose provide some structure where there would otherwise be none.
 
 The first true digital computer was designed by the English mathematician Charles Babbage(1792-1871).
-Although Babbage spent most of his life and fortune trying to build his "analytical engine", 
+Although Babbage spent most of his life and fortune trying to build his ``analytical engine'', 
 he never got it working properly because it was purely mechanical, 
 and the technology of his day could not produce the required wheels, gears, and cogs to the high precision that he needed.
 Needless to say, the analytical engine did not have an operating system.
@@ -404,7 +405,7 @@ The descendants of these machines are still use at computer centers today.
 Nowadays they are often used for managing huge databases (e/g., for airline reservation systems) 
 or as servers for World Wide Web sites that must process thousands of requests per second.
 
-The greatest strenth of the "one family" idea was simultaneously its greatest weakness.
+The greatest strenth of the ``one family'' idea was simultaneously its greatest weakness.
 The intention was that all software, including the operating system, \kw{OS/360}, had to work on all models.
 It had to run on samll system, which often just replaced 1401s for copying cards to tape, 
 and on very large systems, which often replaced 7094s for doing weather forecasting and other heavy computing.
@@ -460,7 +461,7 @@ In a special modified 7094 (Corbato et al., 1962).
 However, timesharing did not really become popular until the necessary protection hardware became widespread during the third generation. 
 
 After the success of the CTSS system, MITM Bell Labs, and General Electric (then a major computer manufacturer) decided to embark on 
-the development of a "computer utility", a machine that would support hundreds of simultaneous timesharing users.
+the development of a ``computer utility'', a machine that would support hundreds of simultaneous timesharing users.
 Their model was the electricity distribution system:
 when you need electric power, you just stick a plug in the wall, and within reason, as much power as you need will be there.
 The designer of this system, known as \kw{MULTICS} (MULTiplexed Information and Computing Service), 
@@ -489,7 +490,7 @@ Despite its lack of commertial success, MULTICS had huge influence on subsequent
 A great deal of information about it exists (Corbato et al., 1972; Corbato and Vyssotsky, 1965; Daley and Dennis, 1968; Organick, 1972l and Saltzerm 1974).
 It also has a stillactive Web site, \www{www.multicians.org}, with a great deal of information about the system, its designers, and its users.
 
-The phrase "computer utility" is no longer heard, but the idea has gained new life in recent years.
+The phrase ``computer utility'' is no longer heard, but the idea has gained new life in recent years.
 In its simplest form, PCs or workstation (high-end PCs) in a business or a classromm 
 may be connected via a \kw{LAN (Local Area Network)} to a \kw{file server} on which all programs and data are stored.
 An administrator then has to install an protect only one set of programs and data, 
@@ -525,7 +526,7 @@ To make it possible to write programs that could run on any UNIX system, IEEE de
 that most versions of UNIX now support.
 In fact, some other operating system now also support the POSIX interface.
 The information needed to write POSIX-compliant software is available in books (IEEE, 1990; Lewine, 1991),
-and online as the Open Group's "Single UNIX Specification" at \www{www.unix.org}.
+and online as the Open Group's ``Single UNIX Specification'' at \www{www.unix.org}.
 Later in this chapter, when we refer to UNIX, we mean all of these systems as well, unless stated otherwise.
 While they differ internally, all of them support the POSIX X standard, so to the programmer they are quite similar.
 
@@ -560,7 +561,7 @@ Microsoft bought the product and hired the original author to improve it.
 The revised system was renamed \kw{MS-DS} (MicroSoft Disk Operating System) and quickly came to dominate the IBM PC market.
 
 CP/M, MS-DOS, and the Apple DOS were all command-line systems: user typed commands at the keyboard.
-Years earlier, Doug Engelbart at Stanford Research Institute had invented the \kw{GUI (Graphical User Interface)}, pronounced "gooey", 
+Years earlier, Doug Engelbart at Stanford Research Institute had invented the \kw{GUI (Graphical User Interface)}, pronounced ``gooey'', 
 complete with windows, icons, menus, and mouse.
 Apple's Steve Jobs saw the possibility of a truly \kw{user-friendly} personal computer 
 (for users who knew nothing about computers and did not want to learn), and the Apple Macintosh was announced in early 1984.
@@ -578,7 +579,7 @@ The other major contender in the personal computer world is UNIX (and its variou
 UNIX is strongest on workstations and other high-end computers, such as network servers.
 It is especially popular on machines powerd by high-performance RISC chips.
 On Pentium-based computers, Linux is becoming a popular alternative to Windows for students and increasingly many corporate users.
-(Throughout this book we will use the term "Pentium" to means the entire Pentium family, 
+(Throughout this book we will use the term ``Pentium'' to means the entire Pentium family, 
 including the low-end Celeron, the gigh end Xeon, and compatible AMD microprocessors).
 
 Although many UNIX users, especially experienced programmers, prefer a command-based interface to a GUI, 
@@ -655,7 +656,7 @@ The version of MINIX described in this book, MINIX 3, is based on the POSIX stan
 Like UNIX, MINIX was written in the C programing language and intented to be easy to port to various computers.
 The initial implementation was for the IBM PC.
 MINIX was subsequently ported to several other platforms.
-In keeping with the "Small is Beautiful" philosophy, MINIX originally did not even require a hard disk to run 
+In keeping with the ``Small is Beautiful'' philosophy, MINIX originally did not even require a hard disk to run 
 (in the mid-1980s hard disks were still an expensive novelty).
 As MINIX grew in functionality and size, it eventually got the point that a hard disk was needed for PCs,
 but in keeping with the MINIX philisophy, a 200-MB partion is sufficient (for embedded applications, no hard disk is reuired ehough).
@@ -723,14 +724,14 @@ and the open source Perl and PHP programming labguages are often used together o
 For more on the history of Linux and open source software see DiBona et al. (1999), Moody (2001), and Naughton (2000).
 
 \section{Operating System Concepts}
-The interface between the operating system and the user programs is defined by the set of "extended instructions" that the operating system provides.
+The interface between the operating system and the user programs is defined by the set of ``extended instructions'' that the operating system provides.
 These extended instructions have been traditionally known as \kw{system call}, although they can be implemented in several ways.
 To really understand what operating system do, we must examine this interface closely.
 The calls available in the interface vary from operating system to operating system (although the underlying concepts tend to be similar).
 
-We are thus forced to make a choice between (1) vague generalities ("operating systems have system calls for reading files")
-and (2) sime specific system ("MINIX 3 has a \cmd{read} system call with three parameters: 
-one to specify the file, one to tell where the data are to be put, and one to tell how many bytes to read").
+We are thus forced to make a choice between (1) vague generalities (``operating systems have system calls for reading files'')
+and (2) sime specific system (``MINIX 3 has a \cmd{read} system call with three parameters: 
+one to specify the file, one to tell where the data are to be put, and one to tell how many bytes to read'').
 
 We have chose the latter approach.
 It's more work that way, but it gives more insight into what operating systems really do.
@@ -757,8 +758,503 @@ the easiest way to get a good intuitive feel for a process is to think about mul
 Periodically, the operating system decides to stop running one process and start running another, for example, 
 because the first one has had more than its share of CPU time in the past second.
 
+When a process is suspended temporarily like this, it must later be restarted in exactly the same state it had when it was stopped.
+This means that all information about the process must be explicitly saved somewhere during the suspension.
+For example, the process may have several files open for reading at once.
+Associated with each of these files is a pointer giving the current position (i.e., the number of the byte or record to be read next).
+When a process is temporarily suspended, all these pointers must be saved so that 
+a \cmd{read} call executed after the process is restarted will read the proper data.
+In many operating systems, all the information about each process, other than the contents of its own address space, 
+is stored in an operating system table called \kw{process table}, which is an array (or linked list) of structures, 
+one for each process currently in existence.
+
+Thus, a (suspended) process consists of its address space, usually called the kw{core image} 
+(in honor of the magnetic core memories used in days of yore),
+and its process table entry, which contains its registers, among other things. 
+
+The key process management system calls are those dealing with the creation and termination of processes.
+Consider a typical example.
+A process called the \kw{command interpreter} or \kw{shell} reads commands from a terminal.
+The user has just typed a command requesting that a program be compiled.
+The shell must now create a nre process that will run the compiler.
+When that process has finished the compilation, it executes a system call to terminate itself.
+
+On Windows and other operating systems that have a GUI, (double) clicking on a desktop icon launches a program in much the same way 
+as typing its name at the command prompt.
+Although we will not discuss GUIs much, they are really simple command interpreters.
+
+If a process can create one or more other processes (usually referred to as \kw{child process}) and these processes in turn can create child processes, 
+we quickly arrive at the process tree structure of Fig. 1-5.
+Related processes that are cooperating to get some job done often need to communicate with one another and synchronize their activities.
+This communication is called \kw{interprocess communication}, and will be addressed in detail in Chap. 2.
+
+Other process system calls are available to request more memory (or release unused memory),
+wait for a child process to terminate, and overlay its program with a different one.
+
+Occasionally, there is a need to convey information to a running process that is not sitting around waiting for it.
+For example, a process that is communicating with another process on a different computer does so 
+by sending messages to the remote process over a network.
+To guard against the possibility that a message or its reply is lost, the sender may request that its own operating system notify it 
+after a specified number of seconds, so that it can retransmit the message if no acknowledgement has been received yet.
+After setting this timer, the program may continu dong other work.
+
+When the specified number of seconds has elapsed, the operating system sends an \kw{alarm signal} to the process.
+The signal causes the process to temporarily suspend whatever it was doing, save its registers on the stack, 
+and start running a special signal handling procedure, for example, to retransmit a presumably lost message.
+When the signal handler is done, the running process is restarted in the state it was in just before the signal.
+Signals are the software analog of hardware interrupts.
+They are generated by a variety of caused in addition to timers expiring.
+Many traps detected by hardware, such as executing an illegal instruction or using a invalid address, 
+are also converted into signals to the guilty process.
+
+Each person authorized to use a MINIX 3 system is assigned a \kw{UID} (User IDentification) by the system administrator.
+Every process started has the UID of the person who started it.
+The child process has the same UID as its parent.
+Users can be members of groups, each of which has a \kw{GID} (Group IDentification).
+
+One UID, called the \kw{superuser} (in UNIX), has special power and may violate many of the protection rules.
+In large installations, only the system administrator knowns the password needed to become superuser, 
+but many of the ordinary users (especially students) devote considerable effort to trying to find flaws in the system 
+that allow them to become superuser without the password.
+
+We will study processes, interprocess communication, and related issues in Chap. 2.
+
+\subsection{Files}
+The other broad category of system calls relates to the file system.
+As noted before, a major function of the operating system is to hide the peculiarities of the disks and other I/O devices 
+and present the programmer with a nice, clean abstract model of device-independent files.
+System calls are obviously needed to create files, remove files, read files, and write files.
+Before a file can be read, it must be opened, and after it has been read it should be closed, so calls are provided to do these things.
+
+To provide a place to keep files, MINIX 3 has the concept of a \kw{directory} as a way of groupiing files together.
+A student, for example, might have one directory for each course he is taking (for the programs needed for that course),
+another directory for his electronic mail, and still another directories for his World Wide Web home page.
+System calls are then needed to create and remove directories.
+Calls are also provided to put an existing file into a directory, and to remove a file from a directory.
+Directory entries may be either file or other directories.
+This model also gives rise to a hierarchythe file systems shown in Fig. 1-6.
+
+The process and file hierarchies both are organized as trees, but the similarity stops there.
+Process hierarchies usually are not very deep (more than three levels is unusual), 
+whereas file hierarchies are commonly four, five, or even more levels deep.
+Process hierarchies are typically short-lived, generally a few minutes at most, 
+whereas the directory hierarchy may exist fo years.
+Ownership and protection also differ to processes and files.
+Typically, only a parent process may control or even access a child process, 
+but mechanisms nearly always exist to allow files and directories to be read by a wider group than just the owner.
+
+Every file within the directory hierarchy can be specified by giving its \kw{path name} from the top of the directory hierarchy, the \kw{root directory}.
+Such absolute path names consist of the list of directories that must be traversed from the root directory to get to the file, 
+with slashes separating the components.
+In Fig. 1-6, the path for file CS101 is \sys{/Faculty/Prof.Brown/Courses/CS101}.
+The leading slash indicates that the path is absolute, that is, starting at the root directory.
+As an aside, in Windows, the backslash(\textbackslash) character is used as the seperator instead of the slash (/) character, 
+so the file path given above would be written as $\backslash$Faculty$\backslash$Prof.Brown$\backslash$Courses$\backslash$CS101.
+Throughout this book we will use the UNIX convention for paths.
+
+At every instant, each process has a current \kw{working directory}, in which path names not beginning with a slash are looked for.
+As an example, in Fig. 1-6, if /Faculty/Prof.Brown were the working directory, 
+then use of the path name Courses/CS101 would yield the same file as the absolute path name given above. 
+Processes can change their working directory by issuing a system call specifying the new working directory.
+
+FIles and directories in MINIX 3 are protected by assigning each one an 11-bit binary protection code.
+The protection code sonsists of three 3-bit fields: one for the ower, one for other members of the owner's group 
+(users are divided into groups by the system administrator), one for everyone else, and 2 bits we will discuss later.
+Each field has a bit for read access, a bit for write access, and a bit for execute access.
+These 3 bits are known as the \kw{rwx bits}.
+For example, the protection code \sys{rwxr-x--x} means that the ower can read, write, or execute the file, 
+other group members can read or execute (but no write) the file, and everyone else can execute (but not read or write) the file.
+For a directory (as opposed to a file), \sys{x} indicates search permission.
+A dash means tthat the corresponding permission is absent (the bit is zero).
+
+Before a file can be read or written, it must be opened, at which time the permissions are checked.
+If access is permitted, the system returns a small integer called a \kw{file descriptor} to use in subsequent operations.
+If the access is prohibited, an error code (1) is returned.
+
+Another important concept in MINIX 3 is mounted file system.
+Nearly all personal computers have one or more CD-ROM drives into which CD-ROMs can be inserted and removed.
+To provide a clean way to deal with removable media (CD-ROMs, DVDs, floppies, Zip drives, etc.), 
+MINIX 3 allows the file system on a CD-ROM to be attached to the main tree.
+Consider the situation of Fig. 1-7(a).
+Before the \cmd{mount} call, the \kw{root file system}, on the hard disk, and a second file system, on a CD-ROM, are separate and unrelated.
+ 
+HOever, the file system on the CD-ROM cannot be used, because there is no way to specify path names on it.
+MINIX 3 does not allow path names to be prefixed by a drive name or number;
+That is precisely the kind of device dependence that operating systems ought to eliminate.
+Instead, the \cmd{mount} system call allows the file system on the CD-ROM to be attached to the root file system wherever the program wants it to be.
+In Fig. 1-7(b) the file system on drive 0 has been mounted on directory b, thus allowing access to file \sys{/b/x} and \sys{/b/y}.
+If directory \sys{/b} had originally contained any files they would not be accessible while the CD-ROM was mounted, 
+since \sys{/b} would refer to the root directory of drive 0.
+(Not being able to access these file is not as serious as it at first seems: file systems are nearly always mounted on empty directories.)
+If a system contains multiple hard disks, they can all be mounted into a single tree as well.
+
+Another important concept inMINIX 3 is the \kw{special file}.
+Special files are provided in order to make I/O devices look like files.
+That way, they can be read and written using the same system calls as are used for reaing and writing files.
+Two kinds of special files exist: \kw{block special files} and \kw{character special files}.
+Block special files are normally used to model devices that consist of a collection of randomly addressable blocks, such as disks.
+By opening a block special file and reading, say, block 4, a program can directly access the fourth block on the device, 
+without regard to the structure of the file system contained on it.
+Similarly, character special files are used to model printers, modems, and other devices that accept or output a character stream.
+By convention, the special files are kept in the \sys{/dev} directory.
+For example, \sys{/dev/lp} might be the line printer.
+
+The last feature we discuss in this overview is one that relates to both processes and files: pipes.
+A \kw{pipe} is a sort of pseudofile that can be used to connect two processes, as shown in Fig. 1-8.
+If processes A and B wish to talk using a pipe, they must set it up in advance.
+When process A wants to send data to process B, it writes on the pipe as thpugh it were an output file.
+Process B can read the data by reading from the pipe as though it were an input file.
+Thus, communication beteen process in MINIX 3 looks very much like ordinary file reads and writes.
+Stronger yet, the only way a process can discover that the output file it is writing on is not really a file, 
+but a pipe, is by makeing a special system call.
+
+\subsection{The Shell}
+The operating system is the code that carries out the system calls.
+Editors, compilers, assemblers, linkers, and command interpreters definitely are not part of the operating system, 
+even though they are important and useful.
+At the risk of confusing things somewhat, in this section we will look briefly at the MINIX 3 command interpreter, called the \kw{shell}.
+Although it is not part of the operating system, it makes heavy use of many operating system features 
+and thus serves as a good example of how the system calls can be used.
+It is also the primary interface between a user sitting at his terminal and the operating system, 
+unless the user is using a graphical user interface.
+Many shell exist, including \sys{csh, zsh} and \kw{bash}.
+All of them support the functionality described below, which derives from the original shell (\sys{sh}).
+
+When any user logs in, a shell is started up.
+The shell has terminal as standard input and standard output.
+It starts out by typing the \kw{prompt}, a character such as a dollar sign, 
+which tell the user that the shell is waiting to accept a command.
+If the user types\\
+\cmd{data}\\
+for example, the shell creates a child process and runs the \sys{data} program as the child.
+While the child process is running, the shell waits for it to terminate.
+When the child finishes, the shell types the prompt again and tries to read the next input line.
+
+The user can specify that standard output be redirected to a file, for example\\
+\cmd{data >file}\\
+Similarly, standard input can be redirected, as in\\
+\cmd{sort <file1 >file2}\\
+which invokes the sort program with input taken from \sys{file1} and output sent to \sys{file2}.
+
+The output of one program can be used as the input for another program by connecting them with a pipe. Thus\\
+\cmd{cat file1 file2 file3 | sort >/dev/lp}\\
+invokes the \sys{cat} program to concatenate three files and send the output to \sys{sort} to arrange all the lines in alphabetical order.
+The output of \sys{sort} is redirected to the file \sys{/dev/lp}, typically the printer.
+
+If a user puts an ampersand after a command, the shell does not wait for it to complete.
+Instead it just gives a prompt immediately. Consequently,\\
+\cmd{cat file1 file2 file3 | sort >/dev/lp \&}\\
+starts up the sort as abackgroud job, allowing the user to continue working normally while the sort is going on.
+The shell has a number of other interesting seatures, which we do not have space to discuss here.
+Most books for UNIX beginners are useful for MINIX 3 users who want to learn more about using the system.
+Examples are Ray and Ray (2003) and Herborth (2005).
+
+\section{System Calls}
+Armed with our general knowledge of how MINIX 3 deals with processes and files, 
+we can now begin to look at the interface between the operating system and its application programs, that is, the set of system calls.
+Although this discussion specially refers to POSIX (INternational Standard 9945-1), hence also to MINIX 3, UNIX, and Linux, 
+most other modern operating systems have system calls that perform the same functions, even if the details differ.
+Since the acyual mechanics of issuing a system call are highly machine dependent, and often must be expressed in assembly code, 
+a procedure library provided to make it possible to make system calls from C programs.
+
+It is useful to keep the following in mind: any single-CPU computer can execute only one instruction at a time.
+If a process is running a user program in user mode and needs asystem service, such as reading data from a file, 
+it has to execute a trap or system call instruction to transfer control to the operating system.
+The operating system then gigures out what the calling process wants by inspecting the parameters.
+Then it carries out the system call and returns control to the instruction following the system call.
+In a sense, making a system call is like making a special kind of procedure call, 
+only system calls enter the kernel or other privileged operating system components and procedure calls do not.
+
+To make the system call machanism clearer, let us take a quick look at \cmd{read}.
+It has three parameters: 
+the first one specifying the file, the second one specifying the buffer, and the third one specifying the number of bytes to read.
+A call to \cmd{read} from a C program might look like this:\\
+\cmd{count = read(fd, buffer, nbytes);}\\
+The system call (and the library procedure) return the number of bytes actually read in \sys{count}.
+This value is normally the same as \sys{nbytes}, but may be smaller, if, for example, end-of-file is encountered while reading.
+
+If the system call cannot be carried out, wither due to an invalid parameter or a disk error, \sys{cmd} is set to 1, 
+and the error number is put in a global variable, \sys{errno}.
+Programs should always check the results of a system call to see if an error occurred.
+
+MINIX 3 has a total of 53 main system calls.
+These are listed in Fig. 1-9, grouped for convenience in six categories.
+A few other calls exist, but they have very specialized uses so we will omit them here.
+In the folloing sections we will briefly examine each of the calls of Fig. 1-9 to see what it does.
+To a large extent, the services offered by these calls determine most of what the operating system has to do, 
+since the resource management on personal computers is minimal (at least compared to big machines with many users).
+\\
+\\
+\kw{Process management}\\
+\cmd{pid = fork}()\\
+Create a child process identical to the parent
+\\
+\cmd{pid = waitpid(pid, \$statloc, opts)}\\
+Wait for a child to terminate
+\\
+\cmd{s = wait(\&status)}\\
+Old version of waitpid
+\\
+\cmd{s = execve(name, argv, envp)}\\
+Replace a process core image
+\\
+\cmd{exit(status)}\\
+Terminate process execution and return status
+\\
+\cmd{zize = brk(addr)}\\
+Set the size of the data segment
+\\
+\cmd{pid = getpid()}\\
+Return the caller's process id
+\\
+\cmd{pid = getpgrp()}\\
+Return the id of the caller's process group
+\\
+\cmd{pid = setsid()}\\
+Create a new session and return its proc. group id
+\\
+\cmd{| = ptrace(req, pid, addr, data)}\\
+Used for debugging
+\\
+\\
+\kw{Signals}\\
+\cmd{S = sigaction(sig, \&act, \&oldact)}\\
+Define action to take on signals
+\\
+\cmd{s = sigreturn(\&contex)}\\
+Return from a signal
+\\
+\cmd{S = sigprocmask(how, \&set, \&old)}\\
+Examine or change the signal mask
+\\
+\cmd{S = sigsuspend(sigmask)}\\
+Replace the signal mask and suspend the process
+\\
+\cmd{S = kill(pid, sig)}\\
+Send a signal to a process
+\\
+\cmd{residual = alarm(seconds)}\\
+Set the alarm clock
+\\
+\cmd{S = pause()}\\
+Suspend the caller until the next signal
+\\
+\\
+\kw{File Mnagement}\\
+\cmd{fd = creat(name, mode)}\\
+Obsolete way to creat a new file
+\\
+\cmd{fd = mknod(name, mode, addr)}\\
+Create a regular, special, or directory i-node
+\\
+\cmd{fd = open (file, how, ...)}\\
+OPen a file for reading, writing, or both
+\\
+\cmd{S = close (fd)}\\
+Close an open file
+\\
+\cmd{n = read (fd, buffer, nbytes)}\\
+Read data from a file into a buffer
+\\
+\cmd{n = write (fd, buffer, nbytes)}\\
+Write data from a buffer into a file
+\\
+\cmd{pos = lseek (fd, offset, whence)}\\
+MOve the file pointer
+\\
+\cmd{S = stat (name, \&buf)}\\
+Get a file's status information
+\\
+\cmd{S = fstat (fd, \&buf)}\\
+Get a file's status information
+\\
+\cmd{fd = dup (fd)}\\
+Allocate a new file descriptor for an open file
+\\
+\cmd{S = pipe (\&fd[0])}\\
+Create a pipe
+\\
+\cmd{S = ioctl (fd, request, argp)}\\
+Performance special operations on a file
+\\
+\cmd{S = rename (old, new)}\\
+Give a file new name
+\\
+\cmd{S = fcntl(fd, cmd, ...)}\\
+File locking and other operations
+\\
+\\
+\kw{Dir. \& File System Mgt.}\\
+\cmd{S = mkdir (name, mode)}\\
+Create a new directory
+\\
+\cmd{S = rmdir (name)}\\
+Remove an empty directory
+\\
+\cmd{S = link (name1, name2)}\\
+Create a new entry, name2, pointing to name1
+\\
+\cmd{S = unlink (name)}\\
+Remove a directory entry
+\\
+\cmd{S = mount (special, name, flag)}\\
+Mount a file system
+\\
+\cmd{S = unmount (special)}
+Unmount a file system
+\\
+\cmd{S = sync()}\\
+Flush all cached blocks to the disk
+\\
+\cmd{S = chdir(dirname)}\\
+Change the working directory
+\\
+\cmd{S = chroot (dirname)}\\
+Change the root directory
+\\
+\\
+\kw{Protection}\\
+\cmd{S = chmod (name, mode)}\\
+Change a file's protection bits
+\\
+\cmd{uid = getuid()}\\
+Get the caller's uid
+\\
+\cmd{gid = getgid ()}\\
+Get the caller's gid
+\\
+\cmd{S = setuid(uid)}\\
+Set the caller's uid
+\\
+\cmd{S = setgid(gid)}\\
+Set the caller's gid
+\\
+\cmd{S = chown(name, owner, group)}\\
+Change a file's owner and group
+\\
+\cmd{oldmask = umask(complmode)}\\
+Change the mode mask
+\\
+\\
+\kw{Time Management}\\
+\cmd{seconds = time (\&seconds)}\\
+Get the elapsed time since Jan. 1, 1970
+\\
+\cmd{S = stime(tp)}\\
+Set the elapsed time since Jan.1, 1970
+\\
+\cmd{S = utime(file, timep)}\\
+Set a file's ``last access'' time
+\\
+\cmd{S = times (buffer)}\\
+Get the user and system times used so far
+\\
+
+This is a good place to point out the mapping of POSIX procedure calls onto system calls is not necessarily one-to-one.
+The POSIX standard specifies a number of procedures that a conformant system must supply, 
+but it does not specify wether they are system calls, library calls, or something else.
+In some cases, the POSIX procedures are supported as library routines in MINIX 3.
+In others, several required procedures are only minor variations of one other, and one system call handles all of them.
+
+\subsection{System Calls for Proces Management}
+The first group of calls in Fig. 1-9 deals with process management.
+\cmd{Fork} is a good place to start the discussion.
+\cmd{Fork} is the only way to create a new process in MINIX 3.
+It creats an exact duplicate of the original process, including all the file descriptors, registers, everything.
+After the \cmd{Fork}, the original process and the copy (the parent and child) go their seperate ways.
+All the variables have identical values at thetime of the \cmd{fork}, but since the parent's data are copied to create the child, 
+subsequent changes in one of them do not affect the other one.
+(The program text, which is unchangeable, is shared between parent and child.)
+The \cmd{Fork} call returns a value, which is zero in the child and equal to the child's process identifier or \kw{PID} in the parent.
+Using the returned PID, the two processes can see which one is the parent process and which one is the child process.
+
+In most cases, after a \cmd{fork}, the child will need to execute different code from the parent.
+Consider the shell.
+It reads a command from the terminal, forks off a child process, waits for the child to execute the command, 
+and then reads the next command when the child terminates.
+To wait for the child finish, the parent executes a \cmd{waitpis} system call, 
+which just waits until the child terminates (any child of more than one exists).
+\cmd{Waitpid} can wait for a specific child, or for any old child by setting the first parameter to 1.
+When \cmd{waitpid} completes, the address pointed by the second parameter, \sys{statioc}, 
+will be set to the child's exit status (normal or abnormal termination and eit value).
+Various options are provided, specified by the third parameter.
+THe \cmd{waitpid} call replaces the previous \cmd{wait} call, which is now obsolete but is provided for reasons of backward compatibility.
+
+Now consider how \cmd{fork} is used by the shell.
+When a command is typed, the shell forks off a new process.
+This child process must execute the user command.
+It does this by using the \cmd{execve} system call, which causes its entire core image to be replaced by the file named in its first parameter.
+(Actually, the system call itself is \cmd{exec}, 
+but several different library procedures call it with different parameters and slightly different names. 
+We will treat these as system calls here.)
+A highly simplified shell illustrating the use of \cmd{fork}, \cmd{waitpid}, and \cmd{execve} is shown in Fig. 1-10.
+
+In the most general case, \cmd{execve} has three parameters: the name of the file to be executed, 
+a pointer to the argument array, and a pointer to the environment array.
+These will be described shortly.
+Various library rountines, including \cmd{execl, execv, execle}, and \cmd{execve}, 
+are provided to allow the parameters to be ommitted or specified in various ways.
+Through this book we will use the name \cmd{exec} to represent the system call invoked by all of these.
+
+Let us consider the case of a command such as\\
+\cmd{cp file1 file2}\\
+used to copy \sys{file1} to \sys{file2}.
+After the shell has forked, the child process locates and executes the file \sys{cp} and passes to it the names of the source and target files.
+
+The main program of \sys{cp} (and main program of most other C programs) contains the declaration\\
+\cmd{main (argc, argv, envp)}\\
+where \sys{argc} is a count of the number of items on the command line, including the program name.
+For example above, \sys{argc} is 3.
+
+The second parameter, \sys{argv}, is a pointer to an array.
+Element \sys{i} of that array is a pointer to the \sys{i-th} string on the command line.
+In our example, \sys{argv[0]} would point to the string ``cp'', \sys{argv[1]} would point to the string ``file1'', 
+and \sys{argv[2]} would point to the string ``file2''.
+
+The third parameter of \sys{main}, \sys{envp}, is a pointer to the environment, and array of strings containing assignments 
+of the form \sys{name = value} used to pass information such as the terminal type and home directory name to a program.
+In Fig. 1-10, no environment is passed to the child, so the third parameter of \sys{execve} is a zero.
+
+If \cmd{exec} seems complicated, do not dispair; it is (semantically) the most complex of all the POSIX system calls.
+If the child exits with, say, 4 as the parameter to \sys{exit}, the parent will be awakened with \sys{n} set to the child's PID 
+and \sys{statloc} set to 0x0400 (the C convention of prefixing hexadecimal constants with 0x will be used throughout this book).
+
+Processes in MINIX 3 have their memory diveded up into three segments: the \kw{text segment} (i.e., the program code),
+the \kw{data segment} (i.e., the variables), and the \kw{stack segment}.
+The data segment grows upward and the stack grows downward, as shown in Fig. 1-11.
+Between them is a gap of unused address address space.
+The stack grows into the gap automatically, as needed, but expansion of the data segment is done explicitly by using a system call, 
+\cmd{brk}, which specifies the new address where the data segment is to end.
+This address may be more than the current value (data segment is growing) or less than the current value (data segment is shringking).
+The parameter must, of course, be less than the stack pointer or the data and stack segments would overlap, which is forbidden.
+
+As a convenience for programmers, a library routine \sys{sbrk} is provideed that also changes the size of the data segment, 
+only its parameter is the number of bytes to add to the data segment (negtive parameters make the data segment smaller).
+It works by keeping track of the current size of the data segment, which is value returned by \cmd{brk}, 
+computing the new size, and makeing a call asking for that number of bytes. 
+THe \cmd{brk} and \cmd{sbrk} calls, however, are not defined by the POSIX standard.
+Programmers are encouraged to use the \sys{malloc} library procedure for dynamiclly allocating storage, 
+and the underlying implementation of \sys{malloc} was not thought to be a suitable subject for standadization 
+since few programmers use it directly.
+
+The next process system call is also the simplest, \cmd{getpid}.
+It just returns the caller's PID.
+Rmember that in \cmd{fork}, only the parent was given the child's PID.
+If a child wants to find out its own PID, it must use \cmd{getpid}.
+The \cmd{getpgrp} call returns the PID of the caller's process group.
+\cmd{setsid} creates a new session and sets the process group's PID to the caller's.
+Sessions are related to an optional feature of POSIX, \kw{job control}, which is not supported by MINIX 3 and which will not concern us further.
+
+The last process management system call, \cmd{ptrace}, is used by debugging programs to control the program being debugged.
+It allows the debugger to read and write the controlled process' memory and manage it other ways.
 
 
+ 
+
+
+
+
+ 
 
 
 
