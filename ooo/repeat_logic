@@ -166,8 +166,12 @@ fall_fetch_req = rem_insn_num_reg <= Q_EMIT_NUM AND
 
 from_repeat_addr = repeat_non_last_roll AND 
                    repeat_rem_insn_num_reg = rem_insn_num_reg  
+from_continue_addr = repeat_last_roll AND
+                     repeat_rem_insn_num_reg = rem_insn_num_reg
+continue_addr = repeat_addr_reg + repeat_all_insn_num_reg
 
 fall_fetch_addr = repeat_addr_reg WHEN from_repeat_addr ELSE
+                  continue_addr WHEN from_continue_addr ELSE
                   next_fetch_addr
 
 #------------------------------------------------------------------------------------
