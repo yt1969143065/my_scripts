@@ -10,22 +10,23 @@
 
 Most books on operating systems are strong on thoery and weak on practice. 
 This one aims to provide a better balance between the two.
-It covers al the fundamental principles in great detail, 
+It covers all the fundamental principles in great detail, 
 including processes, interprocess communication, semaphores, monitors, message passing, 
 scheduling algorithms, input/output, deadlocks, device driver, memory management, paging algorithms,
 file system design, security, and protection mechanisms.
-But it also discusses one particular system MINIX 3a UNIX-compatible operating system in detail, 
+But it also discusses one particular system MINIX 3, a UNIX-compatible operating system in detail, 
 and even provides a source code listing for study.
 This arrangement allows the reader not only to learn the principles, but also to see how they are applied in a real operating system.
 
-When the first edition of this book appeared in 1987, it caused something of a small revolution in the way operating systems coursed were taight.
-Untill then, most coursed just covered theory.
-With the appearance of MINIX, many schools began to have laboratory courses in which students examined a real operating system to see how it worked inside.
-We consoder this trend highly desirable and hope it continues.
+When the first edition of this book appeared in 1987, it caused something of a small revolution in the way operating systems coursed were taught.
+Untill then, most courses just covered theory.
+With the appearance of MINIX, 
+many schools began to have laboratory courses in which students examined a real operating system to see how it worked inside.
+We consider this trend highly desirable and hope it continues.
 
-It its first 10 years, MINIX underwent many changes.
+In its first 10 years, MINIX underwent many changes.
 The original code was designed for a 256K 8088-based IBM PC with two diskette drivers and no hard disk.
-It was also based on UBIX Version 7. 
+It was also based on UNIX Version 7. 
 As time went on, MINIX evolved in many ways: it supported 32-bit protected mode machined with large memories and hard disks.
 It also changed from being based on Version 7, to being based on the international POSIX standard (IEEE 1003.1 and ISO 9945-1).
 Finally, many new features were added, perhaps too many in our view, but too few in the view of some other people, which led to the creation of Linux.
@@ -37,12 +38,12 @@ The popularity of MINIX has continued, as can be observed by examining the numbe
 This third edition of the book has many changes throughout.
 Nearly all of the material on principles has been revised, and considerable new material has been added.
 However, the main change is the discussion of the new version of the system, called MINIX 3, and the inclusion of the new code in this book.
-Although loosely based on MINIX 2, MINIX 3is fundamentally different in many key ways.
+Although loosely based on MINIX 2, MINIX 3 is fundamentally different in many key ways.
 
 The design of MINIX 3 was inspired by the observation that operating system are becoming bloated, slow, and unreliable. 
 They crash far more often than other electronic devices such as televisons, cell phones, and DVD players 
 and have so many features and options that practically nobody can understand them fully or manage them well.
-And of cource, computer viruses, worms, spyware, spam, and other forms of ,alware have become epidemic.
+And of cource, computer viruses, worms, spyware, spam, and other forms of malware have become epidemic.
 
 To a large extent, many of these problems are caused by a fundamental design flaw in current operating systems: their lack of modularity. 
 The entire operating system is typically millions of lines of C/C++ code compiled into a single massive executable program run in kernrl mode.
@@ -67,7 +68,7 @@ You can log in as root and give the system a try without first having to install
 Of course, it can also be installed on the hard disk.
 Detailed installation instructions are given in Appendix A.
 
-As suggested above, MINIX 3is rapidly evolving, with new versions being issued frequently.
+As suggested above, MINIX 3 is rapidly evolving, with new versions being issued frequently.
 To download the current CD-ROM image file for burning, please go to the offical Website: www.minix3.org.
 This site also contains a large amount of new software, documentation, and news about MINIX 3 development.
 For discussions about MINIX 3, or to ask questions, there is a USENET newsgroup: comp.os.minix.
@@ -77,12 +78,12 @@ As an alternative to installing MINIX 3 on your hard disk, it is possible to run
 Some of these are listed on the main page of the Website.
 
 Instructors who are using the book as the text for a university course can get the problem solutions from their local Prentice Hall representative. 
-The book has ints own Website.
+The book has its own Website.
 It can be found by going to www.prenhall.com/tanenbaum and selecting this title.
 
 We have been extremely fortunate in having the help of many people during the course of this project.
-First and doremost, Ben Gras and Jorrit Herder have done most of the programming of the new version.
-They did a great job under tight time constraints, including responseding to e-mail well after midnight on many occasions. 
+First and foremost, Ben Gras and Jorrit Herder have done most of the programming of the new version.
+They did a great job under tight time constraints, including responding to e-mail well after midnight on many occasions. 
 They also read the manuscript and made many useful comments.
 Our deepest appreciation to both of them.
 
@@ -91,7 +92,7 @@ Kees wrote large chunks of code for versions up to 2.0.4, repaired bugs, and ans
 Philip Homburg wrote most of the networking code as well as helping out in numerous other useful ways, 
 especially providing detailed feedback on the manuscript.
 
-People too numerous to list contributed code to the every early versions, helping to get MINIX off the ground in the first place.
+People too numerous to list contributed code to the very early versions, helping to get MINIX off the ground in the first place.
 There were so many of them and their contributions have been so varied that we cannot even begin to list them all here,
 so the best we can do is a generic thank you to all of them.
 
@@ -106,9 +107,9 @@ It's kind of getting to be routine, but the love and support is still much appre
 
 AI's Barbara has been through this twice now.
 Her support, patience, and good humor were essential.
-Gordon has been a patient listenser.
+Gordon has been a patient listener.
 It is still a delight to have a son who understands and cares about the things that fascinate me.
-Finally, step-grandson Zain's first birsday coincides with the release of MINIX 3.
+Finally, step-grandson Zain's first birthday coincides with the release of MINIX 3.
 Some day he will appreciate this.(ASW)
 
 Andrew S. Tanenbaum
@@ -116,19 +117,20 @@ Andrew S. Tanenbaum
 Albert S. Woodhull
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Introduction}
 Without its software, a computer is basically a useless lump of metal.
-With its software, a computer can store , process, and retrieve information; 
+With its software, a computer can store, process, and retrieve information; 
 play music and videos; send e-mail, search the Internet; and engage in many other valuable activities to earn its keep.
 Computer software can be divided into two kinds: system programs, which manage the operation of the computer itself, 
 and application programs, which perform the actual work the user wants.
 The most fundamental system program is the \kw{operating system}, whose job is to control all the computer's resources and 
 provide a base upon which the application programs can be written.
 Operating systems are the topic of this book.
-In particular, and operating system called MINIX 3 is used as a model, to illustrate design principles and the realities of implementing a design.
+In particular, an operating system called MINIX 3 is used as a model, to illustrate design principles and the realities of implementing a design.
 
 A modern computer system consists of one or more processors, some main memory, disks, 
-printers, a keyboard, a display, network interfacees, and other input/output devices. 
+printers, a keyboard, a display, network interfaces, and other input/output devices. 
 All in all, a complex system.
 Writing programs that keep track of all these components and use them correctly, let alone optimally, is an extremely difficult job.
 If every programmer had to be concerned with how disk drives work, and with all the dozons of things that could go wrong when reading a disk block, 
@@ -203,6 +205,7 @@ Finally, above the system programs come the application programs.
 These programs are purchased (or written by) the user to solve their particular problems, 
 such as word processing, spreadsheets, engineering calculations, or storing information in a database.
 
+%---------------------------------------------------------------------------------------------------------------------------------------------------%
 \section{What Is an Operating System?}
 Most computer users have had some experience with an operating system, but it is difficult to pin down precisely what an operating system is.
 Part of the problem is that operating systems perform two basically unreleated functions, extending the machine and managing resources, 
@@ -225,13 +228,13 @@ the recording mode used on the physical medium, the intersector gap spacing, and
 If you do not understand this mumbo jumbo, do not worry; that is precisely the pointit is rather esoteric.
 When the operation is completed, the controller chip returns 23 status and error fields packed into 7 bytes.
 As if this were enough, the floppy disk programmer must also be constantly aware of whether the motor is on or off.
-If the motor is off, it must be turned on (with a long startip delay) before data can be read or write.
+If the motor is off, it must be turned on (with a long startup delay) before data can be read or write.
 The motor cannot be left on too long, however, or the floppy disk will wear out.
 The programmer is thus forced to deal with the trade-off between long startup delays versus wearing out floppy disks (and losing the data on them).
 
 Without going the real details, it should be clear that the average programmer probably does not want to 
 get too intimately involved with the programming of floppy disks (or hard disks, which are just as complex and quite different).
-Instead, what the programmer wants is a simpple, highlevel abstraction to deal with.
+Instead, what the programmer wants is a simple, highlevel abstraction to deal with.
 In the case of disks, a typical abstraction would be that the disk contains a collection of named files.
 Each file can be opened for reading or writing, then read or written, and finally closed.
 Details such as whether or not recording should use modified frequency modulation and 
@@ -252,7 +255,7 @@ We will examine some of the more common system calls later in this chapter.
 
 \subsection{The Operating System as a Resource Manager}
 The concept of the operating system as primarily providing its users with a convient interface is a top-down view.
-An alternative, bottom-up, wiew hols that the operating system is there to manage all the pieces of a complex system. 
+An alternative, bottom-up, view holds that the operating system is there to manage all the pieces of a complex system. 
 Modern computers consist of processors, memories, timers, disks, mice, network interfaces, printers, and a wide variety of other devices.
 In the alternative view, the job of the operating system is to provide for an orderly and controlled allocation 
 of the processors, memories, and I/O devices among the various programs competing for them.
@@ -272,11 +275,11 @@ In short, this view of the operating system holds that its primary task is to ke
 to grant resource requests, to account for usage, and to mediate conflicting requests from different program and users.
 
 Resource management includes multiplexing (sharing) resources in two ways: in time and in space.
-When a resource is time multiolexed, different programs or users turns using it.
+When a resource is time multiplexed, different programs or users turns using it.
 First one of them gets to use the resource, then another, and so on.
 For example, with only one CPU and multiple programs that want to run on it, the operating system first allocates the CPU to one program, 
 then after it has run long enough, another one gets to use the CPU, then another, and then eventually the first one again.
-Determining how the resource is time multiplexed, who goes nexti,  and for how long is the task of the operating system.
+Determining how the resource is time multiplexed, who goes next,  and for how long is the task of the operating system.
 Another example of time multiplexing is sharing the printer.
 When multiple print jobs are queued up for printing on a single printer, a decision has to be made about which one is to be printed next.
 
@@ -292,6 +295,7 @@ Another resource that is space multiplexed is the (hard) disk.
 In many systems a single disk can hold files from many users at the same time.
 Allocating disk space and keeping track of who is using which disk blocks is a typical operating system resource management task.
 
+%---------------------------------------------------------------------------------------------------------------------------------------------------%
 \section{History of Operating Systems}
 Operating systems have been evolving through the years.
 In the following sections we will breifly look at a few of the highlights.
@@ -309,7 +313,7 @@ As an intersting historical aside, Babbage realized that he would need software 
 so he hired a young woman naned Ada Lovelace, who was the daughter of the famed British poet Lord Byron, as the world's first programmer.
 The programming language Ada was named after her.
 
-\subsection{The First Generation(195565) Vacuum Tubes and Plugboards}
+\subsection{The First Generation(194555) Vacuum Tubes and Plugboards}
 After Babbage's unsuccessful efforts, little progress was made in constructing digital computers untill World War II.
 Around the mid-1940s, Howard Aiken at Harvard University, John Von Neumann at the Institute for Advanced Study in Princeton, 
 J. Presper Eckert and John Mauchley at the University of Pennsylvania, and Konrad Zuse in Germany, 
@@ -321,7 +325,7 @@ but they were still millions of times slower than even the cheapest personal com
 
 In these early days, a single group of people designed, built, programmed, operated, and maintained each machine.
 All programming was done in absolute machine language, often by wiring up plugboards to control the machine's basic functions.
-Programming labguages were unknown (even assembly language was unknow).
+Programming languages were unknown (even assembly language was unknow).
 Operating systems were unheard of.
 The usual mode of operation was for the programmer to sign up for a block of time on the signup sheet on the wall, 
 then come down to the machine room, insert his or her plugboard into the computer, 
@@ -344,7 +348,7 @@ To run a \kw{job}(i.e., a program or set of programs), a programmer would first 
 (in FORTRAN or possibly even in assembly language), then punch it on cards.
 He would then bring the card deck down to the input room and hand it to one of the operators and go drink coffee untill the output was ready.
 
-When the computer finished whatever job it was currently running, an operator would go over to the printer and tear off the output i
+When the computer finished whatever job it was currently running, an operator would go over to the printer and tear off the output
 and carry it over to the output-room, so that the programmer could collect it later. 
 Then he would take one of the card decks that had been brought from the input room and read it in.
 If the FORTRAN compiler was needed, the operator would have to get it from a file cabinet and read it in.
@@ -355,7 +359,7 @@ The solution generally adopted was the \kw{batch system}.
 The idea behind using a small (relatively) inexpensive computer, such as the IBM 1401, 
 which was very good at reading cards, copying tapes, and printing output, but not at all good at numerical calculations.
 Others, much more expensive machines, such as the IBM 7094, were used for the real computing.
-THis solution is show in Fig.1-2.
+This solution is show in Fig. 1-2.
 
 After about an hour of collecting a batch of jobs, the tape was rewound and brought into the machine room, where it was mounted on a tape drive.
 The operator then loaded a special program (the ancestor of today's operating system), which read the first job from tape and ran it.
@@ -364,11 +368,11 @@ After each job finished, the operating system automatically read the next job fr
 When the whole batch was done, the operator removed the input and output tapes, replaced the input tape with the next batch, 
 and brought the output tape to a 1401 for printing \kw{off line} (i.e., not connected to the main computer).
 
-The structure of atypical input job is show in Fig.1-3.
+The structure of a typical input job is show in Fig. 1-3.
 It started out with a \$JOB card, specifying the maximum run times in minutes, the account number to be charged, and the programmer's name.
 Then came a \$FORTRAN card, telling the operating system to load FORTRAN compiler from the system tape.
 It was followed by the program to be compiled, and then a \$LOAD card, directing the operating system to load the object program just compiled.
-(Compileed programs were often written on scratch tapes and had to be loaded explicitly.)
+(Compiled programs were often written on scratch tapes and had to be loaded explicitly.)
 Next came the \$RUN card, telling the operating system to run the program with the data following it.
 Finally, the \$END card marked the end of the job.
 These primitive control cards were the forerunners of modern job control language and command interpreters.
@@ -392,7 +396,7 @@ that had the same architectures as their current one so it could run all their o
 IBM attempted to solve both of these problems at a single stroke by introducing the System/360.
 The 360 was a series of software-compatible machines ranging from 1401-size to much more powerful than the 7094.
 The machines differed only in price and performance (maximum memory, processor speed, number of I/O devices permitted, and so forth).
-Since all themachines had the same architecture and instruction set, programs written for one machine could run on all the others, at least in theory.
+Since all the machines had the same architecture and instruction set, programs written for one machine could run on all the others, at least in theory.
 Furthermore, the 360 was designed to handle both scientific (i.e., numerical) and commertial computing.
 Thus a single family of machines could satisfy the needs of all customers.
 In subsequent years, IBM has come out with compatible successors to the 360 line, using more modern technology, 
@@ -407,7 +411,7 @@ or as servers for World Wide Web sites that must process thousands of requests p
 
 The greatest strenth of the ``one family'' idea was simultaneously its greatest weakness.
 The intention was that all software, including the operating system, \kw{OS/360}, had to work on all models.
-It had to run on samll system, which often just replaced 1401s for copying cards to tape, 
+It had to run on small system, which often just replaced 1401s for copying cards to tape, 
 and on very large systems, which often replaced 7094s for doing weather forecasting and other heavy computing.
 It had to be good on systems with few peripherals and on systems with many peripherals.
 It had to work in commercial environments and in scientific environments.
@@ -429,20 +433,20 @@ They also popularized several key techniques absent in second-generation operati
 Probably the most important of these was \kw{multiprogramming}.
 On the 7094, when the current job paused to wait for a tape or other I/O operation to complete, the CPU simply sat idle untill the I/O finished.
 With heavily CPU-bound scientific caculations, I/O is infrequent, so this wasted time is not significant.
-WIth commercial data processing, the I/O wait time can often be 80 or 90 oercent of the total time, 
+With commercial data processing, the I/O wait time can often be 80 or 90 percent of the total time, 
 so something had to be done to avoid having the (expensive) CPU be idle so much.
 
 The solution that evolved was to partition memory into several pieces, with different job in each partition, as shown in Fig. 1-4.
 While one job was waiting for I/O to complete, another job could be using the CPU.
 If enough jobs could be held in main memory at once, the CPU could be kept busy nearly 100 percent of the time.
-Having multiple jobs safely in memory at onece requires special hardware to protect each job against snooping and mischief by the other ones,
+Having multiple jobs safely in memory at once requires special hardware to protect each job against snooping and mischief by the other ones,
 but the 360 and other third-generation systems were equipped with this hardware.
 
 Another major feature present in third-generation operating systems was the ability to read jobs from cards onto the disk 
 as soon as they were brought to the computer room.
 Then, whenever a running job finished, the operating system could load a new job from the disk into the now-empty partion and run it.
 This technique is called \kw{spooling} (from Simultaneous Peripheral Operation On Line) and was used for output.
-With spooling, the 140qs were no longer needed, and much carrying of tapes disappeared.
+With spooling, the 1401s were no longer needed, and much carrying of tapes disappeared.
 
 Although third-generation operating systems were well suited for big scientific caculations and massive commercial data processing runs, 
 they were still basically batch systems.
@@ -450,30 +454,31 @@ Many programmers pined for the first-generation days when they had the machine a
 so they could debug their programs quickly.
 With third-generation systems, the time between submitting a job and getting back the output was often hours, 
 so a single misplaced comma could cause compilation to fail, and the programmer to waste half day.
-The desire for quick response time paved the way for \kw{timesharing}, a variant of multiprogramming, inwhich each user has an online terminal.
+
+The desire for quick response time paved the way for \kw{timesharing}, a variant of multiprogramming, in which each user has an online terminal.
 In a timesharing system, if 20 users are logged in and 17 of them are thinking or talking or drinking coffee, 
 the CPU can be allocated in turn to the three jobs that want service.
-Since people debugging programs usually issue short commands (e.g., compile a five-page procesure) 
+Since people debugging programs usually issue short commands (e.g., compile a five-page procedure) 
 rather than long ones (e.g., sort a million-record file), the computer can provide fast, 
 interactive service to a number of users and perhaps also work on big batch jobs in the backgroud when the CPU is otherwise idle.
-The first serious timesharing system, \kw{CTSS} (Compatible Time Sharing System), was developed at M.I.T.
-In a special modified 7094 (Corbato et al., 1962). 
+The first serious timesharing system, \kw{CTSS} (Compatible Time Sharing System), was developed at M.I.T. 
+on a special modified 7094 (Corbato et al., 1962). 
 However, timesharing did not really become popular until the necessary protection hardware became widespread during the third generation. 
 
-After the success of the CTSS system, MITM Bell Labs, and General Electric (then a major computer manufacturer) decided to embark on 
+After the success of the CTSS system, MIT, Bell Labs, and General Electric (then a major computer manufacturer) decided to embark on 
 the development of a ``computer utility'', a machine that would support hundreds of simultaneous timesharing users.
 Their model was the electricity distribution system:
 when you need electric power, you just stick a plug in the wall, and within reason, as much power as you need will be there.
 The designer of this system, known as \kw{MULTICS} (MULTiplexed Information and Computing Service), 
 envisioned one huge machine providing computing power for everyone in the Boston area.
-The idea that machines far more powerful than their GE-645 mainframe wwould be sold for under a thousand dollars by the millions only 30 years later 
+The idea that machines far more powerful than their GE-645 mainframe would be sold for under a thousand dollars by the millions only 30 years later 
 was pure science fiction, like the idea of supersonic trans-Atlantic underse a trains would be now.
 
 MULTICS was a mixed success.
 It was designed to support hundreds of users on a machine only slightly more powerful than an Intel 80386-base PC,
 although it had much more I/O capacity.
 This is not quite as crazy as it sounds, since people knew how to write small, efficent programs in those days, a skill that has subsequntly been lost.
-There were many reasons that MULTICS did bot take over the world, not the least of which is that it was written in PL/I, 
+There were many reasons that MULTICS did not take over the world, not the least of which is that it was written in PL/I, 
 and the PL/I compiler was years late and barely worked at all when it finally arrived.
 In addition, MULTICS was enormously ambitious for its time, much like Charles Babbage's analytical engine in the nineteenth century.
 
@@ -487,17 +492,18 @@ While their numbers were small, MULTICS users were fiercely loyal.
 General Motors, Ford, and the U.S. National Security Agency, for example, only shut down their MULTICS systems in the late 1990s.
 The last MULTICS running, at the Canadian Department of National Defence, shut down in October 2000.
 Despite its lack of commertial success, MULTICS had huge influence on subsequent operating systems.
-A great deal of information about it exists (Corbato et al., 1972; Corbato and Vyssotsky, 1965; Daley and Dennis, 1968; Organick, 1972l and Saltzerm 1974).
-It also has a stillactive Web site, \www{www.multicians.org}, with a great deal of information about the system, its designers, and its users.
+A great deal of information about it exists 
+(Corbato et al., 1972; Corbato and Vyssotsky, 1965; Daley and Dennis, 1968; Organick, 1972; and Saltzerm 1974).
+It also has a still active Web site, \www{www.multicians.org}, with a great deal of information about the system, its designers, and its users.
 
 The phrase ``computer utility'' is no longer heard, but the idea has gained new life in recent years.
-In its simplest form, PCs or workstation (high-end PCs) in a business or a classromm 
+In its simplest form, PCs or workstation (high-end PCs) in a business or a classroom 
 may be connected via a \kw{LAN (Local Area Network)} to a \kw{file server} on which all programs and data are stored.
 An administrator then has to install an protect only one set of programs and data, 
 and can easily reinstall local software on a malfunctioning PC or workstation without worrying about retrieving or preserving local data.
 In more heterogeneous environments, a class software called \kw{middleware} has evolved 
 to bridge the gap betwwen local users and the files, programs, and databases they use on remote servers.
-Middleware makes networked computers look local to individual user' PCs or workstations 
+Middleware makes networked computers look local to individual users' PCs or workstations 
 and presents a consistent user interface even though there may be a wide variety of different servers, PCs, and workstations in use.
 The World Wide Web is an example.
 A web brower presents documents to a user in a uniform way, and a document as seen on a user's brower can consist of next from one server 
@@ -534,7 +540,7 @@ While they differ internally, all of them support the POSIX X standard, so to th
 With the development of LSI (Large Scale Integration) circuits, chips containing thousands of transistors on a square centimeter of silicon,
 the age of the \kw{microprocessor}-based personal computer dawned.
 In terms of architecture, personal computers (initially called \kw{microcomputers}) were not all that different from minicomputers of the PDP-11 class, 
-but in terms of price they vertainly were different.
+but in terms of price they certainly were different.
 The minicomputer made it possible for a department in a cpmpany or university to have its own computer.
 The microcomputer made it possible for an individual to have his or her own computer.
 
@@ -546,7 +552,7 @@ Many application programs were written to run on CP/M, and it dominated the pers
 
 Motorola also produced an 8-bit microprocessor, the 6800.
 A group of Motorola engineers left to form MOS Technology and manufacture the 6502 CPU after Motorola rejected their suggested improvements to the 6800.
-The 65-2 was the CPU of several early systems.
+The 6502 was the CPU of several early systems.
 One of these, the Apple II, became a major competitor for CP/M systems in the home and educational markets.
 But CP/M was so popular that many owners of Apple II computers purchased Z-80 coprocessor add-on cards to run CP/M, 
 since the 6502 CPU was not compatible with CP/M.
@@ -558,7 +564,7 @@ Intel came out with the 8086, and in the early 1980s, IBM designed the IBM PC ar
 Microsoft offered IBM a package which included Microsoft's BASIC and an operating system, 
 \kw{DOS} (Disk Operating System) originally developed by another company.
 Microsoft bought the product and hired the original author to improve it.
-The revised system was renamed \kw{MS-DS} (MicroSoft Disk Operating System) and quickly came to dominate the IBM PC market.
+The revised system was renamed \kw{MS-DOS} (MicroSoft Disk Operating System) and quickly came to dominate the IBM PC market.
 
 CP/M, MS-DOS, and the Apple DOS were all command-line systems: user typed commands at the keyboard.
 Years earlier, Doug Engelbart at Stanford Research Institute had invented the \kw{GUI (Graphical User Interface)}, pronounced ``gooey'', 
@@ -580,7 +586,7 @@ UNIX is strongest on workstations and other high-end computers, such as network 
 It is especially popular on machines powerd by high-performance RISC chips.
 On Pentium-based computers, Linux is becoming a popular alternative to Windows for students and increasingly many corporate users.
 (Throughout this book we will use the term ``Pentium'' to means the entire Pentium family, 
-including the low-end Celeron, the gigh end Xeon, and compatible AMD microprocessors).
+including the low-end Celeron, the high end Xeon, and compatible AMD microprocessors).
 
 Although many UNIX users, especially experienced programmers, prefer a command-based interface to a GUI, 
 nearly all UNIX systems support a windowing system called \kw{X Window} system developed at M.I.T.
@@ -602,7 +608,7 @@ but these additions do not change the essential structure of the operating syste
 
 A distributed operating system, in contrast, is one that appears to its users as a traditional uniprocessor system, 
 even though it is composed of multiple processors.
-The users shpuld not be aware of where their programs are being run or where their files are located;
+The users should not be aware of where their programs are being run or where their files are located;
 that should all be handled automatically and efficently by the operating system.
 
 True distributed operating systems require more than just adding a little code to a uniprocessor operating system, 
@@ -617,7 +623,7 @@ This situation is radically different from a single-processor system in which th
 \subsection{History of MINIX 3}
 When UNIX was young (Version 6), the source code was widely available, under AT\&T license, and frequently studied.
 John Lions, of the University of New South Wales in Australia, even wrote a little booklet describing its operation, line by line (Lions, 1996).
-This booklet was used (with permission of AT\&T) as atext in many university operating system courses.
+This booklet was used (with permission of AT\&T) as a text in many university operating system courses.
 
 When AT\&T released Verion 7, it dimly began realize that UNIX was a valuable commercial product, 
 so it issued Version 7 with a license that prohibited the source code from being studied in courses, 
@@ -631,23 +637,23 @@ Subjects that really are important, such as I/O and file systems, are generally 
 
 To remedy this situation, one of the authors of this book (Tanenbaum) decided to write a new operating system from scratch 
 that would be compatible with UNIX from the user's point of view,  but completely different on the inside.
-By not using even one line of AT\&T code, this ystem avoided the licensing restrictions, so it could be used for class or individual study.
+By not using even one line of AT\&T code, this system avoided the licensing restrictions, so it could be used for class or individual study.
 In this manner, readers could dissect a real operating system to see what is inside, just as biology students dissect frogs.
 It was called \kw{MINIX} and was released in 1987 with its complete source code for anyone to study or modify.
 The name MINIX stands for mini-UNIX because it is small enough that even a nonguru can understand how it works.
 
-In additionto the advantage of eliminating the legal problems, MINIX had another advantage over UNIX.
+In addition to the advantage of eliminating the legal problems, MINIX had another advantage over UNIX.
 It was written a decade after UNIX and was structured in a more modular way.
 For instance, from the very first release of MINIX the file system and the memory manager 
 were not part of the operating system at all but as user programs.
 In the current release (MINIX 3) this modularization has been extended to the I/O device drivers, 
 which (with the exception of the clock driver) all run as user programs.
 Another difference is that UNIX was designed to be efficient; MINIX was designed to be readable 
-(inasmuch as one can speak of any program hundreds of pages long as being readable).
+(in as much as one can speak of any program hundreds of pages long as being readable).
 The MINIX code, for example, has thousands of comments in it.
 
 MINIX was originally designed for compatibility with Version 7 (V7) UNIX. Version 7 was used as the model because of its simplicity and elegance.
-It is cometimes said that Version 7 was an improvement not only over all its predecessors, but also over all its successors.
+It is sometimes said that Version 7 was an improvement not only over all its predecessors, but also over all its successors.
 With the advent of POSIX, MINIX began evolving toward the new standard, while maintaining backward compatibility with existing programs.
 This kind of evolution is common in the computer industry, as no vendor wants to introduce a new system 
 that none of its existing customers can use without great upheaval.
@@ -659,7 +665,7 @@ MINIX was subsequently ported to several other platforms.
 In keeping with the ``Small is Beautiful'' philosophy, MINIX originally did not even require a hard disk to run 
 (in the mid-1980s hard disks were still an expensive novelty).
 As MINIX grew in functionality and size, it eventually got the point that a hard disk was needed for PCs,
-but in keeping with the MINIX philisophy, a 200-MB partion is sufficient (for embedded applications, no hard disk is reuired ehough).
+but in keeping with the MINIX philisophy, a 200-MB partion is sufficient (for embedded applications, no hard disk is required though).
 In contrast, even small Linux systems require 500-MB of disk space, and several GB will needed to install common applications.
 
 To the average user sitting at an IBM PC, running MINIX is similar to runing UNIX.
@@ -668,13 +674,14 @@ Like the operating system itself, all these utility programs have been rewritten
 his students, and some other dedicated people, with no AT\&T or other proprietary code.
 Many other freely-distributable programs now exist, and in many cases these have been successfully ported (recompiled) on MINIX.
 
-MINIX continued to develop for a decade and MINIX2 was released in 1997, together with the second edition of this book, which described the new release.
+MINIX continued to develop for a decade and MINIX 2 was released in 1997, 
+together with the second edition of this book, which described the new release.
 The changes between Versions 1 and 2 were substantial (e.g., from 16-bit real mode on an 8088 using floppy disks 
 to 32-bit protected mode on a 386 using a hard disk) but evolutionary.
 
 Development continued slowly but systematically until 2004, when Tanenbaum became convinced the software was getting too bloated and unreliable
 and decide to pick up the slightly-dormant MINIX thread again.
-Together with his students and programmers at the Vrije Universiteit in Amsterdam, he produced MINIX 3,
+Together with his students and programmers at the Vrije University in Amsterdam, he produced MINIX 3,
 a major redesign of the system, greatly restructuring the kernel, reducing its size, and emphasizing modularity and reliability.
 The new version was intended both for PCs and embedded systems, where compactness, modularity, and reliability are crucial.
 While some people in the group called for a completely new name, it was eventually decide to call it MINIX 3 
@@ -691,14 +698,14 @@ Yet another study (Ostrand et al., 2004) showed that even after more than a doze
 that were later reported and after a certain point the bug level tends to stabilize rather than go asymptotically to zero.
 This result is supported by the fact that when a very simple, automated, model-checker was let loose on stable versions of Linux and Open BSD, 
 it found hundreds of kernel bugs, overwhelmingly in device drivers (Chou et al., 2001; and Engler et al., 2001).
-THis is the reason the device drivers were moved out of the kernel in MINIX 3; they can do less damage in user mode.
+This is the reason the device drivers were moved out of the kernel in MINIX 3; they can do less damage in user mode.
 
 Throughout this book MINIX 3 will be used as an example.
 Most of the comments about the MINIX 3 system calls, however (as opposed to comments abount the actual code), also apply to other UNIX systems.
 This remark should be kept in mind when reading the text.
 
 A few words about Linux and its relationship to MINIX may possibly be of interest to some reader.
-Shortly after MINIX released, a USENET newgroup, \www{comp.os.minix}, was formed to discuss it.
+Shortly after MINIX released, a USENET newsgroup, \www{comp.os.minix}, was formed to discuss it.
 Within weeks, it had 40,000 subscribers, most of whom wanted to add vast numbers of new features to MINIX 
 to make it bigger and better (well, at least bigger).
 Every day, several hundred of them offered suggestions, ideas, and frequently snippets of source code.
@@ -723,6 +730,7 @@ Other open source software, notably the Apache Web server and the MySQL database
 and the open source Perl and PHP programming labguages are often used together on Web servers and sometimes referred to by the acronym \kw{LAMP}.
 For more on the history of Linux and open source software see DiBona et al. (1999), Moody (2001), and Naughton (2000).
 
+%---------------------------------------------------------------------------------------------------------------------------------------------------%
 \section{Operating System Concepts}
 The interface between the operating system and the user programs is defined by the set of ``extended instructions'' that the operating system provides.
 These extended instructions have been traditionally known as \kw{system call}, although they can be implemented in several ways.
@@ -730,15 +738,15 @@ To really understand what operating system do, we must examine this interface cl
 The calls available in the interface vary from operating system to operating system (although the underlying concepts tend to be similar).
 
 We are thus forced to make a choice between (1) vague generalities (``operating systems have system calls for reading files'')
-and (2) sime specific system (``MINIX 3 has a \cmd{read} system call with three parameters: 
+and (2) some specific system (``MINIX 3 has a \cmd{read} system call with three parameters: 
 one to specify the file, one to tell where the data are to be put, and one to tell how many bytes to read'').
 
-We have chose the latter approach.
+We have chosen the latter approach.
 It's more work that way, but it gives more insight into what operating systems really do.
 In Sec. 1.4 we will look closely at the basic system calls present in UNIX (including the various version of BSD), Linux, and MINIX 3.
 For simplicity's sake, we will refer only to MINIX 3, but the corresponding UNIX and Linux system calls are based on POSIX in most cases.
 Before we look at the actual system calls, however, it is worth taking a bird's-eye view of MINIX 3, 
-to get a general fell for what an operating system is all about.
+to get a general feel for what an operating system is all about.
 this overview applies equally well to UNIX and Linux, as mentioned above.
 
 The MINIX 3 system calls fall roughly in two broad categories: those dealing with processes and those dealing with the file system.
@@ -753,7 +761,7 @@ The address space contains the executable program, the program's data, and its s
 Also associated with each process is some set of registers, including the program counter, stack pointer, and other hardware registers, 
 and all the other information needed to run the program.
  
-We will come back to the process concept in much more detail in Chap.2, but for the time being, 
+We will come back to the process concept in much more detail in Chap. 2, but for the time being, 
 the easiest way to get a good intuitive feel for a process is to think about multiprogramming systems.
 Periodically, the operating system decides to stop running one process and start running another, for example, 
 because the first one has had more than its share of CPU time in the past second.
@@ -768,7 +776,7 @@ In many operating systems, all the information about each process, other than th
 is stored in an operating system table called \kw{process table}, which is an array (or linked list) of structures, 
 one for each process currently in existence.
 
-Thus, a (suspended) process consists of its address space, usually called the kw{core image} 
+Thus, a (suspended) process consists of its address space, usually called the \kw{core image} 
 (in honor of the magnetic core memories used in days of yore),
 and its process table entry, which contains its registers, among other things. 
 
@@ -796,14 +804,14 @@ For example, a process that is communicating with another process on a different
 by sending messages to the remote process over a network.
 To guard against the possibility that a message or its reply is lost, the sender may request that its own operating system notify it 
 after a specified number of seconds, so that it can retransmit the message if no acknowledgement has been received yet.
-After setting this timer, the program may continu dong other work.
+After setting this timer, the program may continue doing other work.
 
 When the specified number of seconds has elapsed, the operating system sends an \kw{alarm signal} to the process.
 The signal causes the process to temporarily suspend whatever it was doing, save its registers on the stack, 
 and start running a special signal handling procedure, for example, to retransmit a presumably lost message.
 When the signal handler is done, the running process is restarted in the state it was in just before the signal.
 Signals are the software analog of hardware interrupts.
-They are generated by a variety of caused in addition to timers expiring.
+They are generated by a variety of causes in addition to timers expiring.
 Many traps detected by hardware, such as executing an illegal instruction or using a invalid address, 
 are also converted into signals to the guilty process.
 
@@ -826,13 +834,13 @@ and present the programmer with a nice, clean abstract model of device-independe
 System calls are obviously needed to create files, remove files, read files, and write files.
 Before a file can be read, it must be opened, and after it has been read it should be closed, so calls are provided to do these things.
 
-To provide a place to keep files, MINIX 3 has the concept of a \kw{directory} as a way of groupiing files together.
+To provide a place to keep files, MINIX 3 has the concept of a \kw{directory} as a way of grouping files together.
 A student, for example, might have one directory for each course he is taking (for the programs needed for that course),
 another directory for his electronic mail, and still another directories for his World Wide Web home page.
 System calls are then needed to create and remove directories.
 Calls are also provided to put an existing file into a directory, and to remove a file from a directory.
 Directory entries may be either file or other directories.
-This model also gives rise to a hierarchythe file systems shown in Fig. 1-6.
+This model also gives rise to a hierarchy, the file systems shown in Fig. 1-6.
 
 The process and file hierarchies both are organized as trees, but the similarity stops there.
 Process hierarchies usually are not very deep (more than three levels is unusual), 
@@ -857,15 +865,15 @@ As an example, in Fig. 1-6, if /Faculty/Prof.Brown were the working directory,
 then use of the path name Courses/CS101 would yield the same file as the absolute path name given above. 
 Processes can change their working directory by issuing a system call specifying the new working directory.
 
-FIles and directories in MINIX 3 are protected by assigning each one an 11-bit binary protection code.
-The protection code sonsists of three 3-bit fields: one for the ower, one for other members of the owner's group 
+Files and directories in MINIX 3 are protected by assigning each one an 11-bit binary protection code.
+The protection code consists of three 3-bit fields: one for the ower, one for other members of the owner's group 
 (users are divided into groups by the system administrator), one for everyone else, and 2 bits we will discuss later.
 Each field has a bit for read access, a bit for write access, and a bit for execute access.
 These 3 bits are known as the \kw{rwx bits}.
 For example, the protection code \sys{rwxr-x--x} means that the ower can read, write, or execute the file, 
 other group members can read or execute (but no write) the file, and everyone else can execute (but not read or write) the file.
 For a directory (as opposed to a file), \sys{x} indicates search permission.
-A dash means tthat the corresponding permission is absent (the bit is zero).
+A dash means that the corresponding permission is absent (the bit is zero).
 
 Before a file can be read or written, it must be opened, at which time the permissions are checked.
 If access is permitted, the system returns a small integer called a \kw{file descriptor} to use in subsequent operations.
@@ -878,7 +886,7 @@ MINIX 3 allows the file system on a CD-ROM to be attached to the main tree.
 Consider the situation of Fig. 1-7(a).
 Before the \cmd{mount} call, the \kw{root file system}, on the hard disk, and a second file system, on a CD-ROM, are separate and unrelated.
  
-HOever, the file system on the CD-ROM cannot be used, because there is no way to specify path names on it.
+Hoever, the file system on the CD-ROM cannot be used, because there is no way to specify path names on it.
 MINIX 3 does not allow path names to be prefixed by a drive name or number;
 That is precisely the kind of device dependence that operating systems ought to eliminate.
 Instead, the \cmd{mount} system call allows the file system on the CD-ROM to be attached to the root file system wherever the program wants it to be.
@@ -888,9 +896,9 @@ since \sys{/b} would refer to the root directory of drive 0.
 (Not being able to access these file is not as serious as it at first seems: file systems are nearly always mounted on empty directories.)
 If a system contains multiple hard disks, they can all be mounted into a single tree as well.
 
-Another important concept inMINIX 3 is the \kw{special file}.
+Another important concept in MINIX 3 is the \kw{special file}.
 Special files are provided in order to make I/O devices look like files.
-That way, they can be read and written using the same system calls as are used for reaing and writing files.
+That way, they can be read and written using the same system calls as are used for reading and writing files.
 Two kinds of special files exist: \kw{block special files} and \kw{character special files}.
 Block special files are normally used to model devices that consist of a collection of randomly addressable blocks, such as disks.
 By opening a block special file and reading, say, block 4, a program can directly access the fourth block on the device, 
@@ -902,11 +910,11 @@ For example, \sys{/dev/lp} might be the line printer.
 The last feature we discuss in this overview is one that relates to both processes and files: pipes.
 A \kw{pipe} is a sort of pseudofile that can be used to connect two processes, as shown in Fig. 1-8.
 If processes A and B wish to talk using a pipe, they must set it up in advance.
-When process A wants to send data to process B, it writes on the pipe as thpugh it were an output file.
+When process A wants to send data to process B, it writes on the pipe as though it were an output file.
 Process B can read the data by reading from the pipe as though it were an input file.
-Thus, communication beteen process in MINIX 3 looks very much like ordinary file reads and writes.
+Thus, communication between process in MINIX 3 looks very much like ordinary file reads and writes.
 Stronger yet, the only way a process can discover that the output file it is writing on is not really a file, 
-but a pipe, is by makeing a special system call.
+but a pipe, is by making a special system call.
 
 \subsection{The Shell}
 The operating system is the code that carries out the system calls.
@@ -944,23 +952,24 @@ The output of \sys{sort} is redirected to the file \sys{/dev/lp}, typically the 
 If a user puts an ampersand after a command, the shell does not wait for it to complete.
 Instead it just gives a prompt immediately. Consequently,\\
 \cmd{cat file1 file2 file3 | sort >/dev/lp \&}\\
-starts up the sort as abackgroud job, allowing the user to continue working normally while the sort is going on.
-The shell has a number of other interesting seatures, which we do not have space to discuss here.
+starts up the sort as a backgroud job, allowing the user to continue working normally while the sort is going on.
+The shell has a number of other interesting features, which we do not have space to discuss here.
 Most books for UNIX beginners are useful for MINIX 3 users who want to learn more about using the system.
 Examples are Ray and Ray (2003) and Herborth (2005).
 
+%---------------------------------------------------------------------------------------------------------------------------------------------------%
 \section{System Calls}
 Armed with our general knowledge of how MINIX 3 deals with processes and files, 
 we can now begin to look at the interface between the operating system and its application programs, that is, the set of system calls.
-Although this discussion specially refers to POSIX (INternational Standard 9945-1), hence also to MINIX 3, UNIX, and Linux, 
+Although this discussion specially refers to POSIX (International Standard 9945-1), hence also to MINIX 3, UNIX, and Linux, 
 most other modern operating systems have system calls that perform the same functions, even if the details differ.
-Since the acyual mechanics of issuing a system call are highly machine dependent, and often must be expressed in assembly code, 
+Since the actual mechanics of issuing a system call are highly machine dependent, and often must be expressed in assembly code, 
 a procedure library provided to make it possible to make system calls from C programs.
 
 It is useful to keep the following in mind: any single-CPU computer can execute only one instruction at a time.
 If a process is running a user program in user mode and needs asystem service, such as reading data from a file, 
 it has to execute a trap or system call instruction to transfer control to the operating system.
-The operating system then gigures out what the calling process wants by inspecting the parameters.
+The operating system then figures out what the calling process wants by inspecting the parameters.
 Then it carries out the system call and returns control to the instruction following the system call.
 In a sense, making a system call is like making a special kind of procedure call, 
 only system calls enter the kernel or other privileged operating system components and procedure calls do not.
@@ -973,7 +982,7 @@ A call to \cmd{read} from a C program might look like this:\\
 The system call (and the library procedure) return the number of bytes actually read in \sys{count}.
 This value is normally the same as \sys{nbytes}, but may be smaller, if, for example, end-of-file is encountered while reading.
 
-If the system call cannot be carried out, wither due to an invalid parameter or a disk error, \sys{cmd} is set to 1, 
+If the system call cannot be carried out, either due to an invalid parameter or a disk error, \sys{count} is set to 1, 
 and the error number is put in a global variable, \sys{errno}.
 Programs should always check the results of a system call to see if an error occurred.
 
@@ -992,16 +1001,16 @@ Create a child process identical to the parent
 \cmd{pid = waitpid(pid, \$statloc, opts)}\\
 Wait for a child to terminate
 \\
-\cmd{s = wait(\&status)}\\
+\cmd{S = wait(\&status)}\\
 Old version of waitpid
 \\
-\cmd{s = execve(name, argv, envp)}\\
+\cmd{S = execve(name, argv, envp)}\\
 Replace a process core image
 \\
 \cmd{exit(status)}\\
 Terminate process execution and return status
 \\
-\cmd{zize = brk(addr)}\\
+\cmd{size = brk(addr)}\\
 Set the size of the data segment
 \\
 \cmd{pid = getpid()}\\
@@ -1021,7 +1030,7 @@ Used for debugging
 \cmd{S = sigaction(sig, \&act, \&oldact)}\\
 Define action to take on signals
 \\
-\cmd{s = sigreturn(\&contex)}\\
+\cmd{S = sigreturn(\&contex)}\\
 Return from a signal
 \\
 \cmd{S = sigprocmask(how, \&set, \&old)}\\
@@ -1156,13 +1165,13 @@ but it does not specify wether they are system calls, library calls, or somethin
 In some cases, the POSIX procedures are supported as library routines in MINIX 3.
 In others, several required procedures are only minor variations of one other, and one system call handles all of them.
 
-\subsection{System Calls for Proces Management}
+\subsection{System Calls for Process Management}
 The first group of calls in Fig. 1-9 deals with process management.
 \cmd{Fork} is a good place to start the discussion.
 \cmd{Fork} is the only way to create a new process in MINIX 3.
 It creats an exact duplicate of the original process, including all the file descriptors, registers, everything.
 After the \cmd{Fork}, the original process and the copy (the parent and child) go their seperate ways.
-All the variables have identical values at thetime of the \cmd{fork}, but since the parent's data are copied to create the child, 
+All the variables have identical values at the time of the \cmd{fork}, but since the parent's data are copied to create the child, 
 subsequent changes in one of them do not affect the other one.
 (The program text, which is unchangeable, is shared between parent and child.)
 The \cmd{Fork} call returns a value, which is zero in the child and equal to the child's process identifier or \kw{PID} in the parent.
@@ -1176,9 +1185,9 @@ To wait for the child finish, the parent executes a \cmd{waitpis} system call,
 which just waits until the child terminates (any child of more than one exists).
 \cmd{Waitpid} can wait for a specific child, or for any old child by setting the first parameter to 1.
 When \cmd{waitpid} completes, the address pointed by the second parameter, \sys{statioc}, 
-will be set to the child's exit status (normal or abnormal termination and eit value).
+will be set to the child's exit status (normal or abnormal termination and exit value).
 Various options are provided, specified by the third parameter.
-THe \cmd{waitpid} call replaces the previous \cmd{wait} call, which is now obsolete but is provided for reasons of backward compatibility.
+The \cmd{waitpid} call replaces the previous \cmd{wait} call, which is now obsolete but is provided for reasons of backward compatibility.
 
 Now consider how \cmd{fork} is used by the shell.
 When a command is typed, the shell forks off a new process.
@@ -1216,30 +1225,38 @@ of the form \sys{name = value} used to pass information such as the terminal typ
 In Fig. 1-10, no environment is passed to the child, so the third parameter of \sys{execve} is a zero.
 
 If \cmd{exec} seems complicated, do not dispair; it is (semantically) the most complex of all the POSIX system calls.
+All the other ones are much simpler.
+As an example of a simple one, consider \cmd{exit}, which processes should use when they are finished executing.
+It has one parameter, the exit status (0 to 255), which is returned to the parent via \sys{statloc} in the \cmd{waitpid} system call.
+The low-order byte of status contains the termination status, with 0 being normal termination and the other values being various error conditions.
+The high-order byte contains the child's exit status (0 to 255).
+For example, if a parent process executes the statement\\
+\cmd{n = waitpid(1, \&statloc, options);}\\
+it will be suspended until some child process terminates.
 If the child exits with, say, 4 as the parameter to \sys{exit}, the parent will be awakened with \sys{n} set to the child's PID 
 and \sys{statloc} set to 0x0400 (the C convention of prefixing hexadecimal constants with 0x will be used throughout this book).
 
-Processes in MINIX 3 have their memory diveded up into three segments: the \kw{text segment} (i.e., the program code),
+Processes in MINIX 3 have their memory divided up into three segments: the \kw{text segment} (i.e., the program code),
 the \kw{data segment} (i.e., the variables), and the \kw{stack segment}.
 The data segment grows upward and the stack grows downward, as shown in Fig. 1-11.
-Between them is a gap of unused address address space.
+Between them is a gap of unused address space.
 The stack grows into the gap automatically, as needed, but expansion of the data segment is done explicitly by using a system call, 
 \cmd{brk}, which specifies the new address where the data segment is to end.
 This address may be more than the current value (data segment is growing) or less than the current value (data segment is shringking).
 The parameter must, of course, be less than the stack pointer or the data and stack segments would overlap, which is forbidden.
 
-As a convenience for programmers, a library routine \sys{sbrk} is provideed that also changes the size of the data segment, 
+As a convenience for programmers, a library routine \sys{sbrk} is provided that also changes the size of the data segment, 
 only its parameter is the number of bytes to add to the data segment (negtive parameters make the data segment smaller).
 It works by keeping track of the current size of the data segment, which is value returned by \cmd{brk}, 
-computing the new size, and makeing a call asking for that number of bytes. 
-THe \cmd{brk} and \cmd{sbrk} calls, however, are not defined by the POSIX standard.
+computing the new size, and making a call asking for that number of bytes. 
+The \cmd{brk} and \cmd{sbrk} calls, however, are not defined by the POSIX standard.
 Programmers are encouraged to use the \sys{malloc} library procedure for dynamiclly allocating storage, 
 and the underlying implementation of \sys{malloc} was not thought to be a suitable subject for standadization 
 since few programmers use it directly.
 
 The next process system call is also the simplest, \cmd{getpid}.
 It just returns the caller's PID.
-Rmember that in \cmd{fork}, only the parent was given the child's PID.
+Remember that in \cmd{fork}, only the parent was given the child's PID.
 If a child wants to find out its own PID, it must use \cmd{getpid}.
 The \cmd{getpgrp} call returns the PID of the caller's process group.
 \cmd{setsid} creates a new session and sets the process group's PID to the caller's.
@@ -1248,13 +1265,812 @@ Sessions are related to an optional feature of POSIX, \kw{job control}, which is
 The last process management system call, \cmd{ptrace}, is used by debugging programs to control the program being debugged.
 It allows the debugger to read and write the controlled process' memory and manage it other ways.
 
+\subsection{System Calls for Signaling}
+Although most forms of interprocess communication are planned, 
+situation exist in which unexpected communications is needed.
+For example, if a user accidently tells a text editor to list the entire contents of a very long file,
+and then realizes the error, some way is needed to interrupt the editor.
+In MINIX 3, the user can hit the CTRL-C key on the keyboard, which sends a \kw{signal} to the editor.
+The editor catches the signal and stops the print-out.
+Signals can also be used to report certain traps detected by the hardware, such as illegal instruction or floating point overflow.
+Timeouts are also implemented as signals.
 
+When a signal is sent to a process that has not announced its willingness to accept that signal,
+the process is simply killed without further ado.
+To avoid this fate, a process can use the \cmd{sigaction} system call to announce that it is prepared to accept some signal type,
+and to provide the address of the signal handling procedure and a place to store the address of the current one.
+After a \cmd{sigaction} call, if a signal of the relevant type is generated (e.g., by pressing CTRL-C), 
+the state of the process is pushed onto its own stack, and then the signal handler is called.
+It may run for as long as it wants to and perform any system calls it wants to.
+In practice, though, signal handlers are usually fairly short.
+When the signal handling procedure is done, it calls \cmd{sigreturn} to continue where it left off before the signal.
+The \cmd{sigaction} call replaces the older \cmd{signal} call, which is now provided as a library procedure, 
+however, for backward compatibility.
+
+Signals can be blocked in MINIX 3.
+A blocked signal is held pending until it is unblocked.
+It is not delivered, but also not lost.
+The \cmd{sigprocmask} call allows a process to define the set of blocked signals by presenting the kernel with a bitmap.
+It is also possible for a process to ask for the set of signals currently pending but not allowed to be delivered due to their being blocked.
+The \cmd{sigpending} call returns this set as a bitmap.
+Finally, the \cmd{sigsuspend} call allows a process to atomically set the bitmap of blocked signals and suspend itself.
+
+Instead of providing a function to catch a signal, the program may also specify the constant SIG\_IGN 
+to have all subsequent signals of the specified type ignored, or SIG\_DFL to restore the default action of the signal when it occurs.
+The default action is either to kill the process or ignore the signal, depending upon the signal.
+As an example of how SIG\_IGN is used, consider what happens when the shell forks off a backgroud process as a result of\\
+\cmd{command \&}\\
+It would be undesirable for a SIGINT signal (generated by pressing CTRL-C) to affect the background process,
+so after the \cmd{fork} but before the \cmd{exec}, the shell does\\
+\cmd{sigaction (SIGINT, SIG\_IGN, NULL);}\\
+and\\
+\cmd{sigaction (SIGQUIT, SIG\_IGN, NULL);}\\
+to disable the SIGINT amd GIGQUIT signals.
+(SIGQUIT is generated by CTRL-\textbackslash; it is the same as SIGINT generated by CTRL-C 
+except that if it is not caught or ignored it makes a core dump of the process killed.)
+For foreground process (no ampersand), these signals are not ignored.
+
+Hitting CTRL-C is not the only way to send a signal.
+The \cmd{kill} system call allows a process to signal another process 
+(provided they have the same UID, unrelated processes cannot signal each other).
+Getting back to the example of backgroud process used above, suppose a backgroud process is started up, 
+but later it is decided that the process should be terminated.
+SIGINT and GIGQUIT have been disabled, so something else is needed.
+The solution is to use the \sys{sys} program, which uses the \cmd{kill} system call to send a signal to any process.
+By sending signal 9 (SIGKILL), to a backgroud process, that process can be killed.
+SIGKILL cannot be caught or ignored.
+
+For many real-time applications, a process needs to be interrupted after a specific time interval to do something, 
+such as retransmit a potentially lost packet over an unreliable communication line.
+To handle this situation, the \cmd{alarm} system call has been provided.
+The parameter specifies an interval, in seconds, after which a SIGALARM signal is sent to the process.
+A process may only have one alarm outstanding at any instant.
+If an \cmd{alarm} call is made with a parameter of 10 seconds, 
+and then 3 seconds later another \cmd{alarm} call is made with a parameter of 20 seconds,
+only one signal will be generated, 20 seconds after the second call.
+The first signal is canceled by the second call to \cmd{alarm}.
+If the parameter to \cmd{alarm} is zero, any pending alarm signal is canceled.
+If an alarm signal is not caught, the default action is taken and the signaled process is killed.
+
+It sometimes occurs that the process has nothing to do until a signal arrives.
+For example, consider a computer-aided-instruction program that is testing reading speed and comprehension.
+It displays some text on the screen and then calls \cmd{alarm} to signal it after 30 seconds.
+While the student is reading the text, the program has nothing to do.
+It could sit in a tight loop doing nothing, but would waste CPU time that another process or user might need.
+A better idea is to use \cmd{pause}, which tells MINIX 3 to suspend the process untill the next signal.
+
+\subsection{System Calls for File Management}
+Many sytem calls relate to the file system.
+In this section we will look at calls that operate on individual files; 
+in the next one we will examine those that involve directories or the file system as a whole.
+To create a new file, the \cmd{creat} call is used (why the call is \cmd{creat} and not \cmd{create} has been lost in the mists of time).
+Its parameters provide the name of the file and the protection mode.
+Thus\\
+\cmd{fd = creat ("abc", 0751);}\\
+creates a file called \sys{abc} with mode 0751 octal (in C, a leading zero means that a constant is in octal).
+The low-order 9 bits of 0751 specify the \sys{rwx} bits for the owner (7 means read-write-execute permission),
+his group (5 means read-execute), and others (1 means execute only).
+
+\cmd{creat} not only creates a new file but also opens it for writing, regardless of the file's mode.
+The file descriptor returnd, \sys{fd}, can be used to write the file.
+If a \cmd{creat} is done on an existing file, that file is truncated to lenghth 0, provided, of course, that the permissions are all right.
+The \cmd{creat} call is obsolete, as \cmd{open} can now create new files, but it has been included for backward compatibility.
+
+Special files are created using \cmd{mknod} rather than \cmd{creat}.
+A typical call is\\
+\cmd{fd = mknod ("/dev/ttyc2", 020744, 0x0402);}\\
+which creates a file named \sys{/dev/ttyc2} (the usual name for console 2) 
+and gives it mode 020744 octal (a character special file with protection bits rwxr--r--).
+The third parameter contains the major device (4) in the high-order byte and the minor device (2) in the low-order byte.
+The major device could have been anything, but a file named \sys{/dev/ttyc2} ought to be minor device 2.
+Calls to \cmd{mknod} fail unless the caller is the superuser.
+
+To read or write an existing file, the file must first be opened using \cmd{open}.
+This call specifies the file name to be opened, either as an absolute path name or relative to the working directory, 
+and a code of \sys{O\_RDONLY}, \sys{O\_WRONLY}, or \sys{O\_RDWR}, meaning open for reading, writing, or both.
+The file descriptor returned can then be used for reading or writing.
+Afterward, the file can be closed by \cmd{close}, which makes the file descriptor available for reuse on a subsequent \cmd{creat} or \cmd{open}.
+
+The most heavily used calls are undoubtedly \cmd{read} and \cmd{write}.
+We saw \cmd{read} earlier; \cmd{write} has the same parameters.
+
+Although most programs read and write files sequentially, 
+for some applications programs need to be able to access any part of a file at random.
+Associated with each file is a pointer that indicates the current position in the file.
+When reading (writing) sequentially, it normally points to the next byte to be read (written).
+The \cmd{lseek} call changes the value of the position pointer, 
+so that subsequent calls to \cmd{read} or \cmd{write} can begin anywhere in the file, or even beyond the end.
+
+\cmd{lseek} has three parameters: the first is the file descriptor for the file, the second is a file position, 
+and the third tells whether the file position is relative to the beginning of the file, the current position, or the end of the file.
+The value returned by \cmd{lseek} is the absolute position in the file after changing the pointer.
+
+For each file, MINIX 3 keeps track of the file mode (regular file, special file, directory, and so on),
+size, time of last modification, and other information.
+Programs can ask to see this information via the \cmd{stat} and \cmd{fstat} system calls.
+These differ only in that the former specifies the file by name, whereas the latter takes a file descriptor, 
+making it useful for open files, especially standard input and standard output, whose names may not be known.
+Both calls provide as the second parameter a pointer to a structure where the information is to be put.
+The structure is shown in Fig. 1-12.
+
+When manipulating file descriptors, the \cmd{dup} call is occasionally helpful.
+Consider, for example, a program that needs to close standard output (file descriptor 1), substitute another file as standard output, 
+call a function that writes some output onto standard output, and then restore the original situation.
+Just closing file descriptor 1 and opening a new file will make the new file standard output 
+(assuming standard input, file descriptor 0, is in use),
+but it will be impossible to restore the original situation later.
+
+The solution is first to execute the statement\\
+\cmd{fd = dup(1);}\\
+which uses the \cmd{dup} system call to allocate a new file descriptor, \sys{fd}, and arrange for it to correspond to the same file as standard output.
+Then standard output can be closed and a new file opened and used.
+When it is time to restore the original situation, file descriptor 1 can be closed, and the\\
+\cmd{n = dup(fd)}\\
+executed to assign the lowest file descriptor, namely, 1 to the same file as \sys{fd}.
+Finally, \sys{fd} can be closed and we are back where we started.
+
+The \cmd{dup} call has a variant that allows an arbitrary unassigned file descriptor to be made to refer to a given open file.
+It is called by\\
+\cmd{dups(fd, fd2);}\\
+where \sys{fd} refers to an open file and \sys{fd2} is the unassigned file descriptor that is to be made refer to the same file as \sys{fd}.
+Thus if \cmd{fd} refers to standard input (file descriptor 0) and \sys{fd2} is 4, after the call, 
+file descriptors 0 and 4 will both refer to standard input.
+
+Interprocess communication in MINIX 3 uses pipes, as described earlier.
+When a user types\\
+\cmd{cat file1 file 2 | sort}\\
+the shell creates a pipe and arranges for standard output of the first process to write to the pipe,
+so standard input of the second process can read from it.
+The \cmd{pipe} system call creates a pipe and returns two file descriptors, one for writing and one for reading.
+The call is\\
+\cmd{pipe (\&fd[0]);}\\
+where \sys{fd} is an array of two integer and \sys{fd[0]} is the file descriptor for reading and \sys{fd[1]} is the one for writing.
+Typically, a \cmd{fork} comes next, and the parent closes the file descriptor for reading 
+and the child close the file descriptor for writing (or vice versa),
+so when they are done, one process can read the pipe and the other can write on it.
+
+Fig. 1-13 depicts a skeleton procedure that creates two processes, with the output of the first one piped into the second one.
+(A more realistic example would do error checking and handle arguments.)
+First a pipe is created, and then the procedure forks, with the parent eventually becoming the first process in the pipeline 
+and the child process becoming the second one.
+Since the files to be executed, \sys{prcess1} and \sys{process2}, do not known  that they are part of a pipeline, 
+it is essential that the file descriptors be manipulated so that the first process' standard output be the pipe 
+and the second one's standard input be the pipe.
+The parent first closes off the file descriptor for reading from the pipe.
+Then it closes standard output and does a \cmd{dup} call that allows file descriptor 1 to write on the pipe.
+It is important to realize that \cmd{dup} always returns the lowest available file descriptor, in this case, 1.
+Then the program closes the other pipe file descriptor.
+
+After the \cmd{exec} call, the process started will have file descriptors 0 and 2 be unchanged, 
+and file descriptor 1 for writing on the pipe.
+The child code is analogous.
+The parameter to \sys{execl} is repeated because the first one is the file to be executed and the second one is the first parameter, 
+which most programs expect to be the file name.
+
+The next system call, \cmd{ioctl}, is potentially applicable to all special files.
+It is, for instance, used by block device drivers like the SCSI driver to control tape and CD-ROM devices.
+Its main use, however, is with special character files, primarily terminals.
+POSIX defines a number of functions which the library translates into \cmd{ioctl} calls.
+The \sys{tcgetattr} and \sys{tcsetattr} library functions use \cmd{ioctl} to change the characters used for 
+correcting typing errors on the terminal, changing the \kw{terminal mode}, and so forth.
+
+Traditionally, there are three terminal modes, cooked, raw, and cbreak.
+\kw{Cooked mode} is the normal terminal mode, in which the erase and kill characters work normally, 
+CTRL-S and CTRL-Q can be used for stopping and starting terminal output, 
+CTRL-D means end of file, 
+CTRL-C generates an interrupt signal, and 
+CTRL-\textbackslash generates a quit signal to force a core dump.
  
+In \kw{raw mode}, all of these functions are disabled; consequently, every character is passed directly to the program with no special processing.
+Furthermore, in raw mode, a read from the terminal will give the program any characters that have been typed, 
+even a partial line, rather than waiting for a complete line to be typed, as in cooked mode.
+Screen editors often use this mode.
 
+\kw{Cbreak mode} is in between.
+The erase and kill characters for editing are disabled, as is CTRL-D, but CTRL-S, CTRL-Q, CTRL-C, and CTRL-\textbackslash are enabled.
+Like raw code, partial lines can be returned to programs (if intraline editing is turn off there is no need 
+to wait until a whole line has been received, the user cannot change his mind and detete it, as he can in cooked mode). 
 
+POSIX does not use the term cooked, raw, and cbreak.
+In POSIX terminology \kw{canonical mode} corresonds to cooked mode.
+In this mode there are eleven special characters defined, and input is by lines.
+In \kw{noncanonical mode} a minimum number of characters to accept and a time, specified in units of 1/10th of second, 
+determine how a read will be satisfied.
+Under POSIX there is a great deal of flexibility, and various flags can be set to make noncanonical mode behave like either cbreak or raw mode.
+The older terms are more descriptive, and we continue to use them informally.
 
+\cmd{Ioctl} has three parameters, for example a call to \sys{tcsetattr} to set terminal parameters will result in\\
+\cmd{ioctl (fd, TCSETS, \&termios);}\\
+The first parameter specifies a file, the second one specifies an operation, 
+and the third one is the address of the POSIX structure that contains flags and the array of control characters.
+Other operation codes instruct the system to postpone the changes until all output has been sent,
+cause unread input to be discarded, and return the current values.
 
+The \cmd{access} system call is used to determine whether a certain file access is permitted by the protection system.
+It is needed because some programs can run using a differnt user's UID.
+This SETUID mechanism will be described later.
+
+The \cmd{rename} system call is used to give a file a new name.
+The parameters specify the old and new names.
+
+Finally, the \cmd{fcntl} call is used to control files, somewhat analogous to \cmd{ioctl} (i.e., both of them are horrible hacks).
+It has several options, the most important of which is for advisory file locking.
+Using \cmd{fcntl}, it is possible for a process to lock and unlock parts of files and test part of a file to see if it is locked.
+The call does not enforce any lock semantics.
+Programs must do this themselves.
+
+\subsection{System Calls for Directory Management}
+In this section, we will look at some system calls that relate more to directories or the file system as a whole,
+rather than just to one specific file as in the previous section.
+The first two calls, \cmd{mkdir} and \cmd{rmdir}, create and remove empty directories, respectively.
+The next call is \cmd{link}.
+Its purpose is to allow the same file to appear under two or more names, often in different directories.
+A typical use is to allow several members of the same programming team to share a common file, 
+with each of them having the file appear in his own directory, possibly under different names.
+Sharing a file is not the same as giving every team member a private copy, 
+because having a shared file means that changes that any member of the team makes are instantly visible to the other members,
+there is only one file.
+When copies are made of a file, subsequent changes made to one copy do not affect the other ones.
  
+To see how \cmd{link} works, consider the situation of Fig. 1-14(a).
+Here are two users, \sys{ast} and \sys{jim}, each having their own directories with some files.
+If \sys{ast} now executes a program containing the system call\\
+\cmd{link ("/usr/jim/memo", "usr/ast/note");}\\
+the file \sys{memo} in \sys{jim}'s directory is now entered into \sys{ast}'s directory under the name \sys{note}.
+Thereafter, \sys{/usr/jim/memo} and \sys{/usr/ast/note} refer to the same file.
+ 
+Understanding how \cmd{link} works will probably make it clearer what it does.
+Every file in UNIX has a unique number its i-number, that identifies it.
+This number is an index into a table of \kw{i-nodes}, one per file, telling who owns the file, 
+where its disk blocks are, and so on.
+A directory is simply a file containing a set of (i-number, ASCII name) pairs.
+In the first versions of UNIX, each directory entry was 16 bytes: 2 bytes for the i-number and 14-bytes for the name.
+A more complicated structure is needed to support long file names, but conceptually a directory is still a set of (i-number, ASCII name) pairs.
+In Fig. 1-14, \sys{mail} has i-number 16, and so on.
+What \cmd{link} does is simply create a new directory entry with a (possibly new) name, using the i-number of an existing file.
+In Fig. 1-14(b), two entries have the same i-number (70) and thus refer to the same file.
+If either one is later removed, using the \cmd{unlink} system call, the other one remains.
+If both are removed, UNIX sees that no entries to the file exist 
+(a field in the i-node keeps track of the number of directory entries pointing to the file), so the file is removed from the disk.
+
+As we have mentioned early, the \cmd{mount} system call allows two file systems to be merge into one.
+A common situation is to have the root system containing the binary (executable) versions of the common commands 
+and other heavily used files, on a hard disk.
+The user can then insert a CD-ROM with files to be read into the CD-ROM drive.
+
+By executing the \cmd{mount} system call, the CD-ROM file system can be attached to the root file system, as shown in Fig. 1-15.
+A typical statement in C to perform the mount is\\
+\cmd{mount ("/dev/cdrom0", "/mnt", 0);}\\
+where the first parameter is the name of a block special file for CD-ROM drive 0, 
+the second parameter is the place in the tree where it is to be mounted,
+and the third one tells whether the file system is to be mounted read-write or read-only.
+
+After the \cmd{mount} call, file on CD-ROM drive 0 can be accessed by just using its path from the root directory or the working directory,
+without regard to which drive it is on.
+In fact, second, third and fourth drives can also be mounted anywhere in the tree.
+The \cmd{mount} call makes it possible to integrate removable media into a single integrated file hierarchy,
+without having to worry about which device a file is on.
+Although this example involves CD-ROMs, hard disks or portions of hard disks
+(often called \kw{partitions} or \kw{minor devices}) can also be mounted this way.
+When a file system is no longer needed, it can be unmounted with the \cmd{unmount} system call.
+
+MINIX 3 maintains a \kw{block cache} cache of recently used blocks in main memory to avoid having to read them from the disk
+if they are used again quickly.
+If a block in the cache is modified (by a \cmd{write} on a file) and the system crashes before the modified block is written out to disk, 
+the file system will be damaged.
+To limit the potential damage, it is important to flush the cache periodically,
+so that the amount of data lost by a crash will be small.
+The system call \cmd{sync} tells MINIX 3 to write out all the cache blocks that have been modified since being read in.
+When MINIX 3 is started up, a program called \sys{update} is started as a background process 
+to do a \cmd{sync} every 30 seconds, to keep flushing the cache.
+
+Two other calls that relate to directories are \cmd{chdir} and \cmd{chroot}.
+The former changes the working directory and the latter changes the root directory.
+After the call\\
+\cmd{chdir ("/usr/ast/test");}\\
+an open on the file \sys{xyz} will open \sys{/usr/ast/test/xyz}.
+\cmd{chroot} works in an analogous way.
+Once a process has told the system to change its root directory, 
+all absolute path names (path names beginning with a ``/'') will start at the new root.
+Why would you want to do that?
+For security server programs for protocols such as \kw{FTP} (File Transfer Protocol) and \kw{HTTP} (HyperText Transfer Protocol) 
+do this so remote users of these services can access only the portions of a file system below the new root.
+Only superusers may execute \cmd{chroot}, and even superusers do not do it very often.
+
+\subsection{System Calls for Protection}
+In MINIX 3 every file has an 11-bit mode used for protection.
+Nine of these bits are the read-write-execute bits for the owner, group, and others.
+The \cmd{chmod} system call makes it possible to change the mode of a file.
+For example, to make a file read-only by everyone except the owner, one could execute\\
+\cmd{chmod ("file", 0644);}\\
+The other two protection bits, 02000 and 04000, are the SETGID (set-group-id) and SETUID (set-user-id) bits, respectively.
+When any user executes a program with the SETUID bit on, 
+for the duration of that process the user's effective UID is changed to that of the file's owner.
+This feature is heavily used to allow users to execute programs that perform superuser only functions, such as creating directories.
+Creating a directory uses \cmd{mknod}, which is for the superuser only.
+By arranging for the \sys{mkdir} program to be owned by the superuser and have mode 04755, 
+ordinary users can be given the power to execute \cmd{mknod} but in a highly restricted way.
+
+When a process executes a file that has the SETUID or SETGID bit on in its mode,
+it acquires an effective UID or GID different from its real UID or GID.
+It is sometimes important for a process to find out what its real and effective UID or GID is.
+The system calls \cmd{getuid} and \cmd{getgid} have been provided to supply this information.
+Each call returns both the real and effective UID or GID, so four library routines were needed to extract the proper information:
+\sys{getuid}, \sys{getgid}, \sys{geteuid}, and \sys{getegid}.
+The first two get the real UID/GID, and the last two the effective ones.
+
+Ordinary users cannot change their UID, except by executing programs with the SETUID bit on,
+but the superuser has another possibility: the \cmd{setuid} system call, which sets both the effective and real UIDs. 
+\cmd{setgid} sets both GIDs.
+The superuser has plenty of opportunity for violating all the protection rules,
+which explains why so many students devote so much of their time to trying to become superuser.
+
+The last two system calls in this category can be executed by ordinary user processes.
+The first one, \cmd{umask}, sets an internal bit mask within the system, which is used to mask off mode bits when a file is created.
+After the call\\
+\cmd{umask (022);}\\
+the mode supplied by \cmd{creat} and \cmd{mknod} will have the 022 bits masked off before being used.
+Thus the call\\
+\cmd{creat ("file", 0777);}\\
+will set the mode to 0755 rather than 0777.
+Since the bit mask is inherited by child processes, if the shell does a \cmd{umask} just after login, 
+none of the user's processes in that session will accidently create files that other people can write on.
+ 
+When a program owned by the root has the SETUID bit on, it can access any file, because its effective UID is the superuser.
+Frequently it is useful for the program to know if the person who called the program has permission to access a given file.
+If the program just tries the access, it will always succeed, and thus learn nothing.
+
+What is needed is a way to see if the access is permitted for the real UID.
+The \cmd{access} system call provides a way to find out.
+The \sys{mode} parameter is 4 to check for read access, 2 for write access, and 1 for execute access.
+Combinations of these values are also allowed.
+For example, with \sys{mode} equal to 6, the call returns 0 if both read and write access are allowed for the real ID;
+otherwise 1 is returned.
+With \sys{mode} equal to 0, a check is made to see if the file exists and the directories leading up to it can be searched.
+
+Although the protection mechanisms of all UNIX-like operating systems are generally similar, 
+there are some differences and inconsistencies that lead to security vulnerabilities.
+See Chen et al.(2002) for a discussion.
+
+\subsection{System Calls for Time Management}
+MINIX 3 has four system calls that involve the time-of-day clock.
+\cmd{Time} just returns the current time in seconds, with 0 corresponding to Jan. 1, 1970 at midnight (just as the day was starting, not ending).
+Of course, the system clock must be set at some point in order to allow it to be read later,
+so \cmd{stime} has been provided to let the clock be set (by the superuser).
+The third time call is \cmd{utime}, which allows the owner of a file (or the superuser) to change the time stored in a file's i-node.
+Application of this system call is fairly limited, but a few programs need it, 
+for example, \sys{touch}, which sets the file's time to the current time.
+
+Finally, we have \cmd{times}, which returns the accounting information to a process,
+so it can see how much CPU time it has used directly, 
+and how much CPU time the system itself has expended on its behalf (handling its system calls).
+The total user and system times used by all its children combined are also returned.
+
+%---------------------------------------------------------------------------------------------------------------------------------------------------%
+\section{Operating System Structure}
+Now that we have seen what operating systems look like on the outside (i.e., the programmer's interface),
+it is a time to take a look inside.
+In the following sections, we will examine five different structures that have been tried,
+in order to get some idea of the spectrum of possibilities.
+These are by no means exhaustive, but they give an idea of some designs that have been tried in practice.
+The five designs are monolithic systems, layered systems, virtual machines, exokernels, and client-server systems.
+
+\subsection{Monolithic Systems}
+By far the most common organization, this approach might well be subtitled ``The Big Mess''.
+The structure is that there is no structure.
+The operating system is written as a collection of procedure, each of which can call any of the other ones whenever it needs to.
+When this technique is used, each procedure in the system has a well-defined interface in terms of parameters and results,
+and each one is free to call any other one, if the latter provides some useful computation that the former needs.
+
+To construct the actual object program of the operating system when this approach is used, 
+one first compiles all the individual procedures, or files containing the procedures, 
+and then binds them all together into a single object file using the system linker.
+In terms of information hiding, there is essentially none every procedure is visible to every other procedure
+(as opposed to a structure containing modules or packages, in which much of the information is hidden away inside modules,
+and only the officially designated entry points can be called from outside the module).  
+
+Even in monolithic systems, however, it is possible to have at least a little structure.
+The services (system calls) provided by the operating system are requested by 
+putting the parameters in well-defined places, such as in registers or on the stack,
+and then executing a special trap instruction known as a \kw{kernel call} or \kw{supervisor call}.
+
+This instruction switches the machine from user mode to kernel mode and transfers control to the operating system.
+(Most CPUs have two modes: kernel mode, for the operating system, in which all instructions are allowed;
+and user mode, for user programs, in which I/O and certain other instructions are not allowed.)
+
+This is a good time to look at how system calls are performed.
+Recall that the \cmd{read} call is used like this:\\
+\cmd{count = read(fd, buffer, nbytes);}
+
+In preparation for calling the \sys{read} library procedure, which actually makes the \cmd{read} system call,
+the calling program first pushes the parameters onto the stack, as shown in steps 13 in Fig. 1-16.
+C and C++ compilers push the parameters onto the stack in reverse order for historical reasons
+(having to do with making the first parameters to \sys{printf}, the format string, appear on top of the stack).
+The first and third parameters are called by value, but the second parameter is passed by reference,
+meaning that the address of the buffer (indicated by \&) is passed, not the contents of the buffer.
+Then comes the actual call to the library procedure (step 4).
+This instruction is the normal procedure call instruction used to call all procedures.
+
+The library procedure, possibly written in assembly language, 
+typically puts the system call number in place where the operating system expects it, such as register (step 5).
+Then it executes a \cmd{trap} instruction to switch from user mode to kernel mode 
+and start execution at a fixed address within the kernel (step 6).
+The kernel code that starts examines the system call number and then dispatches to the correct system call handler,
+usually via a table of pointers to system call handlers indexed on system call number (step 7).
+At that point the system call handler runs (step 8).
+Once the system call handler has completed its work, 
+control may be returned to the user-pace library procedure at the instruction following the \cmd{trap} instruction (step 9).
+This procedure then returns to the user program in the usual way procedure calls return (step 10).
+
+To finish the job, the user program has to clean up the stack, as it does after any procedure call (step 11).
+Assuming the stack grows downward, as it often does, 
+the compiled code increments the stack pointer exactly enough to remove the parameters pushed before the call to \sys{read}.
+The program is now free to do whatever it wants to do next.
+
+In step 9 above, we said ``may be returned to the user-space library procedure'' for good reason.
+The system call may block the caller, preventing it from continuing.
+For example, if it is trying to read from the keyboard and nothing has been typed yet, the caller has to be blocked.
+In this case, the operating system will look around to see if some other process can be run in next.
+Later, when the desired input is available, this process will get the attention of the system and step 9-11 will occur.
+
+This organization suggests a basic structure of the operating system:\\
+1. A main program that invokes the requested service procedure.\\
+2. A set of service procedures that carry out the system calls.\\
+3. A set of utility procedures that help the service procedures.
+
+In this model, for each system call there is one service procedure that takes care of it.
+The utility procedures do things are needed by several service procedures, such as fetching data from user programs.
+This division of the procedures into three layers is shown in Fig. 1-17.
+
+\subsection{Layered Systems}
+A generalization of the approach of Fig. 1-17 is to organize the operating system as a hierarchy of layers,
+each one constructed upon the one below it.
+The first system constructed in this way was THE system 
+built at the Technische Hogeschool Eindhoven in the Netherlands by E.W. Dijkstra (1968) and his students.
+The THE system was a simple batch system for a Dutch computer, the Electrologica X8,
+which had 32K of 27-bit words (bits were expensive back then).
+
+The system had 6 layers, as shown in Fig. 1-18.
+Layer 0 dealt with allocation of the processor, switching between processes when interrupts occurred or timers expired.
+Above layer 0, the system consisted of sequential processes, each of which could be programmed without having to worry about the fact 
+that multiple process are running on a single processor.
+In other words, layer 0 provided the basic multiprogramming of the CPU.
+
+Layer 1 did the memory management.
+It allocated space for processes in main memory and on a 512K word drum used for holding parts of processes (pages) 
+for which there was no room in main memory.
+Above layer 1, processes did not have to worry about wether they were in memory or on the drum;
+the layer 1 software took care of making sure pages were brought into memory whenever they were needed.
+
+Layer 2 handled communication between each process and the operator console.
+Above this layer each process effectively had its own operator console.
+Layer 3 took care of managing the I/O devices and buffering the information streams to and from them.
+Above layer 3 each process could deal with abstract I/O devices with nice properties, 
+instead of real devices with many peculiarities.
+Layer 4 was where the user  programs were found.
+They did not have to worry about process, memory, console, or I/O management.
+The system operator process was located in layer 5.
+
+A further generalization of the layering concept was present in the MULTICS system.
+Instead of layers, MULTICS was organized as a series of concentric rings, with the inner ones being more privileged than the outer ones.
+When a procedure in an outer ring wanted to call a procedure in an inner ring,
+it has to make the equivalent of a system call, that is, a TRAP instruction
+whose parameters were carefully checked for validity before allowing the call to proceed.
+Although the entire operating system was part of the address space of each user process process in MULTICS,
+the hardware made it possible to designate individual procedures (memory segments, actually)
+as protected against reading, writing, or executing.
+
+Whereas the THE layering scheme was really only a design aid, 
+because all the parts of the system were ultimately linked together into a single object program, in MULTICS,
+the ring mechanism was very much present at run time and enforced by the hardware.
+The advantege of the ring mechanism is that it can easily be extended to structure user subsystems.
+For example, a professor could write a program to test and grade student programs and run this program in ring \sys{n},
+with the student programs running in ring \sys{n} + 1 so that they could not change their grades.
+The Pentium hardware supports the MULTICS ring structure, but no major operating system uses it present.
+
+\subsection{Virtual Machines}
+The initial releases of OS/360 were strictly batch systems.
+Neverthless, many 360 users wanted to have timesharing, so various groups, 
+both inside and outside IBM decided to write timesharing system for it.
+The official IBM timesharing system, TSS/360, was delivered late, 
+and when it finally arrived it was so big and slow that few sites converted to it.
+It was eventually abandoned after its development had consumed some \$50 million (Graham, 1970).
+But a group at IBM'S Scientific Center in Cambridge, Massachusetts, 
+produced a radically different system that IBM eventually accepted as a product,
+and which is now used on its mainframes.
+
+This system, originally called CP/CMS and later renamed VM/370 (Seawright and MacKinnon, 1979),
+was based on a very astute observation: a timesharing system provides
+(1) multiprogramming and
+(2) an extended machine with a more convenient interface than the bare hardware.
+The essence of VM/370 is to completely seperate these two functions.
+ 
+The heart of the system, known as the \kw{virtual machine monitor}, runs on the bare hardware and does the multiprogramming,
+providing not one, but several virtual machines to the next layer up, as shown in Fig. 1-19.
+However, unlike all other operating systems, these virtual machines are not extended machines, with files and other nice features.
+Instead, they are \sys{exact} copies of the bare hardware, 
+including kernel/user mode, I/O, interrupts, and everything else real machine has.
+
+Because each virtual machine is identical to the true hardware, 
+each one can run any operating system that will run directly on the bare hardware.
+Different virtual machines can, and frequently do, run different operating systems.
+Some run one of the descendants of OS/360 for batch or transaction processing, 
+while others run a single-user, interactive system called \kw{CMS} (Conversational Monitor System) for timingsharing users.
+
+When a CMS program executes a system call, the call is trapped to operating-system in its own virtual machine,
+not to VM/370, just as it would if it were running on a real machine instead of a virtual one.
+CMS then issues the normal hardware I/O instructions for reading its virtual disk or whatever is needed to carry out the call.
+These I/O instructions are trapped by VM/370, which then performs them as part of its simulation of the real hardware.
+By making a complete separation of the functions of multiprogramming and providing an extended machine, 
+each of the pieces can be much simpler, more flexible, and easier to maintain.
+
+The idea of a virtual machine is used nowadays in a different contex: runing old MS-DOS programs on a Pentium.
+When designing the Pentium and its software, both Intel and Microsoft realized that 
+there would be a big demand for running old software on new hardware.
+For this reason, Intel provided a virtual 8086 mode on the Pentium.
+In this mode, the machine acts like an 8086 (which is identical to an 8088 from a software point of view),
+including 16-bit addressing with a 1-MB limit.
+
+This mode is used by Windows, and other operating systems for running old MS-DOS programs.
+These programs are started up in virtual 8086 mode.
+As long as they execute normal instructions, they run on the bare hardware.
+However, when a program tries to trap to the operating system to make a system call,
+or tries to do protected I/O directly, a trap to the virtual machine monitor occurs.
+
+Two variants on this design are possible.
+In the first one, MS-DOS itself is loaded into the virtual 8086's address space, 
+so the virtual machine monitor just reflects the trap back to MS-DOS, just as would happen on a real 8086.
+When MS-DOS later tries to do the I/O itself, that operation is caught and carried out by the virtual machine monitor.
+
+In the other variant , the virtual nachine monitor just catches the first trap and does I/O itself,
+since it knowns what all the MS-DOS system calls are and thus known what each trap is supposed to do.
+This variant is less pure than the first one, since it emulates only MS-DOS correctly, and not other operating systems, as the first one does.
+On the other hand, it is much faster, since it saves the trouble of starting up MS-DOS to do the I/O.
+A further disadvantage of actually running MS-DOS in virtual 8086 mode is that MS-OS fiddles around with the interrupt enable/disable bit quite a lot, 
+all of which must be emulated at considerable cost.
+
+It is worth nothing that neither of these approaches are really the same as VM/370, 
+since the machine being emulated is not a full Pentium, but only an 8086.
+With the VM/370, it is possible to run VM/370, itself, in the virtual machine.
+Even the earliest vertion of Windows require at least a 286 and cannot be run on a virtual 8086. 
+
+Several virtual machine implementations are marked commercally.
+For companies that provide web-hosting services, it can be more ecnomical to run multiple virtual machines 
+on a single fast server (perhaps one with multiple CPUs) than to run many small computers, each hosting a single Web site.
+VMWare and Microsoft's Virtual PC are marked for such installations.
+These programms use large files on a host system as simulated disks for their guest systems.
+To achive efficiency they analyze guest system program binaries and allow safe code to run directly on the host hardware,
+trapping instructions that make operating system calls.
+Such systems are also useful in education.
+For instance, students working on MINIX 3 lab assignments can work using MINIX 3 as a guest operating system 
+on VMWare on a Windows, Linux or UNIX host with no risk of damaging other software installed on the same PC.
+Most professors teaching other subjects would be very nervous about sharing laboratory computers with an operating systems course 
+where student mistakes could corrupt or erase disk data.
+
+Another are a where virtual machines are used, but in a somewhat different way, is for running Java programs.
+When Sun Microsystems invented the Java programming language, 
+it also invented a virtual machine (i.e., a computer architecture) called \kw{JVM (Java Virtual Machine)}.
+The Java compiler produces code for JVM, which then typically executed by a software JVM interpreter.
+The advantage of this approach is that the JVM code can be shipped over the Internet to any computer 
+that has a JVM interpreter and run there.
+If the compiler had produced SPARC or Pentium binary programs, for example, they could not have been shipped and run anywhere as easily.
+(Of course, Sun could have produced a compiler that produced SPARC binaries and then distributed a SPARC interpreter, 
+but JVM is a much simpler architecture to interpret.)
+Another advantage of using JVM is that if the interpreter is implemented properly, which is not completely trivial, 
+incoming JVM programs can be checked for safety and then executed in a protected environment so they cannot steal data or do any damage.
+
+\subsection{Exokernels}
+With VM/370, each user process gets an exact copy of the actual computer.
+With virtual 8086 mode on the Pentium, each user process gets an exact copy of a different computer.
+Going one step further, researchers at M.I.T. built a system that gives each user a clone of the actual computer,
+but with a subset of the resources (Engler et al., 1995; and Leschke, 2004).
+Thus one virtual machine might get disk blocks 0 to 1023, 
+the next one might get blocks 1024 to 2047, and so on.
+
+At the bottom layer, running in kernel mode, is a program called \kw{exokernel}.
+Its job is to allocate resources to virtual machines and then check attempts to use them 
+to make sure no machine is trying to use somebody else's resources.
+Each user-level virtual machine can run its own operating system, as on VM/370 and the Pentium virtual 8086s,
+except that each one is restricted to using only the resources it has asked for and been allocated.
+
+The advantage of the exokernel scheme is that it saves a layer of mapping.
+In the other designs, each virtual machine thinks it has its own disk, with blocks running from 0 to some maximum,
+so the virtual machine monitor must maintain tables to remap disk addresses (and all other resources).
+With the exokernel, this remapping is not needed.
+The exokernel need only keep track of which virtual machine has been assigned with resource.
+This method still has the advantage of separating the multiprogramming (in the exokernel) from 
+the user operating system code (in user space), but with less overhead,
+since all the exokernel has to do is keep the virtual machines out of each other's hair.
+ 
+\subsection{Client-Server Model}
+VM/370 gains much in simplicity by moving a large part of the traditional operating system code 
+(implementing the extended machine) into a higher layer, CMS.
+Nevertheless, VM/370 itself is still a complex program because simulating a number of virtual 370s is not that simple
+(especially if you want to do it reasonably efficiently).
+
+A trend in modern operating systems is to take this idea of moving code up into higher layers even further 
+and remove as much as possible from the operating system, leaving a minimal \kw{kernel}.
+The usual approach is to implement most of the operating system functions in user processes.
+To request a service, such as reading a block of a file, 
+a user process (now known as the \kw{client process}) sends the request to a \kw{server process},
+which then does the work and sends back the answer.
+
+In this model, shown in Fig. 1-20, all the kernel does is handle the communication between clients and servers.
+By splitting the operating system up into parts, each of which only handles one facet of the system,
+such as file service, process service, terminal service, or memory service, each part becomes small and manageable.
+Furthermore, because all the servers run as user-mode processes, and not in kernel mode, 
+they do not have direct access to the hardware.
+As a consequence, if a bug in the file server is triggered, the file service may crash, 
+but this will not usually bring the whole machine down.
+
+Another advantage of the client-server model is its adaptability to use in distributed systems (see Fig. 1-21).
+If a client communicates with a server by sending it messages, 
+the client need not know whether the message is handled locally in its own machine,
+or whether it was sent across a network to a server on a remote machine.
+As far as the client is concerned, the same thing happens in both cases: 
+a request was sent and a reply came back.
+
+The picture painted above of a kernel that handles only the transport of messages from clients to servers 
+and back is not completely realistic.
+Some operating system functions (such as loading commands into the physical I/O device registers) are difficult, 
+if not impossible, to do from user space programs.
+There are two ways of dealing with this problem.
+One way is to have some critical server processes (e.g., I/O device drivers) actually run in kernel mode, 
+with complete access to all the hardware, but still communicate with other processes using the normal message mechanism.
+A variant of this mechanism was used in earlier version of MINIX where drivers were compiled into the kernel but ran as separate processes.
+
+The other way is to build a minimal amount of \kw{mechanism} into the kernel but leave the \kw{policy} decisions up to servers in user space.
+For example, the kernel might recognize that a message sent to a certain special address means to take the contents of that message
+and load it into the I/O device registers for some disk, to start a disk read.
+In this example, the kernel would not even inspect the bytes in the message to see if they were valid or meaningful;
+it would just blindly copy them into the disk's device registers.
+(Obviously, some scheme for limiting such message to authorized processes only must be used.)
+This is how MINIX 3 works, drivers are in user space and use special kernel calls to request reads and writes of I/O registers or to access kernel information.
+The split between mechanism and policy is an important concept; it occurs...
+
+\section{Outline of the Rest of This Book}
+Operating systems typically have four major components: 
+process management, I/O device management, memory management, and file management.
+MINIX 3 is also divided into these four parts.
+The next four chapters deal with these four topics, one topic per chapter.
+Chapter 6 is a list of suggested reading and a bibliography.
+
+The chapters on processes, I/O, memory management, and file systems have the same general structure.
+First the general principles of the subject are laid out.
+Then comes an overview of the corresponding area of MINIX 3 (which also applied to UNIX).
+Finally, the MINIX 3 implementation is discussed in detail.
+The implementation section may be skimmed or skipped without loss of continuity by readers 
+just interested in the principles of operating systems and not interested in the MINIX 3 code.
+Readers who are interested in finding out how a real operating system (MINIX 3) works should read all the sections.
+
+\section{Summary}
+Operating systems can be viewed from two viewpoints: resource manager and extended machines.
+In the resource manager view, the operating system's job is to efficently manage the different parts of the system.
+In the extended machine view, the job of the system is to provide the users with a virtual machine 
+that is more convenient to use than the actual machine.
+ 
+Operating systems have a long history, starting from the days when they replaced the operator,
+to modern multiprogramming systems.
+
+The heart of any operating system is the set of system calls that it can handle.
+These tell what the operating system really does.
+For MINIX 3, these calls can be divided into six groups.
+The first group of system calls relates to process creation and termination.
+The second group handles signals.
+The third group is for reading and writing files.
+A fourth group is for directory management.
+The fifth group protects information, and the sixth group is about keeping track of time.
+
+Operating systems can be structured in several ways.
+The most common ones are as a monolithic system, as a hierarchy of layers, as a virtual machine system,
+using an exokernel, and using the client-server model.
+
+\section{Problems}
+1. What are the two main functions of an operating system?
+
+2. What is the difference between kernel mode and user mode? Why is the difference important to an operating system?
+
+3. What is multiprogramming?
+
+4. What is spooling? Do you think that advanced personal computers will have spooling as a standard feature in the future?
+
+5. One early computers, every byte of data read or written was directly handled by the CPU (i.e., there was no DMA Directed Memory Access).
+What implications does this organization have for multiprogramming?
+
+6. Why was timesharing not widespread on second-generation computers?
+
+7. Which of the following instructions should be allowed only in kernel mode?\\
+(a) Disable all interrupts.\\
+(b) Read the time-of-day clock.\\
+(c) Set the time-of-day clock.\\
+(d) Change the memory map.
+
+8. List some differences between personal computer operating systems and mainframe operating systems.
+
+9. Give one reason why a closed-source proprietary operating system like Windows should have better quality than 
+an open source operating system like Linux.
+Now give one reason why an open-source operating system like Linux should have better quality than 
+a closed-source proprietary operating system like Windows.
+
+10. A MINIX file whose owner has UID = 12 and GID = 1 has mode \sys{rwxr-x---}.
+Another user with UID = 6, GID = 1 tries to execute the file. What will happen?
+
+11. In view of the fact that the mere existence of a superuser can lead to all kinds of security problems, why does such a concept exist?
+  
+12. All versions of UNIX support file naming using both absolute paths (relative to the root) and 
+relative paths (relative to the working directory). 
+Would it be possible to dispose of one of these and just use the other?
+If so, which would you suggest keeping?
+
+13. Why is the process table needed in a timesharing system?
+Is it also needed in personal computer systems in which only one process exists,
+that process taking over the entire machine until it is finished?
+
+14. What is the essential difference between a block special file and a character special file?
+
+15. In MINIX 3 if user 2 links to a file owned by user 1, then user 1 removes the file, what happens when user 2 tries to read the file?
+
+16. Are pipes an essential facility? Would major functionality be lost if they were not available?
+
+17. Modern consumer appliances such as stereos and digital cameras often have a display 
+where commands can be enterned and the results of entering those commands can be viewed.
+These devices often have a primitive operating system inside.
+To what part of a personal computer software is the command processing via the stereo or camera's display similar to?
+
+18. Windows does not have a \cmd{fork} system call, yet it is able to create new processes.
+Make an educated guess about the semantics of the system call Windows uses to create new processes.
+
+19. Why is the \cmd{chroot} system call limited to the superuser? (Hint: Think about protection problems.)
+
+20. Examine the list of system calls in Fig. 1-9.
+Which call do you think is likely to execute most quickly.
+Explain your answer.
+
+21. Suppose that a computer can execute 1 billion instructions/sec and that a system call takes 1000 instructions,
+including the trap and all the context switching.
+How many system calls can the computer execute per second and still have half the CPU  capacity for running application code?
+
+22. There is a \cmd{mknod} system call in Fig. 1-16 but there is no \cmd{rmnod} call.
+Does this mean that you have to be very, very careful about making nodes this way because there is no way to every remove them?
+
+23. Why does MINIX 3 have the program \sys{update} running in the background all the time?
+
+24. Does it ever make any sense to ignore the SIGALARM signal?
+
+25. The client-server model is popular in distributed systems.
+Can it also be used in a single-computer system?
+
+26. The initial version of the Pentium could not sopport a virtual machine monitor.
+What essential characteristics is needed to allow a machine to be virtualizable?
+
+27. Write a program (or series of programs) to test all the MINIX 3 system calls.
+For each call, try various sets of parameters, including some incorrect ones, to see if they are detected.
+
+28. Write a shell that is similar to Fig. 1-10 but contains enough code that it actually works so you can test it.
+You might add some features such as redirection of input and output, pipes, and background jobs.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
