@@ -2050,14 +2050,542 @@ For each call, try various sets of parameters, including some incorrect ones, to
 You might add some features such as redirection of input and output, pipes, and background jobs.
 
 
+\chapter{Processes}
+We are now embark on a detailed study of how operating systems, ingeneral, and MINIX, in particalur, are designed and constructes.
+The most central concept in any operating system is the \sys{process}: an abstraction of a running program.
+Everything else hinges on this concept, and it is important that the operating system designer (and student) understand this concept well.
 
+\section{Introduction to Processes}
+All modern computers can do several things at the same time.
+While running a user program, a computer can also be reading from a disk and outputting text to a screen or printer.
+In a multiprogramming system, the CPU also swithches from program to program, 
+running each for tens or hundreds of milliseconds.
+While, strictly speaking, at any instant of time, the CPU is running only one program, 
+in the course of 1 second, it may work on several programs, thus giving the users the illusion of parallelism.
+Sometimes people speak of \kw{pseudoparallelism} in this context, 
+to constrast it with the true hardware parallelism of \kw{multiprocessor} systems (which have two or more CPUs sharing the same physical memory).
+Keeping track of multiple, parallel activities is hard for people to do.
+Therefore, operating system designers over the years have evolved a conceptual model (sequential process) 
+that makes parallelism easier to deal with.
+That model, its uses, and some of its consequences form the subject of this chapter.
 
+\subsection{The Process Model}
+In this model, all the runnable software on the computer, sometimes including the operating system, 
+is organized into a number of \kw{sequential processes}, or just \kw{processes} for short.
+A process is just an executing program, including the current values of the program counter, registers, and variables.
+Conceptually, each process has its own virtual CPU.
+In reality, of course, the real CPU swithches back and forth from process to process,
+but to understand the system, it is much easier to think about a collection of processes running in (pseudo) parallel,
+than to try to keep track of how the CPU swithces from program to program.
+This rapid switching back and forth is called \kw{multiprogramming}, as we saw in Chap. 1.
 
+In Fig. 2-1(a) we see a computer multiprogramming four programs in memory.
+In Fig. 2-1(b) we see four processes, each with its own flow of control (i.e., its own program counter), 
+and each one running independently of the other ones.
+Of course, there is only one physical program counter, so when each process runs, 
+its logical program counter is loaded in to the real program counter. 
+When it is finished for the time being, the physical program counter is saved in the process' logical program counter in memory.
+In Fig. 2-1(c) we see that viewed over a long enough time interval, all the processes have made progress,
+but at any given instant only one process is actually running.
 
+With the CPU switching back and forth among the process, the rate at which a process performs its computation will not be uniform, 
+and probably not even reproducible if the same processes are run again.
+Thus, processes must not be programmed with built-in assumptions about timing.
+Consider, for example, an I/O process that starts a streamer tape to restore backed up files,
+executes an idle loop 10,000 times to let it get up to speed, and then issues a command to read the first record.
+It the CPU decides to switch to another process during the idel loop,
+the tape process might not runagain yntill after the first record was already past the read head.
+When a process has critical real-time requirements like this, that is, 
+particular events must occur within a specified number of milliseconds, special measures must be taken to ensure that they do occur.
+Normally, however, most processes are not affected by the underlying multiprogramming of the CPU or the relative speeds of different processes.
 
+The difference between a process and a program is subtle, but crucial.
+An analogy may help make this pointer cleaner.
+Consider a culinary-mind computer scientist who is backing birthdsy cake for his daughter.
+He has a birthday cake recipe and a kitchen well stocked with the necessary input:
+flour, eggs, sugar, extract of vanilla, and so on.
+In this analogy, the recipe is the processor (CPU), and the cake ingredients are the input data.
+The process is the activity consisting of our baker reading the recipe, fetching the ingredients, and baking the cake.
+ 
+Now imagine that the computer scientist's son comes running in crying, saying that he has been stung by a bee.
+The computer scientist records where he was in the recipe (the state of the current process is saved),
+gets out a first aid book, and begins following the directions in it.
+Here we see the processor being switched from one process (baking) to a higher priority process (administering medical care),
+each having a different program (recipe vs. first aid book).
+When the bee sting has been taken care of, the computer scientist goes back to his cake,
+continuing the point where he left off.
 
+The key idea here is that a process is an activity of some kind.
+It has a program, input, output and a state.
+A single processor may be shared among several processes, with some scheduling algorithm being used to do determine
+when to stop work on one process and service a different one.
 
+\subsection{Process Creation}
+Operating systems need some way to make sure all the necessary processes exist.
+In very simple systems, or in systems designed for running only a single application (e.g., controlling a device in real time),
+it may be possible to have all the processes that will ever be needed be present when the system comes up.
+In general-purpose systems, however, some way is needed to create and terminate processes as needed during operation.
+We will now look at some of the issues.
 
+There are four principal events that cause processes to be created:\\
+1. System initialization.\\
+2. Execution of a process creation system call by running process.\\ 
+3. A user request to create a new process.\\
+4. Inition of a batch job.
+
+When an operating system is booted, often several processes are created.
+Some of these are foregroud process, that is, processes that interact with (human) user and perform work for them.
+Others are backgroud processes, which are not associated with particular users, but instead have some special function.
+For example, a backgroud process may be designed to accept incoming requests for web pages hosted on that machine,
+waking up when a request arrives to service the request.
+Processes that say in the backgroud to handle some activity such as web pages, printing, and so on are called \kw{daemons}.
+Large systems commonly have dozens of them.
+In MINIX 3, the \sys{ps} program can be used to list the running processes.
+
+In addition to the processes created at boot time, new processes can be created afterwards as well.
+Often a running process will issue system calls to create one or more new processes to help it do its job.
+Creating new processes is particularly useful when the work to be done can easily be formulated in terms of several related,
+but otherwise independent interacting processes.
+For example, when compiling a large program, the \sys{make} program invokes the C compiler to convert source file to object code,
+and then it invokes the \kw{install} program to copy the program to its destination, 
+set ownership and permissions, etc.
+In MINIX 3, the C compiler itself is actually several different programs, which work together.
+These include a preprocessor, a C language parser, an assembly language code generator, an assembler, and a linker.
+
+In interactive systems, users can start a program by typing a command.
+In MINIX 3, virtual consoles allow a user to start a program, say a compiler, 
+and then switch to an alternate console and start another program,
+perhaps to edit documentation while the compiler is running.
+
+The last situation in which processes are created applies only to the batch systems found on large mainframes.
+Here users can submit batch jobs to the system (possibly remotely).
+When the operating system decides that it has the resources to run another job,
+it create a new process and runs the next job from the input queue in it.
+
+Technically, in all these cases, a new process is created by having an existing process execute a process creation system call.
+That process may be a running user process, 
+a system process invoked from the keyboard or mouse,
+or a batch manager process.
+What that process does is execute a system call to create the new process.
+This system call tells the operating system to create a new process and indicates, directly or indirectly,
+which program to run in it.
+
+In MINIX 3, there is only one system call to create a new process: \cmd{fork}.
+This call creates an exact clone of the calling process.
+After the \cmd{fork}, the two processes, the parent the child, have the same memory image, the same environment strings, and the same open files.
+That is all there is.
+Usually, the child process then executes \cmd{execve} or a similar system call to change its memory image and run a new program.
+For example, when a user types a command, say, \sys{sort}, to the shell,
+the shell forks off a child process and the child executes \sys{sort}.
+The reason for this two-step process is to allow the child to manipulate its file descriptors after the \cmd{fork} 
+but before the \cmd{execve} to accomplish redirection of standard input, standard output, and standard error.
+
+In both MINIX 3 and UNIX, after a process is created both the parent and child have their own distinct address spaces.
+If either process changes a word in its address space, the change is not visible to the other process.
+The child's initial address space is a \sys{copy} of the parent's,
+but there are two distinct address space involved; no writable memory is shared (like some UNIX implementations, 
+MINIX 3 can share the program text between the two since that cannot be modified).
+It is, however, possible for a newly created process to share some of its creator's other resources, such as open files.
+
+\subsection{Process Termination}
+After a process has been created, it starts running and does whatever its job is.
+However, nothing lasts forever, not even processes.
+Sooner or later the new process will terminate, usually due to one of the following conditions:\\
+1. Normal exit (voluntary).\\
+2. Error exit (voluntary).\\
+3. Fatal error (voluntary).\\
+4. Killed by another process (involuntary).
+
+Most processes terminate because they have done their work.
+When a compiler has compiled the program given to it, 
+the compiler executes a system call to tell the operating system that it is finished.
+This call is \cmd{exit} in MINIX 3.
+Screen-oriented programs also support voluntary termination.
+For instance, editors always have a key combination that the user can invoke to tell the process to save the working file, 
+remove any temporary file are open and terminate.
+
+The second reason for termination is that the process discovers a fatal error.
+For example, if a user types the command\\
+\cmd{cc foo.c}\\
+to compile the program \sys{foo.c} and no such file exists, the compiler simply exits.
+
+The third reason for termination is an error caused by the process, perhaps due to a program bug.
+Examples include executing an illegal instruction, referencing nonexistent memory, or dividing by zero.
+In MINIX 3, a process can tell the operating system that it wishes to handle certain errors itself,
+in which case the process is signaled (interrupted) instead of terminated when one of the errors occurs.
+
+The fourth reason a process might terminate is that one process executes a system call telling the operating system to kill some other process.
+In MINIX 3, this call is \cmd{kill}.
+Of course, the killer must have the necessary authorization to do in the killee.
+In some system, when a process terminates, either voluntarily or otherwise,
+all processes it created are immediately killed as well.
+MINIX 3 does work this way, however.
+
+\subsection{Process Hierarchies}
+In some systems, when a process creates another pprocess,
+the parent and child continue to be associated in certain ways.
+The child can itself create more process, forming a process hierarchy.
+Unlike plants and animals that use sexual reproduction,
+a process has only one parent (but zero, one, two, or more children).
+
+In MINIX 3, a process, its children, and further descendants together may form a process group.
+When a user sends a signal from the keyboard, the signal may be delivered to all members of the process group
+associated with the keyboard (usaully all process that were created in the current window).
+This is signal-dependent.
+If a signal is sent to a group, each process can catch the signal, ignore the signal, or take the degault action,
+which is to be killed by the signal.
+
+As a simple example of how process trees are used, let us look at how MINIX initializes itself.
+Two special processes, the \kw{reincarnation server} and \kw{init} are present in the boot image.
+The reincarnation server's job is to (re)start drivers and servers.
+It begins by blocking, waiting for a message telling it what to create.
+
+In contrast, \sys{init} executes the \sys{/etc/rc} script that causes it to issue commands to the reincarnation server
+to start the drivers and servers not present in the boot image.
+This procedure make the drivers and servers so started children of the reincarnation server,
+so if any of them ever terminate, the reincarnation server will be informed and can restart (i.e., reincarnation) them again.
+This mechanism is intended to allow MINIX 3 to tolerate a driver or server crash because a new one will be started automatically.
+IN practice, replacing a driver is much easier than replacing a server, however,
+since there fewer repercussions elsewhere in the system.
+(And, we do not say this always work perfectly; it is still work in progress.)
+
+When \sys{init} has finished this, it reads a configuration file \sys{/etc/ttytab} to see which terminals and virtual terminal exist.
+\sys{Init} \cmd{fork}s is a \sys{getty} process for each one, displays a login prompt on it, and then wait for input.
+When a name is typed, \sys{getty} \cmd{exec}s a \sys{login} process with the name as its argument.
+If the user succeeds in logging in, \sys{login} will \cmd{exec} the user's shell.
+So the shell is a child of \sys{init}.
+User commands create children of the shell, which are granchildren of \sys{init}.
+This sequence of events is an example of how process trees are used.
+As an aside, the code for the reincarnation server and \sys{init} is not listed in this book; neither is the shell.
+The line had to be drawn somewhere.
+But now you have the basic idea.
+
+\subsection{Process Status}
+Although each process is an independent entity, 
+with its own program counter registers, stack, open files, alarms, and other internal state,
+processes often need to interact, communicate, and synchronize with other processes.
+One process may generate some output that another process uses as input, for example.
+In the case, the data needs to be moved between processes.
+In the shell command\\
+\cmd{cat chapter1 chapter2 chapter3 | grep tree}\\
+the first process, running \sys{cat}, concatenates and output three files.
+The second process, running \sys{grep}, selects all lines containing the word ``tree''.
+Depending on the relative speeds of the two processes (which depends on both 
+the relative complexity of the programers and how much CPU time each one has had),
+it may happen that \sys{grep} is ready to run, but there is no input waiting for it.
+It must then \kw{block} until some input available.
+
+When a process blocks, it does so because logically it cannot continue, 
+typically because it is waiting for input that is not yet available.
+It is also possible for a process that is conceptually ready and able to run to be stopped 
+because the operating system has decided to allocate the CPU to another process for a while.
+These two conditions are completely different.
+In the first case, the suspension is inherent in the problem 
+(you cannot process the user's command line until it has been typed).
+In the second case, it is technically of the system (not enough CPUs to give each process its own private processor).
+In Fig. 2-2 we see a state digram showing the three states a process may be in:\\
+1. Running (actually using the CPU at that instant).\\
+2. Ready (runnable; temporarily stopped to let another process run).\\
+3. Blocked (unable to run until some external event happens).
+
+Logically, the first two states are similar.
+In both cases the process is willing to run, only in the second one, there is temporarily no CPU available for it.
+The third state is different from the first two in that the process cannot run, even if the CPU has nothing else to do.
+
+Four transitions are possible among these three states, as shown.
+Transition 1 occurs when a process discovers that it cannot continue.
+In some systems the process must execute a system call, \cmd{block} or \cmd{pause} to get into blocked state.
+In other systems, including MINIX 3, when a process reads from a pipe or special file (e.g., a terminal) and there is no input available,
+the process is automatically moved from the running state to the block state.
+
+Transition 2 and 3 are caused by the process schedular, a part of the operating-system,
+without the process even knowing about them.
+Transition 2 occurs when the scheduler decides that the running process has run long enough,
+and it is time to let another process have some CPU time.
+Transition 3 occurs when all the other processes have had their fair share 
+and it is time for the first process to get the CPU to run again.
+The subject of scheduling deciding which process should run when and for how long is an important one.
+Many algorithms have been devised to try to 
+balance the competing demands of efficiency for the system as a whole and fairness individual processes.
+We will look at sheduling and study some of these algorithms later in this chapter.
+
+Transition 4 occurs when the external event for which a process was waiting (e.g, the arrival of some input) happens.
+If no other process is running then, transition 3 will be triggered immediately,
+and the process will start running.
+Otherwise it may have to wait in \sys{ready} state for a little while untill the CPU is available.
+
+Using the process model, it becomes much easier to think about what is going on inside the system.
+Some of the process run programs that carry out commands typed by a user.
+Other processes are part of the system and handle tasks such as carrying out requests for file services 
+or managing the details of running a disk or a tape drive.
+When a disk interrupt occurs, the system may make a decision to stop running the current process and run the disk process,
+which was blocked waiting for the interrupt.
+We say ``may'' because it depends upon relative priorities of the running process and the disk driver process.
+But the point is that instead of thinking about interrupts, we can think about user processes, disk processes, terminal processes, and so on,
+which block when thay are waiting for something to happen.
+When the disk block has been read or the character typed, the process waiting for it is unblocked
+and is eligible to run again.
+
+This view gives rise to the model shown in Fig. 2-3.
+Here the lowest level of the operating system is the schedular, with a variety of processes on top of it.
+All the interrupt handling and details of actually starting and stopping processes are hidden away in the scheduler,
+which is actually quite small.
+The rest of the operating system is nicely structyred in process form.
+The model of Fig. 2-3 is used in MINIX 3.
+Of course, the ``scheduler'' is not the only thing in the lowest layer, 
+there also support for interrupt handling and interprocess communication.
+Neverthless, to a first approximation, it does show the basic structure.
+
+\subsection{Implementation of Processes}
+To implement the process model, the operating system maintains a table (an array of structures),
+called the \kw{process table}, with one entry per process.
+(SOme authors call these entries \kw{process control blocks}.)
+This entry contains information about the process' state, its program counter, stack pointer, memory allocation,
+the state of its open files, its accounting and scheduling information, alarms and other signals,
+and everything else about the process that must be saved when the process is switched from \sys{running} to \sys{ready} state 
+so that it can be restarted later as if it had never been stopped.
+
+In MINIX 3, interprocess communication, memory management, and file management are each handled by seperate modules within the system,
+so the process table is partitioned, with each module maintaining the fields that it needs.
+Fig. 2-4 shows some of the more important fields.
+The fields in the first column are the only ones relevant to this chapter.
+The other two columns are provided just to give an idea of what information is needed elsewhere in the system.
+
+Now that we have looked at the process table,
+it is possible to explain a little more about how the illusion of multiple sequential process is maintained 
+on a machine with one CPU and many I/O devices.
+What follows is technically a description of how the ``scheduler'' of Fig. 2-3 works in MINIX 3 
+but most modern operating systems work essentially the same way.
+Associated with each I/O device class (e.g., floppy disks, hard disks, timers, terminals) is a data structure in a table 
+called the \kw{interrupt descriptor table}.
+The most important part of each entry in this table is called the \kw{interrupt vector}.
+It contains the address of the interrupt service procedure.
+Suppose that user process 23 is running when a disk interrupt occurs.
+The program counter, program status word, and possibly one or more registers are pushed onto the (current) stack by the interrupt hardware.
+The computer then jumps to the address specified in the disk interrupt vector.
+That is all the hardware does.
+From here on, it is up to the software.
+
+The interrupt service procedure starts out by saving all the registers in the process table entry for the current process.
+The current process number and a pointer to its entry are kept in global variables so they can be found quickly.
+Then the information deposited by the interrupt is removed from the stack, 
+and the stack pointer is set to a temporary stack used by the process handler. 
+Actions such as saving the registers and setting the stack pointer cannot even be expressed in high-level languages such as C,
+so they are performed by a small assembly language routine.
+When this routine is finished, it calls a C procedure to do the rest of the work for this specific interrupt type.
+
+Interprocess communication in MINIX 3 is via message,
+so the next step is to built a message to be sent to the disk process,
+which will be blocked waiting for it.
+The message says that an interrupt occured,
+to distinguish it from messages from user processes requesting disk blocks to be read and things like that.
+The state of the disk process is now changed from \sys{blocked} to \sys{ready} and scheduler is called.
+In MINIX 3, different processes have different priorities, 
+to give better service to I/O device handlers than to user processes, for example.
+If the disk process is now the highest priority runnable process, it will be scheduled to run.
+If the process that was interrupted is just as important or more so, 
+then it will be scheduled to run again, and the disk process will have to wait a little while.
+
+Either way, the C procedure called by the assembly language interrupt code now returns,
+and the assembly language code loads up the registers and memory map for the now-current process and starts it running.
+Interrupt handling and scheduling are summarized in Fig. 2-5.
+It is worth nothing that the details vary slightly from system to system.
+
+\subsection{Threads}
+In traditional operating systems, each process has an address space and a single thread of control.
+In fact, that almost the definition of a process.
+Nevertheless, there are often situations in which it is desirable to 
+have multiple threads of control in the same address space running in quasi-parallel,
+as though they were seperate processes (except for the shared address space).
+These threads of control are usually just called \kw{threads},
+although some people call them \kw{lightweight processes}.
+
+One way of looking at a process is that it is a way to group related resources together.
+A process has an address space containing program text and data, as well as other resources.
+These resources may include open files, child processes, pending alarms, signal handlers, accounting information, and more.
+By putting them together in the form of a process, they can be managed more easily.
+
+The other concept a process has is a thread of execution, usually shortened to just \kw{thread}.
+The thread has a program counter that keeps track of which instruction to execute next.
+It has registers, which hold its current working variables.
+It has a stack, which contains the execution history, with one frame for each procedure called but not yet returned from.
+Although a thread must execute in some process, the thread and its process are different concepts and can be treated seperately.
+Processes are used to group resources together; threads are the entities scheduled for execution on the CPU.
+
+What threads add to the process model is to allow multiple executions to take place in the same process environment,
+to a large degree independent of one another.
+In Fig. 2-6(a) we see three traditional processes.
+Each process has its own address space and a single thread of control.
+In contrast, in Fig. 2-6(b) we see a single process with three threads of control.
+Although in both cases we have three threads, in Fig. 2-6(a) each of them operates in a different address space, 
+whereas in Fig. 2-6(b) all three of them share the same address space.
+
+As an example of where multiple threads might be used, consider a web browser process.
+Many web pages contain multiple small images.
+For each image on a web page, the browser must set up a separate connection to the pages's home site and request the image.
+A great deal of time is spent establing and releasing all these connections.
+By having multiple threads within the browser, many images can be requested at the same time, 
+greatly speeding up performance in most cases since with small images, 
+the set-up time is the limiting factor, not the speed of the transmission line.
+
+When multiple threads are present in the same address space, a few of the fields of Fig. 2-4 are not per process, but per thread,
+so a separate thread table is needed, with one entry per thread.
+Among the per-thread items are the program counter, registers, and state.
+The program counter is needed because threads, like process, can be suspended and resumed.
+The registers are needed because when threads are suspended, their registers must be saved.
+Finally, threads, like processes, can be in \sys{running}, \sys{ready}, or \sys{blocked} state.
+Fig. 2-7 lists some per-process and per-thread items.
+
+In some systems, the operating system is not aware of the threads.
+In other words, they are managed entirely in user space.
+When a thread is about to block, for example, it chooses and starts its successor before stopping.
+Several userlevel threads packages are in common use, including the POSIX \kw{P-threads} and Mach \kw{C-threads} packages.
+
+In other operating systems, the operating system is aware of the existence of multiple threads per process,
+so when a thread blocks, the operating system chooses the next one to run, either from the same process or a different one.
+To do scheduling, the kernel must have a thread table that lists all the threads in the system,
+anologous to the process table.
+
+Although these two alternatives may seem equivalent, they differ considerably in performance.
+Switching threads is much faster when thread management is done in user space than when a system call is needed.
+This fact argues strongly doing thread management in user space.
+On the other hand, when thread are managed entirely in user space and one thread blocks (e.g., waiting for I/O or a page fault to be handled),
+the kernel blockes the entire process, since it is not even aware that other thread exist.
+This fact as well as others argue for doing thread management in the kernel (Boehm, 2005).
+As a consequence, both systems are in use, and various hybrid schemes have been proposed as well (Anderson et al., 1992).
+
+No matter wether threads are managed by the kernel or in user space, they introduce a taft of problems
+that must be solved and which change the programming model appreciably.
+To start with, consider the effects of the \cmd{fork} system call.
+If the parent process has multiple threads, should the child also have them?
+If not, the process may not function properly, since all of them may be essential.
+
+However, if the child process gets as many threads as the parent, 
+what happens if thread was blocked on a \cmd{read} call, say, from the keyboard?
+Are two threads now blocked on the keyboard?
+When a line is typed, do both threads get a copy of it?
+Only the parent?
+Only the child?
+The same problem exists with open network connections.
+
+Another class of problems is related to the fact that threads share many data structures.
+What happens if one thread closes a file while another one is still reading from it?
+Suppose that one thread notices that there is too little memory and starts allocating more memory.
+Then, part way through, a thread switch occurs, 
+and the new thread also notices that there is too little memory and starts allocating more momery.
+Does the allocation happen once or twice?
+IN nearly all systems that were not designed with threads in mind,
+the libraries (such a s the memory allocation procedure) are not reentrant,
+and will crash if a second call is made while the first one still active.
+
+Another problem relates to error reporting.
+In UNIX, after a system call, the status of the call is put into a global variable, \sys{errno}.
+What happens if a thread makes a system call, and before it is able to read \sys{errno},
+another thread makes a system call, wiping out the original value?
+
+Next, consider signals.
+Some signals are logically thread specific; others are not.
+For example, if a thread calls \sys{alarm}, it makes sense for the resulting signal to go to the thread that made the call.
+When the kernel is aware of threads, it can usually make sure the right thread gets the signal.
+When the kernel is not aware of threads, the threads package must keep track of alarms by itself.
+An additional complication for user-level threads exists when (as in UNIX) a process may only have one alarm at a time pending
+and several threads call \cmd{alarm} independently.
+
+Other signals, such as a keyboard-initiated SIGINT, are not thread specific?
+Who should catch them?
+One designated thread?
+All the threads?
+A newly created thread?
+Each of these solutions has problems.
+Furthermore, what happens if one thread changes the signal handlers without telling other threads?
+
+One last problem introduced by thread is stack management.
+In many systems, when stack overflow occurs, the kernel just provides more stack, automatically.
+When a process has multiple threads, it must also have multiple stacks.
+If the kernel is nor aware of all these stacks, it cannot grow them automatically upon stack fault.
+In fact, it may not even realize that a memory fault is related to stack growth.
+ 
+\section{INterprocess Communication}
+Process frequently need to communicate with other processes.
+For example, in a shell pipeline, the output of the first process must be passed to the second process, and so on down the line.
+Thus there is a need for communication between processes, 
+preferably in a well-structured way not using interrupts.
+In the following sections we will look at some of the issues related to this \kw{InterProcess Communication} or \kw{IPC}.
+
+There are three issues here.
+The first was alluded to above:how one process can pass information to another.
+The second has to do with making sure two or more processes do not get each other's way 
+when engaging in critical activities (suppose two processes each try to grab the last 1 MB of memory).
+The third concerns proper sequencing when dependencies are present: if process A produces data and process B print it, 
+B has to wait until A has produced some data before starting to print.
+We will examine all three of these of these issues in this section.
+
+It is also important to mention that two of these issues apply equally well to threads.
+The first one passing informations easy for threads since they share a common address space 
+(threads in different address space that need to communication fall under the heading of communicating processes).
+However, the other two keeping out of each other's hair and proper sequencing apply as well to threads.
+The same problems exist and the same solutions apply.
+Below we will discuss the problem in the context of processes,
+but please keep in mind that the same problems and solutions also apply to threads.
+
+\subsection{Race Conditions}
+In some operating systems, processes that we are working together may share some common storage
+that each one can read and write.
+The shared storage may be in main memory (possibly in a kernel data structure) or it may be shared file;
+the location of the shared memory does not change the nature of the communication or the problems that arise.
+To see how interprocess communication works in practice, let us consider a simple but common example, a print spooler.
+When a process wants to print a file, it enters the file name in a special \kw{spooler directory}.
+Another process, the \kw{printer daemon}, periodically checks to see if so are any files to be printed,
+and if so removes their name from the directory.
+
+Imagine that our spooler directory has a large number of slots, numberd 0, 1, 2, ..., 
+each one capable of holding a file name.
+Also imagine that there are two shared variables, 
+\sys{out}, which points to the next file to be printed,
+and \sys{in}, which points to the next free slot in the directory.
+These two variables might well be kept in a two-word file available to all processes.
+At a certaininstant, sots 0 to 3 are empty (the files have already been printed) and slots 4 to 6 are full (with the names of files to be printed).
+More or less simultaneously, process A and B decide they want to queue a file for printing.
+This situation is shown in Fig. 2-8.
+
+In jurisdictions where Murphy's law is applicable, the following might well happen.
+Process A reads \sys{in} and store the value, 7, in a local variable called \sys{next\_free\_slot}.
+Just then a clock interrupt occurs and the CPU decides that process A has run long enough, 
+so it switches to process B.
+Process B also reads \sys{in}, and also gets a 7, so it stores the name of its file in slot 7 and update \sys{in} to be an 8.
+Then it goes off and does other things.
+
+Eventually, process A runs again, starting from the place it left off last time.
+It looks at \sys{next\_free\_slot}, find a 7 there, and write its file name in slot 7, erasing the name that process B just put there.
+Then it computes \sys{next\_free\_slot} + 1, which is 8, and set \sys{in} to 8.
+The spooler directory is now internally consistent, so the printer daemon will not notice anything wrong,
+but process B will never receive any output.
+User B will hang around the printer room for yaers, wistfully hoping for output that never comes.
+Situations like this, where two or more processes are reading or writing some shared data 
+and the final result depends on who runs precisely when, called \kw{race conditions}.
+Debugging programs containning race conditions is no fun at all.
+The results of most test runs are fine, but once in a blue moon something weird and unexplained happens.
+
+\subsection{Critical Sections}
+How do we avoid race conditions?
+The key to preventing trouble here and in many other situations involving shared memory, shared files, and shared everything else 
+is to find some way to prohibit more than one process from reading and writing the shared data at the same time.
+Put in other words, what we need is \kw{mutual exclusion} some way of making sure that
+if one process is using a shared variable or file, the other processes will be excluded from doing the same thing.
+The difficulty above occurred because process B started using one of the shared variables before process A was finished with it.
+The choice of approprite primitive operations for achieving mutual exclusion is a major design issue in any operating system,
+and a subject that we will now examine in great detail.
+
+The problem of avoiding race conditions can also be formulated in an abstract way.
+Part of the time, a process is busy doing internal computations and other things that do not lead to race conditions.
+However, sometimes a process may be accessing shared memory or files.
+That part of the program where the shared memory is accessed is called the \kw{critical region} or \kw{critical section}.
+If we could arrange matters such that no two processes were ever in their critical regions at the same time, we could avoid race conditions.
+
+Although this requirement avoids race conditions, 
+this is not sufficient for having parallel processes cooperate correctly and efficiently using shared data.
+We need four conditions to hold to have a good solution:\\
+1. 
 
 
 
