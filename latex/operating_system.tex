@@ -6,8 +6,8 @@
 %\newcommand {\cmd} [1] {{\color{Blue}#1}}
 \begin{document}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-@Preface
-
+\frontmatter
+\chapter{Preface}
 Most books on operating systems are strong on thoery and weak on practice. 
 This one aims to provide a better balance between the two.
 It covers all the fundamental principles in great detail, 
@@ -118,6 +118,7 @@ Albert S. Woodhull
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mainmatter
 \chapter{Introduction}
 Without its software, a computer is basically a useless lump of metal.
 With its software, a computer can store, process, and retrieve information; 
@@ -1713,10 +1714,12 @@ For example, if it is trying to read from the keyboard and nothing has been type
 In this case, the operating system will look around to see if some other process can be run in next.
 Later, when the desired input is available, this process will get the attention of the system and step 9-11 will occur.
 
-This organization suggests a basic structure of the operating system:\\
-1. A main program that invokes the requested service procedure.\\
-2. A set of service procedures that carry out the system calls.\\
-3. A set of utility procedures that help the service procedures.
+This organization suggests a basic structure of the operating system:
+\begin{enumerate}
+  \item A main program that invokes the requested service procedure.
+  \item A set of service procedures that carry out the system calls.
+  \item A set of utility procedures that help the service procedures.
+\end{enumerate}
 
 In this model, for each system call there is one service procedure that takes care of it.
 The utility procedures do things are needed by several service procedures, such as fetching data from user programs.
@@ -1966,88 +1969,63 @@ The most common ones are as a monolithic system, as a hierarchy of layers, as a 
 using an exokernel, and using the client-server model.
 
 \section{Problems}
-1. What are the two main functions of an operating system?
-
-2. What is the difference between kernel mode and user mode? Why is the difference important to an operating system?
-
-3. What is multiprogramming?
-
-4. What is spooling? Do you think that advanced personal computers will have spooling as a standard feature in the future?
-
-5. One early computers, every byte of data read or written was directly handled by the CPU (i.e., there was no DMA Directed Memory Access).
-What implications does this organization have for multiprogramming?
-
-6. Why was timesharing not widespread on second-generation computers?
-
-7. Which of the following instructions should be allowed only in kernel mode?\\
-(a) Disable all interrupts.\\
-(b) Read the time-of-day clock.\\
-(c) Set the time-of-day clock.\\
-(d) Change the memory map.
-
-8. List some differences between personal computer operating systems and mainframe operating systems.
-
-9. Give one reason why a closed-source proprietary operating system like Windows should have better quality than 
-an open source operating system like Linux.
-Now give one reason why an open-source operating system like Linux should have better quality than 
-a closed-source proprietary operating system like Windows.
-
-10. A MINIX file whose owner has UID = 12 and GID = 1 has mode \sys{rwxr-x---}.
-Another user with UID = 6, GID = 1 tries to execute the file. What will happen?
-
-11. In view of the fact that the mere existence of a superuser can lead to all kinds of security problems, why does such a concept exist?
-  
-12. All versions of UNIX support file naming using both absolute paths (relative to the root) and 
-relative paths (relative to the working directory). 
-Would it be possible to dispose of one of these and just use the other?
-If so, which would you suggest keeping?
-
-13. Why is the process table needed in a timesharing system?
-Is it also needed in personal computer systems in which only one process exists,
-that process taking over the entire machine until it is finished?
-
-14. What is the essential difference between a block special file and a character special file?
-
-15. In MINIX 3 if user 2 links to a file owned by user 1, then user 1 removes the file, what happens when user 2 tries to read the file?
-
-16. Are pipes an essential facility? Would major functionality be lost if they were not available?
-
-17. Modern consumer appliances such as stereos and digital cameras often have a display 
-where commands can be enterned and the results of entering those commands can be viewed.
-These devices often have a primitive operating system inside.
-To what part of a personal computer software is the command processing via the stereo or camera's display similar to?
-
-18. Windows does not have a \cmd{fork} system call, yet it is able to create new processes.
-Make an educated guess about the semantics of the system call Windows uses to create new processes.
-
-19. Why is the \cmd{chroot} system call limited to the superuser? (Hint: Think about protection problems.)
-
-20. Examine the list of system calls in Fig. 1-9.
-Which call do you think is likely to execute most quickly.
-Explain your answer.
-
-21. Suppose that a computer can execute 1 billion instructions/sec and that a system call takes 1000 instructions,
-including the trap and all the context switching.
-How many system calls can the computer execute per second and still have half the CPU  capacity for running application code?
-
-22. There is a \cmd{mknod} system call in Fig. 1-16 but there is no \cmd{rmnod} call.
-Does this mean that you have to be very, very careful about making nodes this way because there is no way to every remove them?
-
-23. Why does MINIX 3 have the program \sys{update} running in the background all the time?
-
-24. Does it ever make any sense to ignore the SIGALARM signal?
-
-25. The client-server model is popular in distributed systems.
-Can it also be used in a single-computer system?
-
-26. The initial version of the Pentium could not sopport a virtual machine monitor.
-What essential characteristics is needed to allow a machine to be virtualizable?
-
-27. Write a program (or series of programs) to test all the MINIX 3 system calls.
-For each call, try various sets of parameters, including some incorrect ones, to see if they are detected.
-
-28. Write a shell that is similar to Fig. 1-10 but contains enough code that it actually works so you can test it.
-You might add some features such as redirection of input and output, pipes, and background jobs.
+\begin{enumerate}
+\item What are the two main functions of an operating system?
+\item What is the difference between kernel mode and user mode? Why is the difference important to an operating system?
+\item What is multiprogramming?
+\item What is spooling? Do you think that advanced personal computers will have spooling as a standard feature in the future?
+\item One early computers, every byte of data read or written was directly handled by the CPU (i.e., there was no DMA Directed Memory Access).
+      What implications does this organization have for multiprogramming?
+\item Why was timesharing not widespread on second-generation computers?
+\item Which of the following instructions should be allowed only in kernel mode?\\
+      (a) Disable all interrupts.\\
+      (b) Read the time-of-day clock.\\
+      (c) Set the time-of-day clock.\\
+      (d) Change the memory map.
+\item List some differences between personal computer operating systems and mainframe operating systems.
+\item Give one reason why a closed-source proprietary operating system like Windows should have better quality than 
+      an open source operating system like Linux.
+      Now give one reason why an open-source operating system like Linux should have better quality than 
+      a closed-source proprietary operating system like Windows.
+\item A MINIX file whose owner has UID = 12 and GID = 1 has mode \sys{rwxr-x---}.
+      Another user with UID = 6, GID = 1 tries to execute the file. What will happen?
+\item In view of the fact that the mere existence of a superuser can lead to all kinds of security problems, why does such a concept exist?
+\item All versions of UNIX support file naming using both absolute paths (relative to the root) and 
+      relative paths (relative to the working directory). 
+      Would it be possible to dispose of one of these and just use the other?
+      If so, which would you suggest keeping?
+\item Why is the process table needed in a timesharing system?
+      Is it also needed in personal computer systems in which only one process exists,
+      that process taking over the entire machine until it is finished?
+\item What is the essential difference between a block special file and a character special file?
+\item In MINIX 3 if user 2 links to a file owned by user 1, then user 1 removes the file, what happens when user 2 tries to read the file?
+\item Are pipes an essential facility? Would major functionality be lost if they were not available?
+\item Modern consumer appliances such as stereos and digital cameras often have a display 
+      where commands can be enterned and the results of entering those commands can be viewed.
+      These devices often have a primitive operating system inside.
+      To what part of a personal computer software is the command processing via the stereo or camera's display similar to?
+\item Windows does not have a \cmd{fork} system call, yet it is able to create new processes.
+      Make an educated guess about the semantics of the system call Windows uses to create new processes.
+\item Why is the \cmd{chroot} system call limited to the superuser? (Hint: Think about protection problems.)
+\item Examine the list of system calls in Fig. 1-9.
+      Which call do you think is likely to execute most quickly.
+      Explain your answer.
+\item Suppose that a computer can execute 1 billion instructions/sec and that a system call takes 1000 instructions,
+      including the trap and all the context switching.
+      How many system calls can the computer execute per second and still have half the CPU  capacity for running application code?
+\item There is a \cmd{mknod} system call in Fig. 1-16 but there is no \cmd{rmnod} call.
+      Does this mean that you have to be very, very careful about making nodes this way because there is no way to every remove them?
+\item Why does MINIX 3 have the program \sys{update} running in the background all the time?
+\item Does it ever make any sense to ignore the SIGALARM signal?
+\item The client-server model is popular in distributed systems.
+      Can it also be used in a single-computer system?
+\item The initial version of the Pentium could not sopport a virtual machine monitor.
+      What essential characteristics is needed to allow a machine to be virtualizable?
+\item Write a program (or series of programs) to test all the MINIX 3 system calls.
+      For each call, try various sets of parameters, including some incorrect ones, to see if they are detected.
+\item Write a shell that is similar to Fig. 1-10 but contains enough code that it actually works so you can test it.
+      You might add some features such as redirection of input and output, pipes, and background jobs.
+\end{enumerate}
 
 
 \chapter{Processes}
@@ -2127,11 +2105,13 @@ it may be possible to have all the processes that will ever be needed be present
 In general-purpose systems, however, some way is needed to create and terminate processes as needed during operation.
 We will now look at some of the issues.
 
-There are four principal events that cause processes to be created:\\
-1. System initialization.\\
-2. Execution of a process creation system call by running process.\\ 
-3. A user request to create a new process.\\
-4. Inition of a batch job.
+There are four principal events that cause processes to be created:
+\begin{enumerate}
+  \item System initialization.
+  \item Execution of a process creation system call by running process.
+  \item A user request to create a new process.
+  \item Inition of a batch job.
+\end{enumerate}
 
 When an operating system is booted, often several processes are created.
 Some of these are foregroud process, that is, processes that interact with (human) user and perform work for them.
@@ -2190,11 +2170,13 @@ It is, however, possible for a newly created process to share some of its creato
 \subsection{Process Termination}
 After a process has been created, it starts running and does whatever its job is.
 However, nothing lasts forever, not even processes.
-Sooner or later the new process will terminate, usually due to one of the following conditions:\\
-1. Normal exit (voluntary).\\
-2. Error exit (voluntary).\\
-3. Fatal error (voluntary).\\
-4. Killed by another process (involuntary).
+Sooner or later the new process will terminate, usually due to one of the following conditions:
+\begin{enumerate}
+  \item Normal exit (voluntary).
+  \item Error exit (voluntary).
+  \item Fatal error (voluntary).
+  \item Killed by another process (involuntary).
+\end{enumerate}
 
 Most processes terminate because they have done their work.
 When a compiler has compiled the program given to it, 
@@ -2283,10 +2265,12 @@ These two conditions are completely different.
 In the first case, the suspension is inherent in the problem 
 (you cannot process the user's command line until it has been typed).
 In the second case, it is technically of the system (not enough CPUs to give each process its own private processor).
-In Fig. 2-2 we see a state digram showing the three states a process may be in:\\
-1. Running (actually using the CPU at that instant).\\
-2. Ready (runnable; temporarily stopped to let another process run).\\
-3. Blocked (unable to run until some external event happens).
+In Fig. 2-2 we see a state digram showing the three states a process may be in:
+\begin{enumerate}
+  \item Running (actually using the CPU at that instant).
+  \item Ready (runnable; temporarily stopped to let another process run).
+  \item Blocked (unable to run until some external event happens).
+\end{enumerate}
 
 Logically, the first two states are similar.
 In both cases the process is willing to run, only in the second one, there is temporarily no CPU available for it.
@@ -2505,7 +2489,7 @@ When a process has multiple threads, it must also have multiple stacks.
 If the kernel is nor aware of all these stacks, it cannot grow them automatically upon stack fault.
 In fact, it may not even realize that a memory fault is related to stack growth.
  
-\section{INterprocess Communication}
+\section{Interprocess Communication}
 Process frequently need to communicate with other processes.
 For example, in a shell pipeline, the output of the first process must be passed to the second process, and so on down the line.
 Thus there is a need for communication between processes, 
@@ -2584,8 +2568,420 @@ If we could arrange matters such that no two processes were ever in their critic
 
 Although this requirement avoids race conditions, 
 this is not sufficient for having parallel processes cooperate correctly and efficiently using shared data.
-We need four conditions to hold to have a good solution:\\
-1. 
+We need four conditions to hold to have a good solution:
+\begin{enumerate}
+  \item No two processes may be simultaneously inside their critical regions.
+  \item No assumptions may be made about soeeds or the number of CPUs.
+  \item No process running outside its critical region may block other process.
+  \item No process should have to wait forever to enter its critical region.
+\end{enumerate}
+
+The behavior that we wants is shown in Fig. 2-9.
+Here process A enters its critical region at time \sys{T1}.
+A little later, at time \sys{T2} process B attempts to enter its critical region but fails 
+because another process is already in its critical region and we allow only one at a time.
+Consequently, B is temporarily suspended until time \sys{T3} when A leaves its critical region, allowing B to enter immediately.
+Eventually B leaves (at \sys{T4}) and we are back to the original situation with no processes in their critical regions.
+
+\subsection{Mutual Exclusion with Busy Waiting}
+iIn this section we will examine various proposals for achiving mutual exclusion,
+so that while one process is busy updating shared memory in its critical region,
+no other process will enter its critical region and cause trouble.
+\subsubsection*{Disabling Interrupt}
+The simplest solution is to have each process disable all interrupts just after entering its critical region 
+reenable them just before leaving it.
+With interrupts disabled, no clock interrupts can occur.
+The CPU is only switched from process to process as a result of clock or other interrupts, after all,
+and with interrupts turned off the CPU will not be switched to another process.
+Thus, once a process has disabled interrupts, it can examine and update the shared memory without fear that any other process will intervence.
+
+This approach is generally unattractive because it is unwise to give user processes the power to turn off interrupts.
+Suppose that one of them did, and then never turned them on again?
+That could be the end of the system.
+Furthermore, if the system is a multiprocessor, with two or more CPUs, 
+disabling interrupts affects only CPU that executed the disable instruction.
+The other one will continue running and can access the shared memory.
+
+On the other hand, it is frequently convenient for the kernel itself to disable interrupts 
+for a few instructions while it is updating variables or lists.
+If an interrupt occurred while the list of ready processes, for example, was in an inconsistent state, race conditions could occur.
+The conclusion is: disabling interrupts is often a useful technique within the operating system itself
+but is not appropriate as a general mutual exclusion mechanism for user processes.
+
+\subsubsection*{Lock Variables}
+As a second attempt, let us look for a software solution.
+Consider having a single, shared, (lock) variable, initially 0.
+When a process wants to enter its critical region, it first tests the lock.
+If the lock is 0, the process sets it to 1 and enters the critical region.
+If the lock is already 1, the process just waits until it becomes 0.
+Thus, a 0 means that no process is in its critical region, and a 1 means that some process is in its critical region.
+
+Unfortunately, this idea contains exactly the same fatal flaw that we saw in the spooler directory.
+Suppose that one process reads the lock and sees that it is 0.
+Before it can set the lock to 1, another process is scheduled, runs, and sets the lock to 1.
+When the first process runs again, it will also set the lock to 1, and two processes will be in their critical regions at the same time.
+
+Now you might think that we could get around this problem by first reading out the lock value,
+then checking it again just before storing into it, but that really does not help.
+The race now occurs if the second process modifies the lock just after the first process has finished its second check.
+
+\subsubsection*{Strict Alternation}
+A third approach to the mutual exclusion problem is shown in Fig. 2-10.
+This program fragment, like most others in this book, is written in C.
+C was chosen here because real operating systems are commonly written in C (or occasionally C++),
+but hardly ever in languagees like Java.
+C is powerful, efficient, and predictable, characteristics critical for writing operating systems.
+Java, for example, is not predictable because it might run out of storage at a critical moment 
+and need to invoke the garbage collector at a most inopportune time.
+This cannot happen in C because there is no garbage collection in C.
+A quantitative comparison of C, C++, Java, and four other languages is given by Prechelt (2000).
+
+In fig. 2-10, the integer variable \sys{turn}, initially 0, keeps track of whose turn it is to enter the critical region
+and examine or update the shared memory.
+Initially, process 0 inspects \sys{turn}, finds it to be 0, and enters its critical region.
+Process 1 also find it to be 0 and therefore sits in a tight loop continually testing \sys{turn} to see when it becomes 1.
+Continuously testing a variable until some value appears is called \kw{busy waiting}.
+It should usually be avoided, since it wastes CPU time.
+Only when there is a reasonable expectation that the wait will be short is busy waiting used.
+A lock that uses busy waiting is called a \kw{spin lock}.
+
+When process 0 leaves the critical region, it sets \sys{turn} to 1, to allow process 1 to enter its critical region.
+Suppose that process 1 finishes its critical region quickly, so both processes are in their noncritical regions,
+with \sys{turn} set to 0.
+Now process 0 executes its whole loop quickly, exiting its critical region and setting \sys{turn} to 1.
+At this point \sys{turn} is 1 and both processes are executing in their noncritical regions.
+
+Suddenly, process 0 finishes its noncritical region and goes back to the top of its loop.
+Unfortunately, it is not it is not permitted to enter its critical region now, 
+because \sys{turn} is 1 and process 1 is busy with its noncritical region.
+It hangs in its \cmd{while} loop until process 1 sets \sys{turn} to 0.
+Put differently, taking turns is not a good idea when one of the processes is much slower than the other.
+
+This situation violates condition 3 set about above: 
+process 0 is being blocked by a process not in its critical region.
+Going back to the spooler directory discussed above,
+if we now associate the critical region with reading and writing the spooler directory, 
+process 0 would not be allowed to print another file because process 1 was doing something else.
+
+In fact, this solution requires that the two processes strictly alternate in entering their critical regions,
+for example, in spooling files.
+Neither one would be permitted to spool two in a row.
+While this algorithm does avoid all races, it is not really a serious candidate as a solution 
+because it violates condition 3.
+
+\subsubsection*{Peterson's Solution}
+By combining the idea of taking turns with the idea of lock variables and warning variables,
+a Dutch mathematician, T. Dekker, was the first one to devise a software solution to the mutual exclusion problem
+that does not require strict alternation.
+In 1981, G.l. Peterson discovered a much simpler way to achieve mutual exclusion, 
+thus rendering Dekker's solution obsolete.
+Peterson's algorithm is shown in Fig. 2-11.
+This algorithm consists of two procedure written in ANSI C, 
+which means that function prototypes should be supplied for all the functions defined and used.
+However, to save space, we will not show the prototype in this or subsequent example.
+
+Before using the shared variables (i.e., before entering its critical region),
+each process calls \sys{enter\_region} with its own process number, 0 or 1, as the parameter.
+This call will cause it to wait, if need be, until it is safe to enter.
+After it has finished with the shared variables, the process calls \sys{leave\_region} to indicate that it is done 
+and to allow the other process to enter, if so desires.
+
+Let us see how this solution works.
+INitially, neither process is in its critical region.
+Now process 0 calls \sys{enter\_region}.
+It indicates its interest by setting its array element and set \sys{turn} to 0.
+Since 1 is not interested, \sys{enter\_region} returns immediately.
+If process 1 now calls \sys{enter\_region}, it will hang there until \sys{intersted[0]} goes to FALSE, 
+and event that only happens when process 0 calls \sys{leave\_region} to exit the critical region.
+
+Now consider the case that both processes call \sys{enter\_region} almost simuteneously.
+Both will store their process number in \sys{turn}.
+Whichever store is done last is the one that counts; the first one is lost.
+Suppose that process 1 stores last, so \sys{turn} is 1.
+When both processes come to the \cmd{while} statement, process 0 executes it zero times and enters its critical region.
+Process 1 loops and does not enter its critical region.
+
+\subsubsection*{The TSL Instruction}
+Now that let us look at a proposal that reuires a little help from the hardware.
+many computers, especially those designed with multiple processors in mind, have an instruction\\
+\cmd{TSL RX, LOCK}\\
+(Test and Set Lock) that works as follows: 
+it reads the contents of the memory word \sys{LOCK} into register \cmd{RX} 
+and then stores a nonzero value at the memory address \sys{LOCK}.
+The operations of reading the word and storing into it are guaranteed to be indivisible
+no other processor can access the memory word until the instruction is finished.
+The CPU executing the \cmd{TSL} instruction locks the memory bus to prohibit other CPUs from accessing memory until it is done.
+ 
+To use the \cmd{TSL} instruction, we will use a shared variable, \sys{lock}, to coordinate access to shared memory.
+When \sys{LOCK} is 0, any process may set it to 1 using the \cmd{TSL} instruction and then read or write the shared memory.
+When it is done, the process sets \sys{LOCK} back to 0 using an ordinary \cmd{move} instruction.
+
+How can this instruction be used to prevent two process from simultaneously entering their critical region?
+The solution is given in Fig. 2-12.
+There a four-instruction subroutine in a fictitious (but typical) assembly language is shown.
+The first instruction copies the old value of \sys{LOCK} to the register and then sets \sys{lock} to 1.
+Then the old value is compared with 0.
+If it is nonzero, the lock was already set, so the program just goes back to the beginning and tests it again.
+Sooner or later it will become 0 (when the process currently in its critical region is done with its critical region),
+and the subroutine returns, with the lock set.
+Clearning the lock is simple.
+The program just stores a 0 in \sys{LOCK}.
+No special instruction are needed.
+
+One solution to the critical region problem is now straitforward.
+Before entering its critical region, a process calls \sys{enter\_region}, which does busy waiting until the lock is free;
+then it acquires the lock and returns.
+After the critical region the process calls \sys{leave\_region}, which stores a 0 in \sys{LOCK}.
+As with all solutions based on critical regions, the processes must call \sys{enter\_region} and \sys{leave\_region} 
+at the correct times for the method to work.
+If a process cheats, the mutual exclusion will fail.
+
+\subsection{Sleep and Wakeup}
+Both Peterson's solution and the solution using \cmd{TSL} are correct, but both have the defect of requiring busy waiting.
+In essence, what these solutions do is this: when a process wants to enter its critical region, 
+it checks to see if the entry is allowed.
+If it is not, the process just sits in a tight loop waiting until it is.
+
+Not only does this approach waste CPU time, but it can also have unexpected effects.
+Consider a computer with two processes, H, with high priority and L, with low priority, which share a critical region.
+The scheduling rules are such that H is run whenever it is in ready state.
+At a certain moment, with L in its critical region, H becomes ready to run (e.g., an I/O operation completes).
+H now begins busy waiting, but since L is never scheduled while H is running, 
+L never gets the chance to leave its critical region, so H loops forever.
+This situation is sometimes referred to as the \kw{priority inversion problem}.
+
+Now let us look at some interprocess communication primitives that lock instead of wasting CPU time 
+when they are not allowed to enter their critical region.
+One of the simplest is the pair \cmd{sleep} and \cmd{wakeup}.
+\cmd{sleep} is a system call that cause the caller to block, that is, be suspended until another process wakes it up.
+The \cmd{wakeup} call has one parameter, the process to be awakened.
+Alternatively, both \cmd{sleep} and \cmd{wakeup} each have one parameter, 
+a memory address used to match up \cmd{sleep}s with \cmd{wakeup}s.
+
+\subsubsection*{The Producer-Consumer Problem}
+As an example of how these primitives can be used in practice,
+let us consider the \kw{producer-consumer} problem (also known as the \kw{bounded buffer} problem).
+Two processes share a common, fixed-size buffer.
+One of them, the producer, puts information into the buffer, and the other one, the consumer, takes it out.
+(It is also possible to generalize the problem to have \sys{m} producers and \sys{n} consumers, 
+but we will only consider the case of one producer and one consumer because this assumption simplifies the solutions.)
+
+Trouble arises when the producer wants to put a new item in the buffer, but it is already full.
+The solution is for the producer to go to sleep, to be awakened when the consumer has removed one or more items.
+Similarly, if the consumer wants to remove an item from the buffer and sees that the buffer is empty,
+it goes sleep until the producer puts something in the buffer and wakes it up.
+
+This approach sounds simple enough, but it leads to the same kinds of race conditions we saw earlier with the spooler directory.
+To keep track of the number of items in the buffer, we will need a variable, \sys{count}.
+If the maximum number of items the buffer can hold is N, the producer's code will first test to see if \sys{count} is N. 
+If it is, the producer will go to sleep; if it is not, the producer will add an item and increment \sys{count}.
+
+The consumer's code is similar: first test \sys{count} to see if it is 0.
+If it is, go to sleep; if it is nonzero, remove an item and decrement the counter.
+Each of the processes also tests to see if the other should be sleeping, and if not, wakes it up.
+The code for both producer and consumer is shown in Fig. 2-13.
+
+To express system calls such as \cmd{sleep} and \cmd{wakeup} in C, we will show them as calls to library routines.
+They are not part of the standard C library but presumably would be available on any system that actually had these system calls.
+The procedures \sys{enter\_item} and \sys{remove\_item}, which are not shown,
+handle the bookkeeping of putting items into the buffer and taking items out of the buffer.
+
+Now let us get back to the trace condition.
+It can occur because access to \sys{count} is unconstrained.
+The following situation could possibly occur.
+The buffer is empty and the consumer has just read \sys{count} to see if it is 0.
+At that instant, the scheduler decides to stop running the consumer temporarily and start running the producer.
+The producer enters an item in the buffer, increments \sys{count}, and notice that it is now 1.
+Reasoning that \sys{count} was just 0, and thus the consumer must be sleeping, 
+the producer calls \sys{wakeup} to wake the consumer up.
+
+Unfortunately, the consumer is not yet logically asleep, so the wakeup signal is lost.
+When the consumer next runs, it will test the value of \sys{count} it previously read, find it to be 0, and go to sleep forever.
+
+The essence of the problem here is that a wakeup sent to a process that not (yet) sleeping is lost.
+If it were not lost, everything would work.
+A quick fix is to modify the rules to add a \kw{wakeup waiting bit} to the picture.
+When a wakeup is sent to a process that is still awake, this bit is set.
+Later, when the process tries to go to sleep, if the wakeup waiting bit is on, it will be turned off,
+but the process will stay awake.
+The wakeup waiting bit is a piggy bank for wakeup signals.
+
+
+While the wakeup waiting bit saves the day in this simple example, 
+it is easy to construct examples with three or more processes in which one wakeup waiting bit is insufficient.
+We could make another patch, and add a second wakeup waiting bit, or maybe 8 or 32 of them, but in principle the problem is still there.
+
+\subsection{Semaphores}
+This was the situation until E. W. Dijkstra (1965) suggested using an integer variable to count the number of wakeups saved for future use.
+In his proposal, a new variable type, called a \kw{semaphore}, was introduced.
+A semaphore could have the value 0, indicating that no wakeups were saves, 
+or some positive value if one or more wakeups were pending.
+
+Dijkstra proposed having two operations, \cmd{down} and \cmd{up} 
+(which are generalization of \cmd{sleep} and \sys{wakeup}, respectively).
+The \cmd{down} operation on a semaphore checks to see if the value is greater than 0.
+If so, it decrements the value (i.e., uses up one stored wakeup) and just continues.
+If the value is 0, the process is put to sleep without completing the \cmd{down} for the moment.
+Checking the value, changing it, and possibly going  to sleep is all dones as a single, indivisible, \kw{atomic action}.
+It is guaranteed that once a semaphore operation has started, 
+no other process can access the semaphore untill the operation has completed or blocked.
+This atomicity is absolutely essential to solving synchronization problems and avoiding race condition.
+
+The \cmd{up} operation increments the value of the semaphore addresses.
+If one or more processes were sleeping on that semaphore, unable to complete an earlier \cmd{down} operation,
+one of them is chosen by the system (e.g., at random) and is allowed to complete its \sys{down}.
+Thus, after an \cmd{up} on a semaphore with processes sleeping on it, the semaphore will still be 0,
+but there will be one fewer process sleeping on it.
+The operation of incrementing the semaphore and waking up one process is also indivisible.
+No process ever blocks doing an \cmd{up}, just as no process ever blocks doing a \cmd{wakeup} in the earlier model.
+
+As an aside, in Dijkstra's original paper, he used the names \cmd{p} and \cmd{v} instead of \cmd{down} and \cmd{up},
+respectively, but since these have no mnemonic significance to people who do not speak Dutch (and only marginal significance to those who do),
+we will use the terms \cmd{down} and \cmd{up} instead.
+
+\subsubsection*{Solving the Producer-Consumer Problem using Semaphores}
+Semaphores solve the lost-wakeup problem, as shown in Fig. 2-14.
+It is essential that they be implemented in an indivisible way.
+The normal way is to implement \cmd{up} and \cmd{down} as system calls,
+with the operating system briefly disbling all interrupts while it is testing the semaphore,
+updating it, and putting the process to sleep, if necessary.
+As all of these actions take only a few instructions, no harm is done in disabling interrupts.
+If multiple CPUs are being used, each semaphore should be protected by a lock variable, 
+with the \cmd{TSL} instruction used to make sure that only one CPU at a time examines the semaphore.
+But sure you understand that using \cmd{TSL} to prevent several CPUs from accessing the semaphore at the sime time 
+is quite different from busy waiting by the producer or consumer waiting for the other to empty or fill the buffer.
+The semaphore operation will only take a few microseconds, whereas the producer or consumer might take arbitrarily long.
+
+This solution uses three semaphores: 
+one called \sys{full} for counting the number of slots that are full,
+one called \sys{empty} for counting the number of slots that are empty,
+and one called \sys{mutex} to make sure the producer and consumer do not access the buffer at the same time.
+\sys{Full} is initially 0, \sys{empty} is initially equal to the number of slots in the buffer,
+and \sys{mutex} is initially 1.
+Semaphores that are initialized to 1 and used by two or more processes to ensure that 
+only one of them can enter its critical region at the same time are called \kw{binary semaphores}.
+If each process does a \cmd{down} just before entering its critical region and an \cmd{up} just after leaving it, mutual exlusion is guaranteed.
+
+Now that we have a good interprocess communication primitive at our disposal, 
+let us go back and look at the interrupt sequence of Fig. 2-5 again. 
+In a system-using semaphores, the natural way to hide interrupts is to have a semaphore, 
+initially set to 0, associated with each I/O device.
+Just starting an I/O device, the managing process does a \cmd{down} on the associated semaphore, thus blocking immediately.
+When the interrupt comes in, the interrupt handler then does an \cmd{up} on the associated semaphore,
+which makes the relevant process ready to run again.
+In this model, step 6 in Fig. 2-5 consists of doing an \cmd{up} on the device's semaphore,
+so that in step 7 the scheduler will be able to run the device manager.
+Of course, if several processes are now ready, the scheduler may choose to run an even more important process next.
+We will look at how scheduling is done later in this chapter.
+
+In the example of Fig. 2-14, we have actually used semaphores in two different ways.
+This difference is important enough to make explicit.
+The \sys{mutex} semaphore is used for mutual exlusion.
+It is designed to guarantee that only one process at a time will be reading or writing the buffer and the associated variables.
+This mutual exlusion is required to prevent chaos.
+We will study mutual exclusion and how to achive it more in the next section.
+
+The other use of semaphore is for \kw{synchronization}.
+The \sys{full} and \sys{empty} semaphores are needed to guarantee that certain event sequences do or do not occur.
+In this case, they ensure that the producer stops running when the buffer is full, and the consumer stops running when it is empty.
+This use is differnt from mutual exclusion.
+
+\subsection{Mutexes}
+When the semaphore's ability to count is not needed, a simplified version of the semaphore, called mutex, is sometimes used.
+Mutexes are good only for managing mutual exclusion to some shared resources or piece of code.
+They are easy and efficient to implement, which makes them especially useful in thread packages that are implemented entirely in user space.
+
+A \kw{mutex} is a variable that can be in one of two states: unlocke dor locked.
+Consequently, only 1 bit is required to represent it, but in practice an integer often is used, 
+with 0 meaning unlocked and all other values meaning locked.
+Two procedures are used with mutexes.
+When a process (or thread) needs access to a critical region, it calls \sys{mutex\_lock}.
+if the mutex is currently unlocked (meaning that the critical region is available),
+the call succeeds and the calling thread is free to enter the critical region.
+
+On the other hand, if the mutex is already locked, the caller is blocked until the process in the critical region is finished 
+and calls \sys{mutex\_unclock}.
+If multiple processes are blocked on the mutex, one of them is chosen at random and allowed to acquire the lock.
+
+\subsection{Monitors}
+With semaphores interprocess communication looks easy, right? Forget it.
+Look closely at the order of the \cmd{down}s before entering or removing items from the buffer in Fig. 2-14.
+Suppose that the two \cmd{down}s in the producer's code were reversed in order, 
+so \sys{mutex} was decremented before \sys{empty} instead after it.
+If the buffer were completely full, the producer would block, with \sys{mutex} set to 0.
+Consequently, the next time the consumer tried to access the buffer, it would do a \cmd{down} on \sys{mutex}, and block too.
+Both processes would stay blocked forever and no more work would ever be done.
+This unfortunate situation is called a \kw{deadlock}.
+we will study deadlocks in detail in Chap. 3.
+
+This problem is pointed out to show how careful you must be when using semaphores.
+One subtle error and everything comes to a gringding halt.
+It is like programming in assembly language, only worse, 
+because the errors are race conditions, deadlocks, and other forms of unpredictable and irreproducible behavior.
+
+To make it easier to write correct programs, Brinch Hansen (1973) and Hoare (1974) 
+proposed a higher level synchronization primitive called a \kw{monitor}.
+Their proposals differed slightly, as described below.
+A monitor is a collection of procedures, variables, and data structures 
+that are all grouped together in a special kind of module or package.
+Processes may call the procedures in a monitor whenever they want to,
+but they cannot directly access the monitor's internal data structures from procedures declared outside the monitor.
+This rule, which is common in modern object-oriented languages such as Java, was relatively unusual for its time,
+although objects can be tracked back to Simula 67.
+Fig. 2-15 illustrates a monitor written in an imaginary language, Pidgin Pascal.
+
+Monitors have a key property that makes them useful for achieving mutual exclusion: 
+only one process can be active in a monitor at any instant.
+Monitors are a programming labguage construct, so the compiler knows they are special 
+and can handle calls to monitor procedures differently from other procedure calls.
+Typically, when a process calls a monitor procedure, 
+the first few instructions of the procedure will check to see if any other process has left the monitor.
+If no other process is using the monitor, the calling process may enter.
+
+It is up to the compiler to implement the mutual exlusion on monitor entries,
+but a common way is to use a mutex or binary semaphore.
+Because the compiler, not the programmer, arranges for the mutual exclusion, it is much less likely that something will go wrong.
+In any event, the person writing the monitor does not have to be aware of how the compiler aranges for mutual exclusion.
+It is sufficient to know that by turning all the critical regions into monitor procedures, 
+no two processes will ever execute their critical regions at the same time.
+
+
+Although monitors provide an easy way to achieve mutual exlusion, as we have seen above, that is not enough.
+We also need a way for processes to block when they cannot proceed.
+In the producer-consumer problem, it is easy enough to put all the tests for buffer-full and buffer-empty in monitor procedures,
+but how should the procedure block when it finds the buffer full?
+
+The solution lies in the introduction of \kw{condition variables}, among with two operations on them, \cmd{wait} and \cmd{signal}.
+When a monitor procedure discovers that it cannot continue (e.g., the procedure find the buffer full),
+it does a \cmd{wait} on some condition variablle, say, \sys{full}.
+This action causes the calling process to block.
+It also allows another process that had been previously prohibited from entering the monitor to enter now.
+
+The other process, for example, the consumer, can wake up its sleeping partner - 
+by doing a \cmd{signal} on the condition variable that its patner is waiting on.
+To avoid having two active processes in the monitor at the same time, we need a rule telling what happens after a \cmd{signal}.
+Hoare proposed letting the newly awakened process run, suspending the other one.
+Brinch Hansen proposed finessing tthe problem by requiring that a process doing a \cmd{signal} must exit the monitor immediately.
+In other words, a \cmd{signal} statement may appear only as the final statement in a monitor procedure.
+We will use Brinch Hansen's proposal because it is conceptually simpler and also easier to implement.
+If a \cmd{signal} is done on a condition variable on which several processes are waiting, 
+only one of them, determined by the system scheduler, is revived.
+
+There is also a third solution, not proposed by either Hoare or Brinch Hansen.
+This is to let the signaler continue to run and allow the waiting process to start running only after the signaler has exited the monitor.
+
+Condition variables are not counters.
+They do not accumulate signals for later use the way semaphores do.
+Thus if a condition variable is signaled with no one waiting on it, the signal is lost.
+In other words, the \cmd{wait} must come before the \cmd{signal}.
+This rule makes the implementation much simpler.
+In practice it is not a problem because it is easy to keep track of the state of each process with variables, if need be.
+
+
+
+
+
+
 
 
 
