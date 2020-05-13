@@ -5,7 +5,7 @@
 \newcommand {\cmd} [1] {\texttt{#1}}
 %\newcommand {\cmd} [1] {{\color{Blue}#1}}
 \begin{document}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \frontmatter
 \chapter{Preface}
 Most books on operating systems are strong on thoery and weak on practice. 
@@ -43,7 +43,7 @@ Although loosely based on MINIX 2, MINIX 3 is fundamentally different in many ke
 The design of MINIX 3 was inspired by the observation that operating system are becoming bloated, slow, and unreliable. 
 They crash far more often than other electronic devices such as televisons, cell phones, and DVD players 
 and have so many features and options that practically nobody can understand them fully or manage them well.
-And of cource, computer viruses, worms, spyware, spam, and other forms of malware have become epidemic.
+And of course, computer viruses, worms, spyware, spam, and other forms of malware have become epidemic.
 
 To a large extent, many of these problems are caused by a fundamental design flaw in current operating systems: their lack of modularity. 
 The entire operating system is typically millions of lines of C/C++ code compiled into a single massive executable program run in kernrl mode.
@@ -2029,7 +2029,7 @@ using an exokernel, and using the client-server model.
 
 
 \chapter{Processes}
-We are now embark on a detailed study of how operating systems, ingeneral, and MINIX, in particalur, are designed and constructes.
+We are now about to embark on a detailed study of how operating systems, in general, and MINIX, in particular, are designed and constructed.
 The most central concept in any operating system is the \sys{process}: an abstraction of a running program.
 Everything else hinges on this concept, and it is important that the operating system designer (and student) understand this concept well.
 
@@ -2052,9 +2052,9 @@ In this model, all the runnable software on the computer, sometimes including th
 is organized into a number of \kw{sequential processes}, or just \kw{processes} for short.
 A process is just an executing program, including the current values of the program counter, registers, and variables.
 Conceptually, each process has its own virtual CPU.
-In reality, of course, the real CPU swithches back and forth from process to process,
+In reality, of course, the real CPU switches back and forth from process to process,
 but to understand the system, it is much easier to think about a collection of processes running in (pseudo) parallel,
-than to try to keep track of how the CPU swithces from program to program.
+than to try to keep track of how the CPU switches from program to program.
 This rapid switching back and forth is called \kw{multiprogramming}, as we saw in Chap. 1.
 
 In Fig. 2-1(a) we see a computer multiprogramming four programs in memory.
@@ -2071,18 +2071,19 @@ and probably not even reproducible if the same processes are run again.
 Thus, processes must not be programmed with built-in assumptions about timing.
 Consider, for example, an I/O process that starts a streamer tape to restore backed up files,
 executes an idle loop 10,000 times to let it get up to speed, and then issues a command to read the first record.
-It the CPU decides to switch to another process during the idel loop,
-the tape process might not runagain yntill after the first record was already past the read head.
+If the CPU decides to switch to another process during the idle loop,
+the tape process might not run again untill after the first record was already past the read head.
 When a process has critical real-time requirements like this, that is, 
 particular events must occur within a specified number of milliseconds, special measures must be taken to ensure that they do occur.
 Normally, however, most processes are not affected by the underlying multiprogramming of the CPU or the relative speeds of different processes.
 
 The difference between a process and a program is subtle, but crucial.
 An analogy may help make this pointer cleaner.
-Consider a culinary-mind computer scientist who is backing birthdsy cake for his daughter.
+Consider a culinary-mind computer scientist who is backing birthday cake for his daughter.
 He has a birthday cake recipe and a kitchen well stocked with the necessary input:
 flour, eggs, sugar, extract of vanilla, and so on.
-In this analogy, the recipe is the processor (CPU), and the cake ingredients are the input data.
+In this analogy, the recipe is the program (i.e., an algorithm expressed in some suitable notation),
+the computer scientist is the processor (CPU), and the cake ingredients are the input data.
 The process is the activity consisting of our baker reading the recipe, fetching the ingredients, and baking the cake.
  
 Now imagine that the computer scientist's son comes running in crying, saying that he has been stung by a bee.
@@ -2095,7 +2096,7 @@ continuing the point where he left off.
 
 The key idea here is that a process is an activity of some kind.
 It has a program, input, output and a state.
-A single processor may be shared among several processes, with some scheduling algorithm being used to do determine
+A single processor may be shared among several processes, with some scheduling algorithm being used to determine
 when to stop work on one process and service a different one.
 
 \subsection{Process Creation}
@@ -2110,7 +2111,7 @@ There are four principal events that cause processes to be created:
   \item System initialization.
   \item Execution of a process creation system call by running process.
   \item A user request to create a new process.
-  \item Inition of a batch job.
+  \item Initiation of a batch job.
 \end{enumerate}
 
 When an operating system is booted, often several processes are created.
@@ -2184,7 +2185,7 @@ the compiler executes a system call to tell the operating system that it is fini
 This call is \cmd{exit} in MINIX 3.
 Screen-oriented programs also support voluntary termination.
 For instance, editors always have a key combination that the user can invoke to tell the process to save the working file, 
-remove any temporary file are open and terminate.
+remove any temporary files that are open and terminate.
 
 The second reason for termination is that the process discovers a fatal error.
 For example, if a user types the command\\
@@ -2201,7 +2202,7 @@ In MINIX 3, this call is \cmd{kill}.
 Of course, the killer must have the necessary authorization to do in the killee.
 In some system, when a process terminates, either voluntarily or otherwise,
 all processes it created are immediately killed as well.
-MINIX 3 does work this way, however.
+MINIX 3 does not work this way, however.
 
 \subsection{Process Hierarchies}
 In some systems, when a process creates another pprocess,
@@ -2227,12 +2228,12 @@ to start the drivers and servers not present in the boot image.
 This procedure make the drivers and servers so started children of the reincarnation server,
 so if any of them ever terminate, the reincarnation server will be informed and can restart (i.e., reincarnation) them again.
 This mechanism is intended to allow MINIX 3 to tolerate a driver or server crash because a new one will be started automatically.
-IN practice, replacing a driver is much easier than replacing a server, however,
+In practice, replacing a driver is much easier than replacing a server, however,
 since there fewer repercussions elsewhere in the system.
 (And, we do not say this always work perfectly; it is still work in progress.)
 
 When \sys{init} has finished this, it reads a configuration file \sys{/etc/ttytab} to see which terminals and virtual terminal exist.
-\sys{Init} \cmd{fork}s is a \sys{getty} process for each one, displays a login prompt on it, and then wait for input.
+\sys{Init} \cmd{fork}s a \sys{getty} process for each one, displays a login prompt on it, and then wait for input.
 When a name is typed, \sys{getty} \cmd{exec}s a \sys{login} process with the name as its argument.
 If the user succeeds in logging in, \sys{login} will \cmd{exec} the user's shell.
 So the shell is a child of \sys{init}.
@@ -2264,7 +2265,7 @@ because the operating system has decided to allocate the CPU to another process 
 These two conditions are completely different.
 In the first case, the suspension is inherent in the problem 
 (you cannot process the user's command line until it has been typed).
-In the second case, it is technically of the system (not enough CPUs to give each process its own private processor).
+In the second case, it is technicality of the system (not enough CPUs to give each process its own private processor).
 In Fig. 2-2 we see a state digram showing the three states a process may be in:
 \begin{enumerate}
   \item Running (actually using the CPU at that instant).
@@ -2306,15 +2307,15 @@ When a disk interrupt occurs, the system may make a decision to stop running the
 which was blocked waiting for the interrupt.
 We say ``may'' because it depends upon relative priorities of the running process and the disk driver process.
 But the point is that instead of thinking about interrupts, we can think about user processes, disk processes, terminal processes, and so on,
-which block when thay are waiting for something to happen.
+which block when they are waiting for something to happen.
 When the disk block has been read or the character typed, the process waiting for it is unblocked
 and is eligible to run again.
 
 This view gives rise to the model shown in Fig. 2-3.
-Here the lowest level of the operating system is the schedular, with a variety of processes on top of it.
+Here the lowest level of the operating system is the scheduler, with a variety of processes on top of it.
 All the interrupt handling and details of actually starting and stopping processes are hidden away in the scheduler,
 which is actually quite small.
-The rest of the operating system is nicely structyred in process form.
+The rest of the operating system is nicely structured in process form.
 The model of Fig. 2-3 is used in MINIX 3.
 Of course, the ``scheduler'' is not the only thing in the lowest layer, 
 there also support for interrupt handling and interprocess communication.
@@ -2323,7 +2324,7 @@ Neverthless, to a first approximation, it does show the basic structure.
 \subsection{Implementation of Processes}
 To implement the process model, the operating system maintains a table (an array of structures),
 called the \kw{process table}, with one entry per process.
-(SOme authors call these entries \kw{process control blocks}.)
+(Some authors call these entries \kw{process control blocks}.)
 This entry contains information about the process' state, its program counter, stack pointer, memory allocation,
 the state of its open files, its accounting and scheduling information, alarms and other signals,
 and everything else about the process that must be saved when the process is switched from \sys{running} to \sys{ready} state 
@@ -2976,6 +2977,1894 @@ Thus if a condition variable is signaled with no one waiting on it, the signal i
 In other words, the \cmd{wait} must come before the \cmd{signal}.
 This rule makes the implementation much simpler.
 In practice it is not a problem because it is easy to keep track of the state of each process with variables, if need be.
+A process that might otherwise do a \cmd{signal} can see that this operation is not necessary by looking at the variables.
+
+A skeleton of the procecer-consumer problem with monitors is given in Fig. 2-16 in Pidgin Pascal.
+the advantage of using Pidgin Pascal here is that it is pure and simple 
+and follow Hoare/Brinch Hansen model exactly.
+
+You may be thinking that the operations \cmd{wait} and \cmd{signal} look similar to \cmd{sleep} and \cmd{wakeup},
+which we saw earlier had fatal race conditions.
+They are very similar, but with one crucial difference:
+\cmd{sleep} and \cmd{wakeup} failed because while one process was trying to go sleep, the other one was trying to wake it up.
+With monitors, that cannot happen.
+The automatic mutual exclusion on monitor procedures guarantee that if, say, 
+the producer inside a monitor procedure discovers that the buffer is full, 
+it will be able to complete the \cmd{wait} operation without having to worry about the possibility 
+that the scheduler may switch to the consumer just before the \cmd{wait} completes.
+The consumer will not even be let into the monitor at all untill the \cmd{wait} is finished 
+and the producer is marked as no longer runnable.
+
+Although Pidgin Pascal is an imaginary language, some real programming languages also support monitors,
+although not always in the form designed by Hoare and Brinch hansen.
+One such language is Java.
+Java is an object-oriented language that supports user-level threads and also allows methods (procedures) to be grouped together into classes.
+By adding the keyword \cmd{synchronized} to a method declaration,
+Java guarantees that once any thread has started executing that method,
+no other thread will be alloed to start executing any other \cmd{synchronized} method in that class.
+
+Synchronized methods in Java differ from classical monitors in an essential way:
+Java does not have condition variables.
+Instead, it offers two procedures, \sys{wait} and \sys{notify} that are the equivalent of \sys{sleep} and \sys{wakeup} except
+that when are used inside synchronized methods, they are not subject to race condition.
+
+By making the mutual exlusion of critical regions automatic,
+monitors make parallel programming much less error-prone than with semaphores.
+Still, they too have some drawbacks.
+It is not for nothing that Fig. 2-16 is written in Pidgin Pascal rather than in C,
+as are the other examples in this book.
+As we said earlier, monitors are a programming language concept.
+The compiler must recognize them and arrange for the mutual exclusion somehow.
+C, Pascal, and most other languages do not have monitors,
+so it is unreasonable to expect their compilers to enforece any mutual exclusion rules.
+In fact, how could the compiler even known which procedures were in monitors and which were not?
+
+These same languages do not have semaphores either, but adding semaphores is easy:
+all you need to do is add two short assembly code routines to the library to issue the \cmd{up} and \cmd{down} system calls.
+the compiler even have to know that they exist.
+Of course, the operating systems have to know about the semaphores, 
+but at least if you have a semaphore-based operating system,
+you can still write the user programs for it in C or C++ (or even FORTRAN if you are masochistic enough).
+With monitors, you need a labguage that has them built in.
+
+Another problem with monitors, and also with semaphores, 
+is that they were designed for solving the mutual exclusion problem on one or mpore CPUs that all have access to a common memory.
+By putting the semaphores in the shared memory and protecting them with \cmd{TSL} instructions,
+we can avoid races.
+When we go to a distributed system consisting of mutiple CPUs, 
+each with its own private memory, connected by a local area network, these primitives become inapplicable.
+The conclusion is that semaphores are too low level and monitors are not usable except in a few programming languages.
+Also, none of the primitives provide for information exchange between machines.
+Something else is needed.
+
+\subsection{Message Passing}
+That something else is \kw{message passing}.
+This method of interprocess communication uses two primitives, \cmd{send} and \cmd{receive},
+which, like semaphores and unlike monitors, are system calls rather than language constructs.
+As such, they can easily be put into library procedures, such as\\
+\cmd{send (destination, \&message);}\\
+and\\
+\cmd{receive(source, \&message);}
+
+The former call sends a message to a given destination and the latter one receives a message from a given source
+(or from \sys{ANY}, if the receiver does not care.)
+If no message is available, the receiver could block until one arrives.
+Alternatively, it could return immediately with an error code.
+
+\subsubsection*{Design Issues for Message Passing System}
+Message passing system have many challenging problems and design issues that do not arise with semaphores or monitors,
+especially if the communicating processes are on different machines connected by anetwork.
+For example, message can be lost by the network.
+To guard against lost messages, the sender and receiver can agree that as soon as message has been received, 
+the receiver will send back a special \kw{acknowledgement} message.
+If the sender has not received the acknowledgement within a certain time interval, it retransmits the message.
+
+Now consider what happens if the message itself is received correctly, but the acknowledgement is lost.
+The sender will retransmit the message, so the receiver will get it twice.
+It is essential that the receiver can distinguish a new message from the retransimission of an old one.
+Usually, this problem is solved by putting consecutive sequence numbers in each original message.
+If the receiver gets a message bearing the same sequence number as the previous message,
+it knows that the message is a duplicate that can be ignored.
+
+Message systems also have to deal with the question of how processes are named,
+so that the process specified in a \cmd{send} or \cmd{receive} call is unambiguous.
+\kw{Authentication} is also an issue in message systems:
+how can the client tell that he is communicating with the real file sever, and not with an imposter?
+
+As the other end of the spectrun, there are also design issues that are important when the sender and receiver are on the same machine.
+One of these is performance.
+Copying messages from one process to another is always slower than doing a semaphore operation or entering a monitor.
+Much work has gone into making message passing efficient.
+Cheriton (1984), for example, has suggested limiting message size to what will fit in the machine's registers,
+and then doing message passing using the registers.
+
+\subsubsection*{THe Producer-Consumer Problem with Message Passing}
+Now let us see how the producer-consumer problem can be solved with message passing and no shared memory.
+A solution is given in Fig. 2-17.
+We assume that all messages are the same size and that messages sent but not yet received are buffered automatically by the operating system.
+In this solution, a total of N message is used, analogous to the N slots in a shared memory buffer.
+The consumer starts out by sending N empty messages to the producer.
+Whenever the producer has an item to give to the consumer, it takes an empty message and sends back a full one.
+IN this way, the total number of messages in the system remains constant in time, 
+so they can be stored in agiven amount of meory known in advance.
+
+If the producer works faster than the consumer, all the messages will end up full, waiting for the consumer;
+the producer will be blocked, waiting for an empty to come back.
+If the consumer works faster, then the reverse happens;
+all the messages will be empties waiting for the producer to fill them up; the consumer will be blocked, waiting for a full message.
+
+Many variants are possible with message passing.
+For starters, let us look at how messages are addresses.
+On eway is to assign each process a unique address and have messages be addressed to processes.
+A different way is to invent a new structurem called a \cmd{mailbox}.
+A mailbox is a place to buffer a certain number of messages, typically specified when the mailbox is created.
+When the mailboxes are used, the address parameters in the \cmd{send} and \cmd{receive} calls are mailboxes, not processes.
+When a process tries to send to a mailbox that is full, 
+it is suspended until a message is removed from that mailbox, making room for a new one.
+
+For the producer-consumer problem, both the producer and consumer would create mailboxes large enough to hold N messages.
+The producer would send messages containing data to the consumer's mailbox, 
+and the consumer would send empty messages containing data to the consumer's mailbox.
+When mailboxes are used, the buffering mechanism is clear:
+the destination mailbox holds messages that have sent to the destination process but have not yet been accepted.
+
+The other extreme from having mailboxes is to eliminate a buffering.
+When this approach is followed, 
+if the \cmd{send} is done before the \cmd{receive}, the sending process is blocked until the \cmd{receive} happens,
+at which time the message can be copied directly from the sender to the receiver, with no intermediate buffering.
+Similarly, if the \cmd{receive} is done first, the receiver is blocked until a \cmd{send} happens.
+This strategy is often known as \kw{rendezvous}.
+It is easy to implement than a buffered message scheme but is less flexible since the sender and receiver are forced to run in lockstep.
+
+The processes that make up the MINIX 3 operating system itself use the rendezvous methods with fixed size messages for communication among themselves.
+User processes also use this method to communicate with operating system components,
+although a programmer does not see this, since library routine mediate systems calls.
+Interprocess communication between user processes in MINIX 3 (and UNIX) is via pipes, which are effectively mailboxes.
+THe only real difference between a message system with mailboxes and the pipe mechanism is that
+pipes do not preserve message boundaries.
+In other words, if one process write 10 messages of 100 bytes to a pipe and another process reads 1000 bytes from the pipe,
+the reader will get all 10 messages at once.
+With a true message system, each \cmd{read} should return only one message.
+Of course, if the processes agree always to read and write fixed-size messages from the pipe, 
+or to end each message with a special character (e.g., linefeed), no problems arise.
+
+Message passing is commonly used in parallel programming systems.
+One well-known message-passing system, for example, is \kw{MPI(Message-Passing Interface)}.
+It is widely used for scientific computing.
+For more information about it, see for example Gropp et al. (1994) and Snir et al. (1996). 
+
+\section{Classical IPC Problems}
+The operating systems literature is full of interprocess communication problems 
+that have been widely discussed using a variety of synchronization methods.
+In the following sections we will examine two of the better-known problems.
+
+\subsection{The Dining Philosophers Problem}
+In 1965, Dijkstra posed and solved a synchronization problem he called the \kw{dining philosophers problem}.
+Since that time, everyone inventing yet another synchronization primitive has felt obligated to 
+demonstrate how wonderful the new primitive is by showing how elegantly it solves the dining philosophers problem.
+The problem can be stated quite simply as follows.
+Five philosophers are seated around a circular table.
+Each philosopher has a plate of spaghetti.
+The spaghetti is so slippery that a philosopher needs two forks to eat it.
+Between each pair of plates is one fork.
+The layout of the table is illustrated in Fig. 2-18.
+
+The life of a philosopher consists of alternate periods of eating and thinking.
+(This is something of an abstraction, even for philosophers, but the other activities are irrelevant here.)
+When a philosopher gets hungry, she tries to acquire her left and right fork, one at a time, in either order.
+If successful in acquiring two forks, she eats for a while, then puts down the forks and continues to think.
+The key question is: can you write a program for each philosopher that does what it is supposed to do and never gets stuck?
+(It has been pointed out that the two-fork requirement is somewhat artificial; 
+perhaps we should switch from Italian to Chinese food, substituting rice for spaghetti and chopsticks for forks.)
+
+Fig. 2-19 shows the obvious solution.
+The procedure \sys{take\_foork} waits until the specified fork is available and then sizes it.
+Unfortunately, the obvious solution is wrong.
+Suppose that all five philosophers take their left forks simutaneously.
+None will be able to take their right forks, and there will be a deadlock.
+
+We could modify the program so that after taking the left fork, the program checks to see if the right fork is available.
+If it is not, the philosopher puts down the left one, waits for some time, and then repeats the whole process.
+This proposal too, gails, although for a different reason.
+With a little bit of bad luck, all the philosophers could start the algorithm simultaneously, 
+picking up their left forks, seeing that their right forks were not available, putting down their left forks, waiting, 
+picking up their left forks again simultaneously, and so on, forever.
+A situation like this, in which all the programs continue to run indefinitely but fail to make any process is called \kw{starvation}.
+(It is called starvation even when the problem does not occur in an Italian or a Chinese restaurant.)
+
+Now you might think, "if the philosophers would just wait a random time instead of the same time after failing to acquire the right-hand fork,
+the chance that everything would continue in lockstep for even an hour is very small."
+This observation is true, and in nearly all applications trying again later is not a problem.
+For example, in a local area network using Ethernet, a computer sends a packet only when it detects no other computer is sending one.
+However, because of transmission delays, two computers separated by a length of cable may send packets overlap a collision. 
+When a collision of packets is detected each computer waits a random time and tries again;
+in practice this solution works fine.
+However, in some applications one would prefer a solution that always works and cannot fail due to an unlikely series of random numbers.
+Think about safety control in a nuclear power plant.
+
+One improvement to Fig. 2-19 that has no deadlock and no starvation is to 
+protect the five statements following the call to \sys{think} by a binary semaphore.
+Before starting to acquire forks, a philosopher would do a \cmd{down} on \sys{mutex}.
+After replacing the forks, she would do an \cmd{up} on \sys{mutex}.
+From a theoretical viewpoint, this solution is adequate.
+From a practical one, it has a performance bug: only one philosopher can be eating at any instant.
+With five forks available, we should be able to allow two philosophers to eat at the same time.
+
+THe solution presented in Fig. 2-20 is deadlock-free and allows the maximum parallelism for an arbitrary nuber of philosophers.
+It uses an array, \sys{state}, to keep track of whether a philosopher is eating, thinking, or hungry (trying to acquire forks).
+A philosopher may move into eating state only if neither neighbor is eating.
+Philosopher \sys{i}'s neighbors are defined by the macros \sys{LEFT} and \sys{RIGHT}.
+In other words, if \sys{i} is 2, \sys{LEFT} is 1 and \sys{RIGHT} is 3.
+
+The program uses an array of semaphores, one per philosopher, so hungry philosophers can block if the needed forks are busy.
+Note that each process runs the procedure \sys{phylosopher} as its main code, 
+but the other procedures, sys{take\_forks}, \sys{put\_forks}, and \sys{test} are ordinary procedures and not separate processes.
+
+\subsection{The Readers and Writers Problem}
+The dining philosophers problem is useful for modeling processes that are competing for exclusive access to a limited number of resources,
+such as I/O devices.
+Another famous problem is the readers and writers problem which models access to a database (Courtois et al., 1971).
+Imagine, for example, an airline reservation system, with many competing processes wishing to read and write it.
+It is acceptable to have multiple process reading the database at the same time, but if one process is updating (writing) the database,
+no other process may have access to the database, not even a reader.
+The question is how do you program the readers and the writers?
+One solution is shown in Fig. 2-21.
+
+In this solution, the first reader to get access to the database does a \cmd{down} on the semaphore \sys{db}.
+Subsequent readers merely have to increment a counter, sys{rc}.
+As readers leave, they decrement the counter and the last one out does an \cmd{up} on the semaphore, allowing a blocked writer,
+if there is one, to get in.
+
+The solution presented here implicitly contains a subtle decision that is worth commenting on.
+Suppose that while a reader is using the database, another reader comes along.
+Since having two readers at the same time is not a problem, the second reader is admitted.
+A third and subsequent readers can also be admitted if they come along.
+
+Now suppose that a writer comes along.
+The writer cannot admitted to the database, since writers must have exlusive access, so the writer is suspended.
+Later, additional readers show up.
+As long as at least one reader is still active, subsequent readers are admitted.
+As a consequence of this strategy, as long as there is a steady supply of readers, they will all get in as soon as they arrive.
+The writer will be kept suspended until no reader is present.
+If a new reader arrives, say, every 2 seconds, and each reader takes 5 seconds to do its work, the writer will never get in.
+
+To prevent this situation, the program could be written slightly differently:
+When a reader arrives and a writer is waiting, the reader is suspended behind the writer instead of being admitted immediately.
+In this way, a writer has to wait for readers that were active when it arrived to finish 
+but does not have to wait for readers that came along after it. 
+The disadvantage of this solution is that it achives less concurrency and thus lower performance.
+Courtois et al. present a solution that gives priority to writers.
+For details, we refer you to the paper.
+
+\section{Scheduling}
+In the examples of the previous sections, we have often had situations in which 
+two or more processes (e.g., producer and consumer) were logically runnable.
+When a computer is mutiprogrammed, it frequently has multiple processes competing for the CPU at the same time.
+When more than one process is in the ready state and there is only one CPU available,
+the operating system must decide which process to run first.
+The part of the operating system that makes the choice is called the \kw{scheduler};
+the algorithm it uses called the \kw{scheduling algorithm}.
+
+Many scheduling issues apply both to processes and threads.
+Initially, we will focus on process scheduling, but later we will take a brief look at some issues specific to thread scheduling.
+
+\subsection{Introduction to Scheduling}
+Back in the old days of batch systems with input in the form of card images on a magnetic tape,
+the scheduling algorithm was simple: just run the next job on the tape.
+With timesharing systems, the scheduling algorithm became more complex, because there were generally multiple users waiting for service.
+There may be one or more batch systems as well (e.g., at an insurance company, for processing clainms).
+On a personal computer you might think there would be only one active process.
+After all, a user entering a document on a word processor is unlikely to be simutaneously compiling a program in the backgroud.
+However, there are often backgroud jobs, such as electronic mail daemons sending or receiving e-mail.
+You might also think that computers have gotten so much faster over the years that the CPU is rarely a scare resource any more.
+However, new applications tend to demand more resources.
+Processing digital photographs or watching real time video are examples.
+
+\subsubsection*{Process Behavior}
+Nearly all processes alternate bursts of computing with (disk) I/O requests, as shown in Fig. 2-22.
+Typically the CPU runs for a while without stopping, then a system call is made to read from a file or write to a file.
+When the system call completes, the CPU computes again until it needs more data or has to write more data, and so on.
+Note that some I/O activities count as computing.
+For example, when the CPU copies bits to a video RAM to update the screen, it is computing, not doing I/O, because the CPU is in use.
+I/O in this sense is when a process enters the blocked state waiting for an external device to complete its work.
+
+The important thing to notice about Fig. 2-22 is that s
+ome processes, such as the one in Fig. 2-22(a), spend most of their time computing, 
+while others, such as the one in Fig. 2-22(b), spend most of their time waiting for I/O.
+The former are called \kw{compute-bound}; the latter are called \kw{I/O-bound}.
+Compute-bound processes typically have long CPU bursts and thus infrequent I/O waits,
+whereas I/O-bound processes have short CPU bursts and thus frequent I/O waits.
+Note that the key factor is the length of the CPU burst, not the length of the I/O burst.
+I/O-bound processes are I/O bound because they do not compute much between I/O requests, 
+not because they have especially long I/O requests.
+It takes the same time to read a disk block no matter how much or how little time it takes to process the data after they arrive.
+
+It is worth nothing that as CPU s get faster, processes tends to get more I/O bound.
+This effect occurs because CPUs are improving much faster than disks.
+As a consequence, the scheduling of I/O-bound processes is likely to become more inportant subject in the future.
+The basic idea here is that if an I/O-bound process wants to run, 
+it should get a chance quickly so it can issue its disk request and keep the disk busy.
+
+\subsubsection*{When to Schedule}
+There are a variaty of situation in which scheduling may occur.
+First, scheduling is absolutely required on two occasions:
+\begin{enumerate}
+  \item When a process exits.
+  \item When a process blocks on I/O , or a semaphore.
+\end{enumerate}
+ 
+In each of these cases the process that had most recently been running becomes unready, so another must be chosen to run next.
+
+There are three other occasions when scheduling is usaully done, although logically it is not absolutely necessary at these times:
+\begin{enumerate}
+  \item When a new process is created.
+  \item When an I/O interrupt occurs.
+  \item When a clock interrupt occurs.
+\end{enumerate}
+
+In the case of a new process, it makes sense to reevaluate priorities at this time.
+In some cases the parent may able to request a different priority for its child.
+
+In some case of an I/O interrupt, this usually means that an I/O devices has now completed its work.
+So some process that was blocked waiting for I/O may now be ready ro run.
+
+In the case of a clock interrupt, this is an opportunity to decide whether the currently running process has run too long.
+Scheduling algorithms can be divided into two categories with respect to how they deal with clock interrupts.
+A \kw{non-preemptive} scheduling algorithm picks a process to run and 
+then just lets it run until it blocks (either on I/O or waiting for another process)
+or until it voluntarily release the CPU.
+In contrast, a \kw{preemptive} scheduling algorithm picks a process and let it run for a maximum of some fixed time.
+If it is still running at the end of the time interval, it is suspended and the scheduler picks another process to run (if one is available).
+Doing preemptive scheduling requires having a clock interrupt occur at the end of the time interval to 
+give control of the CPU back to the scheduler.
+If no clock is available, non-preemptive scheduling is the only option.
+
+\subsubsection*{Categories of Scheduling Algorithms}
+Not surpringly, in different environments different scheduling algorithms are needed.
+THis situation arises because different application areas (and different kinds of operating systems) have different goals.
+In other words, what the scheduler should optimize for is not the same in all systems.
+Three environments worth distinguishing are
+\begin{enumerate}
+  \item Batch.
+  \item Interactive.
+  \item Real time.
+\end{enumerate}
+
+In batch systems, there are no users impatiently waiting at their terminals for a quick response.
+Consequently, nonpreemptive algorithms, or preemptive algorithms with long time periods for each process are often acceptable.
+This approach reduces process switches and thus improves performance.
+
+In an environment with interactive users, preemption is essential to 
+keep one process from hogging the CPU and denying service to the others.
+Even if no process intentionally ran forever, due to a program bug, one process might shut out all the others indefinitely.
+Preemption is needed to prevent this behavior.
+
+In systems with real-time constraints, preemption is, oddly enough sometines not needed because the processes know that
+they may not run for long periods of time and usually do their work and block quickly.
+The difference with interactive systems is that real-time systems run only programs that are intended to further the application at hand.
+Interactive systems are general purpose and msy run arbitrary programs that are not cooperative or even malicious.
+
+\subsubsection*{Scheduling Algorithm Goals}
+In order to design a scheduling algorithm, it is necessary to have some idea of what a good algorithm should do.
+Some goals depend on the environment (batch, interactivem or real time),
+but there are also some that are desirable in all cases.
+Some goals are listed in Fig. 2-23.
+We will discuss these in turn below.
+
+Under all circumstances, fairness is important.
+Comparable processes should get comparable service.
+Giving one process much more CPU time than an equivalent one is not fair.
+Of course, different categories of processes may be treated differently.
+Think of safety control and doing the payroll at a nuclear reactor's computer center.
+
+Somewhat related to fairness is enforcing the system's policies.
+If the local policy is that safety control processes get to run whenever they want to,
+even if it means the payroll is 30 sec late, the scheduler has to make sure this policy is enforeced.
+
+Another general goal is keeping all parts of the system busy when possible.
+If the CPU and all the I/O devices can be kept running all the time, more work gets done per second if some of the components are idle.
+In a batch system, for example, the scheduler has control of which jobs are brought into memory to run.
+Having some CPU-bound processes and some I/O-bound processes in memory together is a better idea than 
+first loading and running all the CPU-bound jobs and 
+then, when they are finished, loading an running all the I/O-bound jobs.
+If the later strategy is used, when the CPU-bound processes are running, 
+they will fight for the CPU and the disk will be idle.
+Later, when the I/O-bound jobs come in, they will fight for the disk and the CPU will be idle.
+Better to keep the whole system running at once by careful mix of processes.
+
+The managers of corporate computer centers that run many batch jobs (e.g., processing insurance claims) typically 
+look at three metrics to see how well their systems are performing:
+\kw{throughput}, \kw{turnaround time}, and \kw{CPU utilization}.
+Throughput is the number of jobs per second that the system completes.
+All things considered, finishing 50 jobs per second is better than finishing 40 jobs per second.
+Turnaround time is the average time from the moment that a batch job is submitted until the moment it is completed.
+It measures how long the average user has to wait for the output.
+Here the rule is: Small is Beautiful.
+
+A scheduling algorithm that maximizes throughput may not necessarily minimize turnaround time.
+For example, given a mix of short jobs and long jobs, 
+a scheduler that always ran short jobs and never ran long jobs might achieve an excelent throughput (many short jobs per second) 
+but at the expense of a terrible turnaround time for the long jobs.
+If short jobs kept arriving at a steady rate, the long jobs might never run, 
+making the mean turnaround time infinite while achieving a high throughput.
+
+CPU utilization is also an issue with batch systems because on the big mainfremes where batch systems run,
+the CPU is still a major expense.
+Thus computer center managers feel guilty when it is not running all the time.
+Actually though, this is not such a good metric.
+What really matters is how many jobs per second come out of the system (throughput) and how long it takes to get a job back (turnaround time).
+Using CPU utilization as ametric is like rating cars based on how many times per second the engine turns over.
+
+For interactive systems, especially timesharing systems and servers, different goals apply.
+The most important one is to minimize \kw{response time}, that is the time between issuing a command an getting the result. 
+On a personal computer where a backgroud process is running (for example, reading and storing email from the network),
+a user request to start a program or open a file should take precedence over the backgroud work.
+Having all interactive requests go first will be perceived as good service.
+
+A somewhat related issue is what might be called \kw{proportionality}.
+Users have an inherent (but often incorrect) idea of how long things should take.
+When a request that is perceived as complex takes a long time, users accept that,
+but when a request that is perceived as simple takes a long time, users get irritated.
+For example, if clicking on a icon that calls up an Internet provider using an analog modem takes 45 seconds to establish a connection, 
+the user will probably accept that as a fact of life.
+On the other hand, if clicking on an icon that breaks the connection takes 45 seconds, 
+the user will probably be swearing a blue streak by the 30-sec mark and frothing at the mouth by 45 sec.
+This behavior is due to the common user perception that 
+placing a phone call and getting a connection is supposed to take a lot longer than just hanging up.
+In some cases (such as this one), the scheduler cannot do anything about the response time,
+but in other cases it can, especially when the delay is due to a poor choice of process order.
+
+Real-time systems have different properties than interactive systems, and thus different scheduling goals.
+They are characterized by having deadlines that must or at least should be met.
+For example, if a computer is controlling a device that produces data at a regular rate, 
+failure to run the data-collection process on time may result in lost data.
+Thus the foremost need in a real-time system is meeting all (or most) deadlines.
+
+In some real-time systems, especially those involving multimedia, predictability is important.
+Missing an occasional deadline is not fatal, but if the audio process-runs too erratically, the sound quality will deteriorate rapidly.
+Video is also an issue, but the ear is much more sensitive to jitter than the eyr.
+To avoid this problem, process scheduling must be highly predictable and regualr.
+
+\subsection{Scheduling in Batch Systems}
+It is now time to turn from general scheduling issues to specific scheduling algorithms.
+In this section we will look at algorithms used in batch systems.
+In the following ones we will examine interactive and real-time systems.
+It is worth pointing out that some algorithms are used in both batch and interactive systems.
+We will study these later.
+Here we will focus on algorithms that are only suitable in batch systems.
+
+\subsubsection*{First-Come First-Served}
+Probably the simplest of all scheduling algorithms is nonpreemptive \kw{first-come first-served}.
+With this algorithm, processes are assigned the CPU in the order they request it.
+Basically, there is a single queue of ready process.
+When the first job enters the system from the outside in the morning, 
+it is started immediately and allowed to run as long as it wants to.
+As other jobs come in, they are put onto the end of the queue.
+When the running process blocks, the first process on the queue is run next.
+When a blocked process becomes ready, like a newly arrived job, it is put on the end of the queue.
+
+The great strength of this algorithm is that it is easy to understand and equally easy to program.
+It is also fair in the same sense that allocating scarce sports or concert tickets to people 
+who are willing to stand on line starting at 2 A.M. is fair.
+WIth this algorithm, a single linked list keeps track of all ready processes.
+Picking a process to run just requires removing one from the front of the queue.
+Adding a new job or unblocked process just requires attaching it to the end of the queue.
+What could be simpler?
+
+Unfortunately, first-come first-served also has a powerful disadvantage.
+Suppose that there is one compute-bound process that runs for 1 sec at a time and 
+many I/O-bound processes that use little CPU time but each have to perform 1000 disk reads in order to complete.
+The compute-bound process runs for 1 sec, then it reads a disk block, it runs for another 1 sec,
+followed by all the I/O-bound processes in quick succession.
+
+The net result is that each I/O-bound process gets to read 1 block per second and will take 1000 sec to finish.
+With a scheduling algorithm that preempted the compute-bound process every 10 msec,
+the I/O-bound processes would finish in 10 sec instead of 1000 sec,
+and without slowing down the compute-bound process very much.
+
+\subsubsection{Shortest Job First}
+Now let us look at another nonpreemptive batch algorithm that assumes the run times are known in advance.
+In any insurance company, for example, people can predict quite accurately how long it will take to run a batch of 1000 claims,
+since similar work is done every day.
+When several equally important jobs are sitting in the input queue waiting to be started, the scheduler picks the \kw{shortest job first}.
+Look at Fig. 2-24.
+Here we find four jobs A, B, C, and D with run times of 8, 4, 4, and 4 minutes, respectively.
+By running them in that order, the turnaround time for A is 8 minutes, for B is 12 minutes, for C is 16 minutes, 
+and for D is 20 minutes for an average of 14 minutes.
+
+Now let us consider running these four jobs using shortest job first, as shown in Fig. 2-24(b).
+The turnaround times are now 4, 8, 12, and 20 minutes for an average of 11 minutes.
+Shortest job first is provable optimal.
+Consider the case of four jobs, with run times of a, b, c, and d, respectively.
+The first job finished at time a, the second finishes at time a + b, and so on.
+The mean turnaround time is (4a + 3b + 2c +d)/4.
+It is clear that a contributes more to the average than the other times, so it should be the shortest job,
+with b next, then c, and finally d as the longest as it affects only its own turnaround time.
+The same argument applies qually well to any number of jobs.
+
+It is worth pointing out that shortest job first is only optimal when all the jobs are available simultaneously.
+As a counterexample, consider five jobs, A through E, with run times of 2, 4, 1, 1, and 1, respectively.
+Their arrival times are 0, 0, 3, 3, and 3.
+Initially, only A or B can be chosen, since the other three jobs have not arrived yet.
+Using shortest job first we will run the jobs in the order A, B, C, D, E, for an average wait of 4.6.
+However, running them in the order B, C, D, E, A has an average wait of 4.4.
+
+\subsubsection*{Shortest Remaining Time Next}
+A preemptive version of shortest job first is \kw{shortest remaining time next}.
+With this algorithm, the scheduler always chooses the process whose remainning run time is the shortest.
+Again here, the run time has to be known in advance.
+When a new job arrives, its total time is compared to the current process' remaining time.
+If the new job needs less time to finish than the current process, the current process is suspended and the new job started.
+This scheme allows new short jobs to get good service.
+
+\subsubsection*{Three-Level Scheduling}
+From a certain perspective, batch systems allows scheduling at three different levels, as illustrated in Fig. 2-25.
+As jobs arrive at the system, they are initially placed in an input queue stored on the disk.
+The \kw{admission scheduler} decides which jobs to admit to the system.
+The others are kept in the input queue until they are selected.
+A typical algorithm for admission control might be to look for a mix of compute-bound jobs and I/O-bound jobs.
+Alternatively, short jobs could be admitted quickly whereas longer jobs would have to wait.
+The admission scheduler is free to hold some jobs in the input queue and admit jobs that arrive later if it so chooses.
+
+Once a job has been admitted to the system, a process can be created for it and it can contend for the CPU.
+However, it might well happen that the number of processes is so large that there is not enough room for all of them in memory.
+In that case, some of the processes have to be swapped out to disk.
+The second level of scheduling is deciding which processes should kept in memory and which ones should kept on disk.
+We will call this scheduler the \kw{memory scheduler}, since it determins which processes are kept in memory and which on the disk.
+
+This decision has to be reviewed frequently to allow the processes on disk to get some service.
+However, since bringing a process in from disk is expensive, 
+the review probably should not happen more often than once per second, maybe less often.
+If the contents of main memory are shuffled too often, a large amount of disk bandwidth will be wasted, slowing down file I/O.
+
+To optimize system performance as a whole, the memory scheduler might well want to carefully decide how many processes it wants in memory,
+called \kw{degree of multiprogramming}, and what kind of processes.
+If it has information about which processes are compute bound and which are I/O bound, 
+it can try to keep a mix of these process types in memory.
+As a very crude approximation, if a certain class of process computes about 20\% of the time, 
+keeoing five of them around is roughly the right number to keep the CPU busy.
+
+To make its decisions, the memory scheduler periodically reviews each process on disk to decide whether or not to bring it into memory.
+Among the criteria that it can use to make its decision are following ones:
+\begin{enumerate}
+  \item How long has it been since the process was swapped in or out?
+  \item How much CPU time has the process had recently?
+  \item How big is the process? (Small ones do not get in the way.)
+  \item How important is the process?
+\end{enumerate}
+
+The third level of scheduling is actually picking one of the ready processes in main memory to run next.
+Often this is called the \kw{CPU scheduler} and is the one people usually mean when they talk about the ``scheduler''.
+Any suitable algorithm can be used here, either preemptive or non-preemptive.
+These include the ones described above as well as a number of algorithms to be described in the next section.
+
+\subsection{Scheduling in Iteractive Systems}
+We will now look at some algorithms that can be used in interactive systems.
+All of these can also be used as the CPU scheduler in batch systems as well.
+While three-level scheduling is not possible here, two-level scheduling (memory scheduler and CPU scheduler) is possible and common.
+Below we will focus on the CPU scheduler and some common scheduling algorithms.
+
+\subsubsection*{Round-Robin Scheduling}
+Now let us look at some specific scheduling algorithms.
+One of the oldest, simplest, fairest, and most widely used algorithms is \kw{round robin}.
+Each process is assigned a time interval, called its \kw{quantum}, which it is allowed to run.
+If the process is still running at the end of the quantum, the CPU is preempted and given to another process.
+If the process has blocked or finished before the quantum has elapsed,
+the CPU switching is done when the process blocks, of course.
+Round robin is easy to implement.
+All the scheduler needs to do is maintain a list of runable processes, as shown in Fig. 2-26(a).
+When the process uses up its quantum, it is put on the end of the list, as shown in Fig. 2-26(b).
+
+The only intersting issue with round robin is the length of the quantum.
+Switching from one process to another requires a certain amount of time 
+for doing the administration saving and loading registers and memory maps,
+updating various tables and lists, flushing and reloading the memory cache, etc.
+Suppose that this \kw{process switch} or \kw{contex switch}, as it sometimes called, takes 1 msec, 
+including switching memory maps, flushing and reloading the cache, etc.
+Also suppose that the quantum is set at 4 msec.
+With these parameters, after doing 4 msec of useful work,
+the CPU will have to spend 1 msec on process switching.
+Twenty percent of the CPU time will be wasted on administrative overhead.
+Clearly, this is too much.
+
+To improve the CPU efficiently, we could set the quantum to, say, 100 msec.
+Now the wasted time is only 1 percent.
+But consider what happens on a timesharing system if ten interactive users hit the carriage return key at roughly the same time.
+Ten processes will be put on the list of runable processes.
+If the CPU is idle, the first one will start immediately, the second one may not start until 100 msec later, and so on.
+The unlucky last one may have to wait 1 sec before getting a chance, assuming all the others use their full quanta.
+Most users will perceive a 1-sec response to a short command as sluggish.
+
+Another factor is that the quantum is set longer than the mean CPU burst, preemption will rarely happen. 
+Instead, most processes will perform a blocking operation before the quantum runs out, causing a process switch.
+Eliminating preemption improves performance because process switches then only happen when they are logically necessary, 
+that is, when a process blocks and cannot continue because it is logically waiting for waiting for something.
+
+The conclusion can be formulated as follows: setting the quantum too short causes too many process switching and lowers the CPU efficiency,
+but setting it too long may cause poor response to short interactive requests.
+A quantum of around 2050 msec is often a reasonable compromise.
+
+
+\subsubsection*{Priority Scheduling}
+Round-robin scheduling makes the implicit assumption that all processes are equally important.
+Frequently, the people who own and operate multiuser computers have different ideas on that subjects.
+At a university, the pecking order may be deans first, then professors, secretaries, janitors, and finally students.
+The need to take external factors into account leads to \kw{priority scheduling}.
+The basic idea is straitforward: each process is assigned a priority, 
+and the runnable process with the highest priority is allowed to run.
+
+Even on a PC with a singler owner, there may be multiple processes, some more important than others.
+For example, a daemon process sending electronic mail in the background should be assigned a lower priority 
+than a process displaying a video film on the screen in real time.
+
+To prevent high-priority processes from running indefinitely, 
+the scheduler may decrease the priority of the currently running process at each clock tick (i.e., at each clock interrupt).
+If this action causes its priority to drop below that of the next highest process, a process switch occurs.
+Alternatively, each process may be assigned a maximum time quantum that it is allowed to run.
+When this quantum is used up, the next highest priority process is given a chance to run.
+
+Priorities can be assigned to processes statically or dynamically.
+On a military-compute, processes started by generals might begin at priority 100, 
+processes started by colonels at 90, majors at 80, captains at 70, lieutenants at 60, and so on.
+Alternatively, at a commertial computer center, high-priority jobs might cost 100 dollars and hour,
+medium priority 75 dollars an hour, and low priority 50 dollars an hour.
+The UNIX system has a command, \sys{nice}, which allows a user to voluntarily reduce the priority of his process,
+in order to be nice to the other users.
+Nobody ever uses it.
+
+Priorities can also be assigned dynamically by the system to achive certain system goals.
+For example, some processes are highly I/O bound and spend most of their time waiting for I/O to cpmplete.
+Whenever such a process wants the CPU, it should be given the CPU immediately, to let it start its next I/O request, 
+which can then proceed in parallel with another process actually computing.
+Making the I/O-bound process wait a long time for the CPU will just mean having it around occupying memory for an unnecessarily long time.
+A simple algorithm for giving good service to I/O-bound processes is to set the priority to 1/\sys{f}, 
+where \sys{f} is the fraction of the last quantum that a process used.
+A process that used only 1 msec of its 50 msec quantum would get priority 50, 
+while a process that ran 25 msec before blocking would get priority 2,
+and process that used the whole quantum would get priority 1.
+
+It is often convenient to group processes into priority classes and 
+use priority scheduling among the classes but round-robin scheduling within each class.
+Fig. 2-27 shows a system with four priority classes.
+The scheduling algorithm is as follows: as long as there are runnable processes in priority class 4, 
+just run each one for one quantum, round-robin fashion, and never bother with lower priority classes.
+If priority class 4 is empty, then run the class 3 processes round robin.
+If classes 4 and 3 are both empty, then run class 2 round robin, and so on.
+If priorities are not adjusted occasionally, lower priority classes may all startve to death.
+
+MINIX 3 uses a similar system to Fig. 2-27, although there are sixteen priority classes in the default configuration.
+In MINIX 3, components of the operating system run as processes.
+MINIX 3 puts tasks (I/O drivers) and servers (memory manager, file system, and network) in the highest priority classes.
+The initial priority of each task or service is defined at compile time;
+I/O from a slow device may be given lower priority than I/O from a fast device or even a server.
+User processes generally have lower priority than system components, but all priorities can change during execution.
+
+\subsubsection*{Multiple Queues}
+One of the earliest priority schedulers was in CTSS (Corbato et al., 1962).
+CTSS had the problem that process switching was very show because the 7094 could hold only one process in memory.
+Each switch meant swapping the current process to disk and reading in a new one from disk.
+The CTSS designers quickly realized that it was more efficient to give CPU-bound processes a large quantum once in a while,
+rather than giving them small quanta frequently (to reduce swapping).
+On the other hand, giving all processes a large quantum would mean poor response time, as we have already observed.
+Their solution was to set up priority classes.
+Processes in the highest class were run for one quantum.
+Processes in the next highest class were run for two quanta.
+Processes in the next class were run for four quanta, and so on.
+Whenever a process used up all the quanta allocated to it, it was moved down one class.
+
+As an example, consider a process that needed to compute continuously for 100 quanta.
+It would initially be given one quantum, then swapped out.
+Next time it would get two quanta before being swapped out.
+On succeeding runs it would get 4, 8, 16, 32, and 64 quanta, 
+although it would have used only 37 of the final 64 quanta to complete its work.
+Only 7 swaps would be neede (including the initial load) instead of 100 with a pure round-robin algorithm.
+Furthermore, as the process sank deeper and deeper into the priority queues,
+it would be run less and less frequently, saving the CPU for short, interactive processes.
+
+The following policy was adopted to prevent a process that needed to run for a long time 
+when it first started but became interactive later, from being punished forever.
+Whenever a carriage return was typed at a terminal, the process belonging to that terminal was moved to the highest priority class,
+on the assumption that it was about to become interactive.
+One fine day, some user with a heavily CPU-bound process discovered that just sitting at the terminal and typing carrige returns at random every few seconds did wounders for his response time.
+He told He told all his friends.
+Moral of the story: getting it right in practice is much harder than getting it right in principle.
+
+Many other algorithm have been used for assigning processes to priority classes.
+For example, the influential XDS 940 system (Lampson, 1968), built at Berkeley, 
+had four priority classes, called terminal, I/O, short quantum, and long quantum.
+When a process that was waiting for terminal input was finally awakened, it went into the highest priority class (terminal).
+When a process waiting for a disk block became ready, it went into the second class.
+When a process was still running when its quantum ran out, it was initially placed in the third class.
+However, if a process used up its quantum too many times in a row without blocking for terminal or other I/O, 
+it was moved down to the bottom queue.
+Many other systems use something similar to favor interactive users and processes over backgroud one.
+
+\subsubsection*{Shortest Process Next}
+Because shortest job first always produces the minimum average response time for batch systems,
+it would be nice if it could be used for interactive processes as well.
+To a certain extent, it can be.
+INteractive processes generally follow the pattern of wait for command, execute command, wait for command, execute command, and so on.
+If we regard the execution of each command as a separate ``jon'', then we could minimize overall response time by running the shortest one first.
+The only problem is figuring out which of the currently runnable processes is the shortest one.
+
+One approach is to make estimates based on past behavior and run the process with the shortest estimated running time.
+Suppose that the estimated time per command for some terminal is \sys{T0}.
+Now suppose its next run is measured to be \sys{T1}.
+We could update our estimateby taking a weighted sum of these two numbers, that is, \sys{aT0 + (1a)T1}.
+Though the choice of \sys{a} we can decide to have the estimation process forget old runs quickly, 
+or remember them for a long time.
+With \sys{a} = 1/2. we get successive estimates of \\
+\cmd{T0, T0/2+T1/2, T0/4+T1/4+T2/2, T0/8+T1/8+T2/4+T3/2}
+After three new runs, the weight of \sys{T0} in the new estimate has dropped to 1/8.
+
+THe technique of estimating the next value in a series by taking the weighted average 
+of the current measured value and the previous estimate is sometimes called \kw{aging}.
+It is applicable to many situations where a prediction must be made based on previous values.
+Aging is especially easy to implement when \sys{a} = 1/2.
+All that is needed is to add the new value to the current estimate and divide the sum by 2 (by shifting it right 1 bit).
+
+\subsubsection*{Guaranteed Scheduling}
+A completely different approach to scheduling is to make real promises to the users about performance and then live up to them.
+One promise that is realistic to make and easy to live up to is this:
+If there are \sys{n} users logged in while you are working, you will receive about 1/n of the CPU power.
+Similarly, on a single-user system with \sys{n} processes running, all things being equal, each one should get 1/n of the CPU cycles.
+
+To make good on this promise, the system must keep track of how much CPU each process has had since its creation.
+It then computes the amount of CPU each one is entitled to, namely the time since creation divided by \sys{n}.
+Since the amount of CPU time each process has actually had is also known, it is straightforward to compute the ratio of actual CPU time consumed to CPU time entitled.
+A ration of 0.5 means that a process has only had half of what it should have had,
+and a ratio of 2.0 means that a process has had twice as much as it was entitled to.
+The algorithm is then to run the process with the lowest ration until its ration has moved above its closest competitor.
+
+\subsubsection*{Lottery Scheduling}
+While making promises to the users and then living up to them is a fine idea, it is difficult to implement.
+However, another algorithm can be used to give similarly predictable results with a much simpler implementation. 
+It is called \kw{lottery scheduling} (Waldspurger and Weihl, 1994).
+
+The basic idea is to give processes lottery tickets for various system resources, such as CPU time.
+Whenever a scheduling decision has to be made, a lottery ticket is chosen at random, and the process holding that ticket gets the resource.
+When applied to CPU scheduling, the system might hold a lottery 50 times a second, with each winner getting 20 msec of CPU time as a prize.
+
+To paraphrase George Orwell: ``All processes are equal, but some processes are more equal.''
+More important processes can be given extra tickets, to increase their odds of winning.
+If there are 100 tickets outstanding, and one process holds 20 of them, it will have a 20 percent chance of winning each lottery.
+In the long run, it will get about 20 percent of the CPU.
+In contrast to a priority scheduler, where it is very hard to state what having a priority of 40 actually means,
+here the rule is clear: a process holding a fraction \sys{f} of the tickets will get about a fraction \sys{f} of the resource in question.
+
+Lottery scheduling has several intersting properties.
+For example, if a new process shows up and is granted some tickets, at the very next lottery 
+it will have a chance of winning in proportion to the number of tickets it holds.
+In other words, ;lottery scheduling is highly responsive.
+
+Cooperating processes may exchange tickets if they wish.
+For example, when a client process sends a message to a sever process and then blocks, it may give all of its tickets to the server,
+to increase the chance of the server running next.
+When the server is finished, it returns the tickets so the client can run again.
+In fact, in the absence of clients, servers need no tickets at all.
+
+Lottery shceduling can be used to solve problems that are difficult to handle with other methods.
+One example is a video server in which several processes are feeding videostreams to their clients, but at different frame rates.
+Suppose that the processes need frames at 10, 20, and 25 frames/sec.
+By allocating these processes 10, 20, and 25 tickets, respectively,
+they will automatically divide the CPU in approximately the correct proportion, that is , 10 : 20 : 25.
+
+\subsubsection*{Fair-Share Scheduling}
+So far we have assumed that each process is scheduled on its own, without regard to who its owner is.
+As a result, if user 1 starts up 9 processes and user 2 starts up 1 processes,
+with round robin or equal priorities, user 1 will get 90\% of the CPU and user 2 get only 10\% of it.
+
+To prevent this situation, some systems taken into account who owns a process before scheduling it.
+In this model, each user is allocated some fraction of the CPU and scheduler picks processes in such a way as to enforece it.
+Thus if two users have each been promised 50\% of the CPU, they will each get that, 
+no mattern how many processes they have in existence.
+
+As an example, consider a system with two users, each of which has been promised 50\% of the CPU.
+User 1 has four processes, A, B, C, and D, and user 2 has only 1 process, E.
+If round-robin scheduling is used, a possible scheduling sequence that meets all the constraints is this one:\\
+A E B E C E A E B E C E D E...
+
+On the other hand, if user 1 is entitled twice as much CPU time as user 2, we might get\\
+A B E C D E A B E C D E...
+
+Numerous other possibilities exist, of course, and can be exploited, depending on what the notion of fairness is.
+
+\subsection{Scheduling in Real-Time Systems}
+A \kw{real-time} system is one in which time plays an essential role.
+Typically, one or more physical devices external to the computer generate stimuli, 
+and the computer must react appropriately to them within a fixed amount of time.
+For example, the computer in a compact disc plater gets the bits as they come off the drive 
+and must convert them into music within a very tight time interval.
+If the caculation takes too long, the music will sound peculiar.
+Other real-time systems are patient monitoring in a hospital intersive-care unit, 
+the autopilot in an aircraft, and robot control in an automated factory.
+In all these cases, having the right answer but having too late is aften just as bad as not having it at all.
+
+Real-time systems are generally categorized as \sys{hard real time}, meaning there are absolute deadlines that must be met,
+or else, and \sys{soft real time}, meaning that missing an occasional deadline is undesirable, but nevertheless tolerable.
+In both cases, real-time behavior is achived by diving the program into a number of processes, 
+each of whose behavior is predictable and known in advance.
+These processes are generally short lived and can run to completion in well under a second.
+When an external event is detected, it is the job of the scheduler to schedule the processes in such a way that all deadlines are met.
+
+The events that a real-time system may have to respond to can further categorized as 
+\kw{periodic} (occuring at regular intervals) or \kw{aperiodic} (occuring unpredictably).
+A stystem may have to respond to multiple periodic event streams.
+Depending on how much time each event requires for processing, 
+it may not even be possible to handle them all.
+For example, if there are \sys{m} periodic events and event \sys{i} occurs 
+with period \(P_i\) and requires \(C_i\) seconds of CPU time to handle each event, 
+then the load can only be handled if 
+\[
+\sum_{i=1}^{m}\frac{C_i}{P_i}\leq1
+\]
+A real-time system that meets this criteria is said to be \kw{schedule}.
+
+As an example, consider a soft real-time system with three periodic events,
+with periods of 100, 200, and 500 msec, respectively.
+If these events require 50, 30, and 100 msec of CPU time per event, respectively, the system is schedulable because 0.5 + 0.15 + 0.2 < 1.
+If a fourth event with a period of 1 sec is added, 
+the system will remain schedulable as long as this event does not need more than 150 msec of CPU time per event.
+Implicit in this calculation is the assumption that the context-switching overhead is so small that it can be ignore.
+
+Real-time scheduling algorithms can be static or dynamic.
+The former make their scheduling decisions before the system starts running.
+The latter make their scheduling decisions at run time.
+Static shceduling only works when there is perfect information available in advance 
+about the work needed to be done and the deadlines that have to be met.
+Dynamic shceduling algorithms do not have these restrictions.
+
+\subsection{Policy versus Mechanism}
+Up until now, we have tacitly assumed that all the processes in the system belong to different users and are thus competing for the CPU.
+While this is often trur, sometimes it happens that one process has many children running under its control.
+For example, a database management system process may have many children.
+Each child might be working on a different request, or each one might have some specific function to perform (query parsing, disk access, etc.).
+It is entirely possible that the main process has an excellent idea of 
+which of its children are the most important (or the most time critical) and which the least.
+Unfortunately, none of the shcedulers discusses above accept any input from user processes about scheduling decisions.
+As a result, the scheduler rarely makes the best choice.
+
+The solution to this problem is to seperate the \kw{scheduling mechanism} from the \kw{scheduling policy}.
+What this means is that the scheduling algorithm is parameterized in some way, but the parameters can be filled in by user processes.
+Let us consider the datebase example once again.
+Suppose that the kernel uses a priority shceduling algorithm but provides a system call 
+by which a process can set (and change) the priorities of its children.
+In this way the parent can control in detail how its children are scheduled, even though it does not do the scheduling itself.
+Here the mechanism is in the kernel but policy is set by user process.
+
+\subsection{Thread Scheduling}
+When several processes each have multiple threads, we have two levels of parallelism present: processes and threads.
+Scheduling in such systems differs substantially on whether user-level threads or kernel-level threads (or both) are supported.
+
+Let us consider user-level threads first.
+Since the kernel is not aware of the existence of threads,
+it operates as it always does, picking a process, say, \sys{A}, and giving \sys{A} control for its quantum.
+The thread scheduler inside \sys{A} decides which thread to run, say \sys{A1}.
+SInce there are no clock interrupts to multiprogram threads, this thread may continue running as long as it wants to.
+If it uses up the process' entire quantum, the kernel will select another process to run.
+
+When the process \sys{A} finally runs again, thread \sys{A1} will resume running.
+It will continue to consume all of \sys{A}'s time until it is finished.
+However, its antisocial behavior will not affect other processes.
+They will get whatever the scheduler considers their appropriate share, no matter what is going on inside process s\sys{A}.
+
+Now consider the case that \sys{A}'s threads have relatively little work to do per CPU burst, for example, 5 msec of work within a 50-msec quantum.
+Consequently, each one runs for a little while , then yields the CPU back to the thread scheduler.
+THis might lead to the sequence \sys{A1, A2, A3, A1, A2, A3, A1}, before the kernel switches to process B.
+This situation is illustrated in Fig. 2-28(a).
+
+The scheduling algorithm used by the run-time system can be any of the ones described above.
+In practice, round-robin scheduling and priority shceduling are most common.
+The only constraint is the absence of a clock to interrupt a thread that has run too long.
+
+Now consider the situation with kernel-level threads.
+Here the kernel picks a particular thread to run.
+It dose not have to take into account with process the thread belongs to, but it can if it wants to.
+The thread is given a quantum and is forceably suspended if it exceeds the quantum.
+With a 50-msec quantum but threads that block after 5 msec, the thread order for some period of 30 msec might be \sys{A1, B1, A2, B2, A3, B3},
+something not possible with these parameters and user-level threads.
+This situation is partially depicted in Fig. 2-28(b).
+
+A major difference between user-level threads and kernel-level threads is the performance.
+Doing a thread switch with user-level threads takes a handful of machine instructions.
+With kernel-level threads it requires a full context switch, changing the memory map, and invalidating the cache, 
+which is several orders of magnitude slower.
+On the onther hand, with kernel-level threads, having a thread block on I/O does not suspend the entire process as it soes with user-level threads.
+
+Since the kernel knowns that switching from a thread in process \sys{A} to a thread in process \sys{B} is more expensive 
+that running a second thread in process A (due to having to change the memory map and having the memory cache spoiled),
+it can take this information into account when making a decision.
+For example, given two threads that are otherwise equally important, with one of them belonging to the same process as a thread that just blocked
+and one belonging to a different process, preference could be given to the former.
+
+Another important factor to consider is that user-level threads can employ an application-specific thread scheduler.
+For example, consider a web server which has a dispatcher thread to accept and distribute incoming requests to worker threads.
+Suppose that a worker thread has just blocked and the dispatcher thread and two worker threads are ready.
+Who should run next?
+The run-time system, knowing what all the threads do, can easily pick the dispatcher to run next,
+so it can start another worker running.
+This strategy maximizes the amount of parallelism in an environment where workers frequently block on disk I/O.
+With kernel-level threads, the kernel would never known what each thread did (although they could be assigned different priorities).
+In general, however, application-specific thread shcedulers can tune an application better than the kernel can.
+
+\section{Overview of Processes in MINIX 3}
+Having completed our study of the principles of process management, interprocess communication, and shceduling, 
+we can now take a look at how they are applied in MINIX 3.
+Unlike UNIX, whose kernel is a monolithic program not split up into modules, 
+MINIX 3 itself is a collection of process that communicate with each other and also with user processes,
+using a single interprocess commucation primitive message passing.
+This design gives a more modular and flexible structure, making it easy,
+for example, to replace the entire file system by a completely different one,
+without having even to recompile the kernel.
+
+\subsection{The Internal Structure of MINIX 3}
+Let us begin our study of MINIX 3 by taking a bird's-eye view of the system.
+MINIX 3 is structed in four layers, with each layer performing a well-defined function.
+The four layers are illustrated in Fig. 2-29.
+
+The \kw{kernel} in the bottom layer shcedules processes and manages the transitions between the ready, running, and blocked states of Fig. 2-2.
+The kernel also handles all messages between processes.
+Massage handling requires checking for legal destinations, locating the send and receive buffers in physical memory,
+and copying bytes from sender to receiver.
+Also part of the kernel is support for access to I/O ports and interrupts,
+which on modern processors require use of privileged \kw{kernel mode} instructions not available to ordinary processes.
+
+In addition to the kernel itself, this layer contains two modules that function similarly to device drivers.
+The \kw{clock task} is an I/O device driver in the sense that it interacts with the hardware that generates timing signals,
+but it is not user-accessible like a disk or communications line driverit interfaces only with the kernel.
+
+One of the main function of layer 1 is to provide a set of privileged \kw{kernel calls} to the drivers and servers above it.
+These including reading and writing I/O ports, copying data between address spaces, and so on.
+Implementation of these calls is done by the \kw{system task}.
+Although the system task and the clock task are compiled into the kernel's address space,
+they are scheduled as separate processes and have their own call stacks.
+
+Most of the kernel and all of the clock and system tasks are witten in C.
+However, a small amount of the kernel is written in assembly language.
+The assembly language parts deal with interrupt handling, the low-level mechanics of managing context switches between processes 
+(saving and restoreing registers and the like), and low-level parts of manipulating the MMU hardware.
+By and large, the assembly-language code handles those parts of the kernel 
+that deal directly with the hardware at a very low level and which cannot be expresses in C.
+These parts have to be rewritten when MINIX 3 is ported to a new architecture.
+
+The three layers above the kernel could be considered to be a single layer because the kernel fundamentally treats them all of them the same way.
+Each one is limited to \kw{user mode} instructions, and each is scheduled to run by the kernel.
+None of them can access I/O ports directly.
+Furthermore, none of them can access memory outside the segments allocated to it.
+
+However, processes potentially have special privileges (such as the ability to make kernel calls).
+This is the real difference between processes in layers 2, 3, and 4.
+The processes in layer 2 have the most privileges, those in layer 3 have some privileges, and those in layer 4 have no special privileges.
+For example, processes in layer 2, called \kw{device drivers}, are allowed to request that the system task 
+read data from or write data to I/O ports on their behalf.
+A driver is needed for each device type, including disks, printers, terminals, and network interfaces.
+If other I/O devices are present, a driver is needed for each one of those, as well.
+Device drivers may also make onther kernel calls, such as requesting that newly-read data to copied to the address space of a different process.
+
+The third layer contains \kw{severs}, processes that provide useful services to the user processes.
+Two servers are essential.
+The \kw{process manager (PM)} carries out all the MINIX 3 system calls that involve starting or stopping process execution,
+such as \cmd{fork}, \cmd{exec}, and \cmd{exit}, as well as system calls related to signals, 
+such as \cmd{alrm} and \cmd{kill}, which can alter the execution state of a process.
+The process manager also is responsible for managing memory, for instance, with the \cmd{brk} system call.
+The \kw{file system (FS)} carries out all the system calls, such as \cmd{read}, \cmd{mount}, and \cmd{chdir}.
+
+It is important to understand the difference between kernel calls and POSIX system calls.
+Kernel calls are low-level functions provided by the system task to allow the drivers and servers to do their work.
+Reading a hardware I/O port is a typical kernel call.
+In contrast, the POSIX system calls such as \cmd{read}, \cmd{fork}, and \cmd{unlink} are high-level calls defined by the POSIX standard,
+and are available to user programs in layer 4.
+User programs contain many POSIX calls but no kernel calls.
+Occasionally when we are not being careful with our language we may call a kernel call a system call.
+The mechanisms used to make these calls are similar, and kernel calls can be considered a special subset of system calls.
+
+In addition to the PM and FS, other servers exist in layer 3.
+They perform functions that are specific to MINIX 3.
+It is safe to say that the functionality of the process manager and the file system wii be found in any operating system.
+The \kw{information server (IS)} handles jobs such as providing debugging and status information about other drivers and servers, 
+something that is more necessary in a system like MINIX 3, designed for experimentation, 
+that would be the case for a commercial operating system which users cannot alter.
+The \kw{reincarnation server (RS)} starts, and if necessary restarts, device drivers that are not loaded into memory at the same time as the kernel.
+In particular, if a driver fails during operation, the reincarnation server detects this failure,
+kill the driver if it is not already dead, and starts a fresh copy of the driver,
+making the system highly fault tolerant.
+This functionality is absent from most operating systems.
+On a networked system the optional \kw{network server (inet)} is also in level 3.
+Servers cannot do I/O directly, but they can communicate with drivers to request I/O.
+Servers can also communicate with the kernel via the system task.
+
+As we noted at the start of Chap. 1, operating system do two things: manage resources and provide an extended machine by implementing system calls.
+In MINIX 3 the resource management is largely done by the drivers in layer 2, 
+with help from the kernel layer when privileged access to I/O ports or the interrupt system is required.
+System call interpretation is done by the process manager and file system servers in layer 3.
+The file system has been carefully designed as a file ``server'' and counld be moved to a remote machine with few changes.
+
+The system does not need to be recompiled to include additional servers.
+The process manager and the file system can be supplemented with the network server and other servers 
+by attaching additional servers as required when MINIX 3 starts up or later.
+Device drivers, although typically started when the system is started, can also be started later.
+Both device drivers and servers are compiled and stored on disk as ordinary executable files,
+but when properly started up they are granted access to the special privileges needed.
+Although the drivers and servers are independent processes, 
+they differ from user processes in that normally they never terminate while the system is active.
+
+We will often refer to the drivers and servers in layers 2 and 3 as \kw{system processes}.
+Arguably, system processes are part of the operating system.
+They do not belong to any user, and many if not all of them will be activated before the first user logs on.
+Another difference between system processes and user processes is that
+system processes have higher execution priority than user processes.
+IN fact, normally drivers have higher execution priority than servers, but this is not automatic.
+Execution priority is assigned on a case-by-case basis in MINIX 3;
+it is possible for a driver that services a slow device to be given lower priority than a server that must respond quickly.
+
+Finally, layer 4 contains all the user processes shells, editors, compilers, and user-written \sys{a.out} programs.
+Many user processes come and go as users log in, do work, and log out.
+A running system normally has some user processes that are started when the system is booted and which run forever.
+One of these is \sys{init}, which we will describe in the next section.
+ALso, several daemons are likely to be running.
+A \kw{daemon} is a backgroud process that executes periodically or always waits for some event,
+such as the arrival of a packet from the network.
+In a sense a daemon is a server that is started independently and runs as a user process.
+Like true servers installed at startup time, it is possible to configure a daemon to have a higher priority than ordinary user processes.
+
+A note about the term \kw{task} and \kw{device driver} is needed.
+IN older versions of MINIX all device drivers were compiled together with the kernel,
+which gave them access to data structures belonging to the kernel and each other.
+They also could all access I/O port directly.
+They were referred to as ``tasks'' to distinguish them from pure independent user-space processes.
+In MINIX 3, device drivers have been implemented completely in user-space.
+The only exception is the clock task, which is arguably not a device driver in the same sense as drivers 
+that can accessed through device files by user processes.
+Within the text we have taken pains to use the term ``task'' only when referring to the clock task or the system task,
+both of which are compiled into the kernel to function.
+We have been careful to replace the word ``task'' with ``device driver'' where we refer to user-space device drivers.
+However, function names, variable names, and comments in the source code have not been as carefully updated.
+Thus, as you look at source code during your study of MINIX 3 you may find the word ``task'' where ``device driver'' is meant. 
+
+\subsection{Process Management in MINIX 3}
+Processes in MINIX 3 follow the general process model described at length earlier in this chapter.
+Processes can create subprocesses, which in turn can create more subprocesses, yielding a tree of processes.
+In fact, all the user processes in the whole system are part of a single tree with \sys{init} (see Fig. 2-29) at the root.
+Severs and drivers are a special case, of course, since some of them must be started before any user process, including \sys{init}.
+
+\subsubsection*{MINIX 3 Startup}
+How does an operating system start up?
+We will summarize the MINIX 3 stratup sequence in the next few pages.
+For a look at how some other operating system do this, see Dodge et al. (2005).
+
+On most computers with disk devices, there is a \kw{noot disk} hierarchy.
+TYpically, if a floppy disk is in the first floppy disk driveit will be the boot disk.
+If no floppy disk is present and a CD-ROM is present in the first CD-ROM dive, it becomes the boot disk.
+If there is neither a floppy disk nor a CD-ROM present, the first hard drive becomes the boot disk.
+The order of this hierarchy may be configurable by entering the BIOS immediately after powering the computer up.
+Additional devices, especially other removable storage devices, may be supported as well.
+
+When the computer is turn on, if the boot device is a diskette, 
+the hardware reads the first sector of the first track of the boot disk into memory and executes the code it find there.
+On a diskette this sector contains the \kw{bootstrap} program.
+It is very small, since it has to fit in one sector (512 bytes).
+The MINIX 3 bootstrap loads a large program, \sys{boot}, which then loads the operating system itself.
+
+In contrast, hard disks require an intermediate step.
+A hard disk is divided into \kw{partions}, and the first sector of a hard disk contains a small program and the disk's \kw{partion table}.
+Collectively thesetwo pieces are called the \kw{master boot record}.
+The program part is executed to read the partion table and to select the \kw{active partion}.
+The active partion has a bootstrap on its first sector, which is then loaded and executed to find and start a copy of \sys{boot} in the partion,
+exactly as is done when booting from a diskette.
+
+CD-ROMs came along later in the history of computers than floppy disks and hard disks,
+and when support for booting from a CD-RON is present it is capable of more than just loading one sector.
+A computer that supports booting from a CD-ROM can load a large block of data into memory immediately.
+Typically what is loaded from the CD-ROM is an exact copy of a bootable floppy disk, 
+which is placed in memory and used as a \kw{RAM disk}.
+After the first step control is transferred to the RAM disk and booting continues exactly as if a physical floppy disk were the boot device.
+On an oler computer which has a CD-ROM drive but does not support booting from a CD-ROM, 
+the bootable floppy disk image can be copied to a floppy disk which can then be used to start the system.
+The CD-ROM must be in the CD-ROM drive, of course, since the bootable floppy disk image expects that.
+
+In any case, the MINIX 3 \sys{boot} program looks for a specific multipart file on the diskette or partition 
+and loads the individual parts into memory at the proper locations.
+This is the \kw{boot image}.
+The most important parts are the kernel (which include the clock task and the system task),
+the process manager, and the file system.
+Additionally, at least one disk driver must be loaded as part of the boot image.
+There are several other programs loaded in the boot image.
+These include the reincarnation server, the RAM disk, console, and log drivers, and \sys{init}.
+
+It should be strongly emphasized that all parts of the boot image are seperate programs.
+After the essential kernel, process manager and file system have been loaded many other parts could be loaded separately.
+An exception is the reincarnation server.
+It must be part of the boot image.
+It gives ordinary processes loaded after initialization the special priorities and privileges 
+which make them into system processes, it can also restart a crashed driver, which explains its name.
+As mentioned above, at least one disk driver is essential.
+If the root file system is to be copied to a RAM disk, the memory driver is also required, otherwise it could be loaded later.
+The \sys{tty} and \sys{log} drivers are optional in the boot image.
+They are loaded early just because it is useful to be able to display messages on the console 
+and save information to a log early in the startup process.
+\sys{Init} could certainly be loaded later, but it controls initial configuration of the system, 
+and it was easiest just to include it in the boot image file.
+
+Startup is not a trivial operation.
+Operations that are in the realms of the disk driver and the file system must be performed by \sys{boot} before these parts of the system are active.
+In a later section we will detail how MINIX 3 is tarted.
+For now, suffice it to say that once the loading operation is complete the kernel starts running.
+
+During its initialization phase the kernel starts the system and clock tasks,
+and then the process manager and the file system.
+The process manager and the file system then cooperate in starting other servers and drivers that are part of the boot image.
+When all these have run and initialized themselves, they will block, waiting for something to do.
+MINIX 3 shceduling prioritizes processes.
+Only when all tasks, drivers, and servers loaded in the boot image have blocked will \sys{init}, the first user process, be executed.
+System components loaded with the boot image or during initialization are shown in Fig. 2-30.
+
+\subsubsection*{Initialization of the Process Tree}
+\kw{Init} is the first user process, and also the last process loaded as part of the boot image.
+You might think building of a process tree such as that of Fig. 1-5 begins once \sys{init} starts running.
+Well, not exactly.
+That wold be true in a conventional operating system, but MINIX 3 is different.
+First, there are already quite a few system processes running by the time \sys{init} gets to run.
+The tasks \sys{CLOCK} and \sys{SYSTEM} that run within the kernel are unique processes that are not visible outside of the kernel.
+They receive no PIDs and are not considred part of amy tree of processes.
+The process manager is the first process to run in user space;
+it is given PID 0 and is neither a child nor a parent of nay other process.
+The reincarnation server is made the parent of all the other processes started from the boot image (e.g., the drivers and servers).
+The logic of this is that the reincarnation server is the process that should be informed if any of these should need to be restarted.
+
+As we will see, even after \sys{init} starts running there are differences between the way a process tree is built in MINIX 3 
+and the conventional concept.
+\sys{Init} in a UNIX-like is given PID 1, and even though \sys{init} is not the process to run, 
+the traditional PID 1 is reserved for it in MINIX 3.
+Like all the user space processes in the boot image (except the process manager),
+\sys{init} is made one of the children of the reincarnation server.
+As in a standard UNIX-like system, \sys{init} first execytes the \kw{/etc/rc} shell script.
+This script starts additional drivers and servers that are not part of the boot image.
+Any program started by the \sys{rc} script will be a child of \sys{init}.
+One of the first programs run is a utility called \sys{service}.
+\sys{Service} itself runs as a child of \sys{init}, as would be expected.
+But now things once again vary from the conventional.
+
+\sys{Service} is the user interface to the reincarnation server.
+The reincarnation server starts an ordinary program and converts it into a system process.
+It starts \sys{floppy} (if it was used in booting the system), \sys{cmos} (which is needed to read the real-time clock), 
+and \sys{is}, the information server which manage the debug dumps that are produced by pressing function keys (F1, F2, etc.) on concole keyboard.
+One of the actions of the inreincarnation server is to adopt all system processes except the process manager as its own children.
+
+After the \sys{cmos} device driver has been started the \sys{rc} script can initialize the real-time clock.
+Up to this point all files needed must be found on the root device.
+The servers and drivers needed initially are in the \sys{/sbin} directory;
+other commands needed for startup are in \sys{/bin}.
+Once the initial startup steps have been completed other file systems such as \sys{/usr} are mounted.
+An important of the \sys{rc} script is to check for file system problems that might have resulted from a previous system crash.
+The test is simple when the system is shutdown correctly by executing the \sys{shutdown} command, 
+an entry is written to the login history file, \sys{/usr/adm/wtmp}.
+The command \cmd{shutdown} checks whether the last ebtry in \sys{wtmp} is a shutdown entry.
+If not, it assumed an abnormal shutdown occurred, and the \sys{fsck} utility is run to check all file systems.
+The final job of \sys{/etc/rc} is to start daemons.
+This may be done by subsidiary scripts.
+If you look at the output of a \cmd{ps axl} command, which shows both PIDs and parent PIDs (PPIDs),
+you will see that daemons such as \sys{update} and \sys{usyslogd} will normally be the among the first presisten processes
+which are children of \sys{init}.
+
+Finally \sys{init} reads the file \sys{/etc/ttytab}, which lists all potential terminal devices.
+Those devices that can be used as login terminals 
+(in the standard distribution, just the main console and up to three virtual consoles, 
+but serial lines and network pseudo terminal can be added) 
+have an entry in the \sys{getty} field of \sys{/etc/ttytab}, 
+and \sys{init} forks off a child process for each such terminal.
+Normally, each child executes \sys{/usr/bin/getty} which prints a message, then wait for a name to be typed.
+If a particular terminal requires special treatment (e.g., a dial-up line) \sys{/etc/ttytab} can specify a command 
+(such as \sys{/usr/bin/stty}) to be executed to initialize the line before running \sys{getty}.
+
+When a user types a name to log in, \sys{usr/bin/login} is called with the name as its argument.
+\sys{Login} determins if a password is required, and if so prompts for and verifies the password.
+After a successful login, \sys{login} executes the user's shell (by default \sys{/bin/sh}, but another shell may be specified in the \sys{/etc/passwd}).
+The shell wait for commands to be typed and then forks off a new process for each command.
+In this way, the shells are the children of \sys{init}, the usr processes are granchildren of \sys{init},
+and all the user processes in the system are part of a single tree.
+In fact, except for the tasks compiled into the kernel and the process manager, all processes, 
+both system processes and user processes, form a tree.
+But unlike the process tree of a conventional UNIX system, \sys{init} is not the root of the tree,
+and the structure of the tree does not allow one to determin the order in which system processes were started.
+
+The two principal MINIX 3 system calls for process management are \cmd{fork} and \cmd{exec}.
+\cmd{Fork} is the only way to create a new process.
+\cmd{Exec} allows a process to execute a specified program.
+When a program is executed, it is allocated a portion of memory whose size is specified in the program file's header.
+It keeps this amount of memory throught its execution, 
+although the distribution among data segment, stack segment, and unused can vary as the process runs.
+
+All the information about a process is kept in the process table, which is divided up among the kernel, process manager, and file system,
+with each one having those fields that it needs.
+When a new process comes into existense (by \cmd{fork}),
+or an old process terminates (by \cmd{exit} or a signal),
+the process manager first updates its part of the process table and then sends messages to the file system and kernel telling them to do likewise.
+
+\subsection{Interprocess Communication in MINIX 3}
+Three primitives are provided for sending and receiving messages.
+They are called by the C library procudures\\
+\cmd{send (dest, \&message);}\\
+to send a message to precess \sys{dest},\\
+\cmd{receive (source, \&message);}\\
+to receive a message from process \sys{source} (or \sys{ANY}), and\\
+\cmd{sendrec (src\_dst, \&message);}\\
+to send a message and wait for a reply from the same process.
+The second parameter in each call is the local address of the message data.
+The message passing mechanism in the kernel copies the message from the sender to the receiver.
+The reply (for \cmd{sendrec}) overwrites the original message.  
+In principle this kernel mechanism could be replaced by a function 
+which copies messages over a network to a cerresponding function function on another mechine, to implement a distributed system.
+In practice this would be complicated somewaht by the fact that
+message contents sometimes include pointers to large data structures,
+and a distributed system would have to provide for copying the data itself over the network.
+
+Each task, driver or server process is allowed to exchange messages only with certain other processes.
+Details of how this is enforced will be described later.
+The usaul flow of message is downward in the layers of Fig. 2-29,
+and messages can be between processes in the same layer or between processes in adjacent layers.
+User processes cannot send messages to each other.
+User processes in layer 4 can initiate message to servers in layer 3, servers in layer 3 can initiate messages to drivers in layer 2.
+
+When a process sends a message to aprocess that is not currently waiting for a message,
+the sender blocks until the destination does a \cmd{receive}.
+In other words, MINIX 3 uses the rendezvous method to avoid the problems of buggering sent, but not yet received, messages.
+The advantage of this approach is that it is simple and eliminates the need for buffer management (including the possibility of running out of buffers).
+IN addition, because all messages are of fixed length determined at compile time,
+buffer overrun errors, a common source of bugs, are structuarally prevented.
+
+The basic purpose of the restrictions on exchanges of messages is that 
+if process A is allowed to generate a \cmd{send} or \cmd{sendrec} directd to process B,
+then process B can be allowed to call \cmd{receive} with A designated as the sender, but B should not be allowed to \cmd{send} to A.
+Obviously, if A tries to \cmd{send} to B and blocks, and B tries to \cmd{send} to A and blocks we have a deadlock.
+The ``resource'' that each would need to complete the operations is not a physical resource like an I/O device,
+it is a call to \cmd{receive} by the target of the message.
+We will have more to say about deadlock in Chap. 3.
+
+Occasionally something different from a blocking message is needed.
+There exists another important message-passing primitive.
+It is called by the C library procedure\\
+\cmd{notify (dest);}\\
+and is used when a process needs to make another process aware that something important has happened.
+A \cmd{notify} is nonblocking, which means the sender continues to execute whether or not the receipient is waiting.
+Because it does bot block, a notification avoid the possibility of a message deadlock.
+
+The message mechanism is used to deliver a notification, but the information conveyed is limited.
+In the general case the message contains only the identity of the sender and a timestamp added by the kernel.
+Sometimes this is all that is necessary.
+For instance, the keyboard uses a \cmd{notify} call when one of the function keys (F1 TO F12 and shifted F1 to F12) is pressed.
+In MINIX 3, function keys are used to trigger debugging dumps.
+The Ethernet driver is an example of a process that generates only one kind of debug dump 
+and never needs to get any other communication from the console driver.
+Thus a notification to the Ethernet driver from the keyboard driver when the dump-Ethernet-states key is pressed is unambiguous.
+In other cases a notification is not sufficient, 
+but upon receiving a notification the target process can send a message to the originator of the notification to request more information.
+
+There is a reason notification message are so simple.
+Because a \cmd{notify} call does not block, it can be made when the recipient has not yet done a \cmd{receive}.
+But the simplicity of the message means that a notification that cannot be received is easily stored 
+so the recipient can be informed of it the next time the recipient calls \cmd{receive}.
+In fact, a single bit suffices.
+Notifications are meant for use between system processes, of which there can be only a relatively samll number.
+Every system process has a bitmap for pending notifications, with a distinct bit for every system process.
+So if process A needs to send a notification to process B at a time when process B is not blocked on a receive,
+the message-passing mechanism sets a bit which corresponds to A in B's bitmap of pending notifications.
+When B finally does a \cmd{receive}, the first step is to check its pending notifications bitmap.
+It can learn of attempted notifications from multiple sources this way.
+The single bit is enough to regenerate the information content of the notification.
+It tells the identity of the sender, and the message passing code in the kernel adds the timestamp when it is delivered.
+Timestamps are used primarily to see if timers have expired, 
+so it does bot matter that the timestamp may be for a time later than the time when the sender first tried to send the notification. 
+
+There is a further refinement to the notification mechanism.
+In certain cases an additional field of the notification message is used.
+When the notification is generated to inform a recipient of an interrupt, 
+a bitmap of all possible sources of interrupts is included in the message.
+And when the notification is from the system task a bitmap of all pending signals for the recipient is part of the message.
+The natural question at this point is, 
+how can this additional information be stored when the notification must be sent to a process that is not trying to receive a message?
+The answer is that these bitmaps are in kernel data structures.
+They do not need to be copied to be preserved.
+If a notification must be deffered and reduced to seting a single bit, 
+when the recipient eventually does a \cmd{receive} and the notification message is generated, 
+knowing the origin of the notification is enough to specify which additional information needs to be include in the message.
+And for the recipient, the origin of the notification also tells whether or not the message contains additional information,
+and, if so, how it is to be interpreted.
+
+A few other primitives related to interprocess communication exist.
+They will be mentioned ina later section.
+They are less important than \cmd{send}, \cmd{receive}, \cmd{sendrec}, and \cmd{notify}. 
+
+\subsection{Processing Scheduling in MINIX 3}
+The interrupt system is what keeps a multiprogramming operating system going.
+Processes block when they make requests for input, allowing other processes to execute.
+When input becomes available, the current running process is interrupted by the disk, keyboard, or other hardware.
+The clock also generates interrupts that are used to make sure a running user process that has not requested input eventually relinquishes the CPU,
+to give other processes their chance to run.
+It is the job of the lowest layer of MINIX 3 to hide these interrupts by turning them into messages.
+A far as processes are concerned, when an I/O device completes an operation it sends a message to some process, 
+waking it up and making it eligible to run.
+
+Interrupts are also generated by software, in which case they are often called \kw{traps}.
+The \cmd{send} and \cmd{receive} operations that we described above are translated by the system library into \kw{software interrupt} instructions
+which have exactly the same effect as hardware-generated interrupts.
+The process that executes a software interrupt is immediately blocked and the kernel is activated to process the interrupt.
+User programs do not refer to \cmd{send} or \cmd{receive} directly, but any time one of the system calls listed in Fig. 1-9 is invoked, 
+either directly or by a library routine, \cmd{sendrec} is used internally and a software interrupt is generated.
+
+Each time a process is interrupted (whether by a conventional I/O device or by the clock) or due to execution of a software interrupt instruction,
+there is an opportunity to redetermin which process is most deserving of an opportunity to run.
+Of course, this must be done whenever a process terminates, as well, but in a system like MINIX 3 interruptions due to I/O operations 
+or the clock or message passing occur more frequently than process termination.
+
+The MINIX 3 shceduler uses a multilevel queueing system.
+Sixteen queues are defined, although recompiling to use more or fewer queue is easy.
+The lowest priority queue is used only by the \sys{IDLE} process which runs when there is nothing else to do.
+User processes start by default in a queue several levels higher than the lowest one.
+
+Severs are normally scheduled in queues with priorities higher than alloed allowed for user processes,
+drivers in queues with priorities higher than those of servers, and clock and system tasks are shceduled in the highest priority queue.
+Not all of the sixteen available queues are likely to be in use at any time.
+Processes are started in only a few of them.
+A process may be moved to a different priority queue by the system or (with certain limitis) by a user who invokes the \sys{nice} command.
+The extra levels are available for experimentation, and as additional drivers are added to MINIX 3 
+the default settings can be adjusted for best performance.
+For instance, if it were desired to add a server to stream digital audio or video to a network,
+such a server might be assigned a higher starting priority than current servers,
+or the initial priority of a current server or driver might be reduced in order for the new server to achieve bettern performance.
+
+In addition to the priority determined by the queue on which a process is paced, 
+another mechanism is used to give some processes an edge over others.
+The quantum, the time interval allowed before a process is preempted, is not the same for all processes.
+User processes have a relatively low quantum.
+Drivers and servers normally should run until they block.
+However, as a hedge against malfunction they are made preemptable, but are given a large quantum.
+They are allowed to run for a large but finite number of clock ticks,
+but if they use their entire quantum they are preempted in order not to hang the system.
+In such a case the time-out process will be considered ready, and can be put on the end of its queue.
+However, if a process that has used up its entire quantum is found to have been the process that ran last, 
+this is taken as a sign it may be stuck in a loop and preventing other processes with lower priority from running.
+In this case its priority is lowered by putting it on the end of a lower priority queue.
+If the process times out again and another process still has not been able to run, its priority will again be lowered.
+Eventually, something else should get a chance to run.
+
+A process that has been demoted in priority can earn its way back to a higher priority queue.
+If a process uses all its quantum but is not preventing other processes from running it will be promoted to a higher priority queue,
+up to the maximum priority permitted for it.
+Such a process apparently needs its quantum, but is not being inconsiderate of others.
+
+Otherwise, processes are shceduled using a slightly modified round robin.
+If a process has not used its entire quantum when it becomes unready,
+this is taken to mean that it blocked waiting for I/O, and when it becomes ready again it is put one the head of the queue,
+but with only the left-over part of its previous quantum.
+This is intended to give user processes quick response to I/O.
+A process that become unready because it used its entire quantum is placed at the end of the queue in pure round robin fashion.
+
+With tasks normally having the highest priority, drivers next, servers below drivers, and user processes last, 
+a user process will not run unless all system processes have nothing to do,
+and a system process cannot be prevented from running by a user process.
+
+When picking a process to run, the sheduler checks to see if any processes are queued in the highest priority queue.
+If one or more are ready, the one at the head of the queue is run.
+If none is ready the next lower priority queue is similarly tested, and so on.
+Since drivers response to requests from servers and servers respond to requests from user processes,
+eventually all high priority processes should complete whatever work was requested of them.
+They will then block with nothing to do until user processes get a turn to run and make more requests.
+If no process is ready, the \sys{IDLE} process is chosen.
+This puts the CPU in a low-power mode until the next interrupt occurs.
+
+At each clock tick, a check is made to see if the current process has run for more than its allocatted quantum.
+If it has, the scheduler moves it to the end of its queue (which may require do nothing if it is alone on the queue).
+Then the next process to run is picked, as described above.
+Only if there are no proceses on high-priority queue and if the previous process is alone on its queue will it get run again immediately.
+Otherwise the process at the head of the highest priority nonempty queue will run next.
+Essential drivers and servers are given such large quanta that normally they are normally never preempted by the clock.
+But something goes wrong their priority can be temporarily lowered to prevent the system from coming to a total standstill.
+Probably nothing useful can be done if this happens to an essential server,
+but it may be possible to shut the system down gracefully,
+preventing data loss and possibly collecting information that ...
+
+\section{Implementation of Processes in MINIX 3}
+We are now moving closer to look at the actual code,
+so a few words about the nonation we will use are perhaps in order.
+The term ``procedure'', ``function'', and ``rotine'' will be used interchangeably.
+Name of variables, procedures, and files will be written in italics, as in \textit{rw\_flag}.
+When a variable, procedure, or file name starts a sentense, it will be capitalized, but the actual names begin with lower case letters.
+There are a few exceptions, the tasks which are compiled into the kernel are identified by upper case names, 
+such as \sys{CLOCK}, \sys{SYSTEM}, and \sys{IDLE}.
+System calls will be in lower case Helvetica, for example, \cmd{read}.
+
+The book and software, both of which are continuously evolving, did not ``go to press'' on the same day, 
+so there may be minor discrepancies between the references to the code, the printed listing, and the CD-ROM version.
+Such differences generally only affect a line or two, however.
+The source code printed in the book has been simplified by omitting code used to compile options that are not discussed in the book.
+The complete version is on the CD-ROM.
+The MINIX 3 Web Site (\www{www.minix3.org}) has the current version, which has new features and additional software and documentation.
+
+\subsection{Organization of the MINIX 3 Source Code}
+The implementation of MINIX 3 as described in this book is for an IBM PC-type machine with an advanced processor chip
+(e.g., 80386, 80486, Pentium , Pentium Pro, II, III, 4, M or D) that uses 32-bit words.
+We will refer to all of these as Intel 32-bit processors.
+The full path to the C language source code on a standard Intel-based platform is \sys{/usr/src} 
+(a trailing ``/'' in a path name indicates that it refers to a directory).
+The source directory tree for other platforms may be in a different location.
+Throughout the book, MINIX 3 source code files will be referred to using a path starting with the top \sys{src/} directory.
+An important subdirectory of the source tree is \sys{src/include},
+where the master copy of the C header files are located.
+We will refer to this directory as \sys{include/}.
+
+Each directory in the source tree contains a file named \kw{Makefile} which directs the operation of the UNIX-standard \sys{make} utility.
+The \sys{Makefile} controls compilation of files in its directory and may also direct compilation of files in one or more subdirectories.
+The operation of \sys{make} is complex and a full description is beyond the scope of this section,
+but it can be summarized by saying that \sys{make} manages efficient compilation of programs involving multiple source files.
+\sys{Make} assures that all necessary files are compiled.
+It tests previously compiled modules to see if they are up to data 
+and recompiles any whose source file have been modified since the previous compilation.
+This saves time by avoiding recompilation of files that do not need to be recompiled.
+Finally, \sys{make} directs the compilation of separately compiled modules into an executable program 
+and may also manage installation of the completed program.
+
+Al  or part of the \sys{src/} tree can be relocated, since the \sys{Makefile} in each source directory uses a relative path to C source directories.
+For instance, you may want to make a source directory on the root filesystem, \sys{/src/},
+for speedy compilation if the root device ia a RAM disk.
+If you are developing a special version you can make a copy of \sys{src/} under another name.
+
+The path to the C header files is a special case.
+During compilation every \sys{Makefile} expects to find header file in \sys{/usr/inclu} (or the equivalent path on a non-Intel platform).
+However, \sys{src/tools/Makefile}, used to recompile the system, 
+expects to find a master copy of the headers in \sys{/usr/src/include} (on an Intel system).
+Before recompiling the system, however, the entire \sys{/usr/include} directory tree is detected 
+and \sys{/usr/src/include} is copied to \sys{/usr/include}.
+This was done to make it possible to keep all files needed in the development of MINIX 3 in one place.
+This also makes it easy to maintain multiple copies of the entire source and headers trees 
+for experimenting with different configurations of the MINIX 3 system.
+However, if you want to edit a header file as part of such experiment, 
+you must be sure to edit the copy in the \sys{/src/include} directory and not one in \sys{/src/include}.
+
+This is a good place to point out for newcomers to the C language how file names are quoted in a \cmd{\#include} statement.
+Every C compiler has a default directory where it looks for include files.
+Frequently, this is \sys{/usr/include}.
+When the name of a file to include is quoted between less-than and great-than symbols (``<...>'') then the compiler searches for the file in the default header directory or a specified subdirectory, for example,\\
+\cmd{\#include <filename>}\\
+include a file from \sys{/usr/include}.
+
+Many program also require definations in local header files that are not meant to be shared system-wide.
+Such a header may have the same name as and be meant to replace or supplement a standard header.
+When the name is quoted between ordinary quote characters (\cmd{"..."}) the file is searched for first in the same directory as the source file
+(or a specified subdirectory) and then, if not found there, in the default directory.
+Thus\\
+\cmd{\#include "filename"}\\
+reads a local file.
+
+The \sys{include/} directory contains a number of POSIX standard header files.
+In addition, it has three subdirectories:\\
+\sys{sys/}		additional POSIX headers.\\
+\sys{minix/}	header files used by the MINIX 3 operating system.\\
+\sys{ibm/}		header files with IBM PC-specific definitions.
+
+To support extensions to MINIX 3 and programs that run in the MINIX 3 environment, 
+other files and subdirectories are also present in \sys{include/} as provided on the CD-RON and also on the MINIX 3 Web site.
+For instance, \sys{include/arpa/} and the \sys{include/net/} directory and its subdirectory \sys{include/net/gen/} support network extensions.
+These are not necessary for compiling the basic MINIX 3 system,
+and files in these directories are not listed in Appendix B.
+
+In addition to \sys{src/include}, the \sys{src/} directory contains three other important subdirectories with operating system source code:\\
+\sys{kernel/}    layer 1 (scheduling, messages, clock and system tasks).\\
+\sys{drivers/}   layer 2 (device drivers for disk, console, printer, etc.).\\
+\sys{servers/}   layer 3 (process manager, file system, other servers).
+
+Three other source code directories are not printed or discussed in the next, but are essential to producing a working system:\\
+\sys{src/lib/}    source code for library procedures (e.g., open, read).\\
+\sys{src/tools/}  Makefile and scripts for building the MINIX 3 system.\\
+\sys{src/boot/}   the code for booting and installing MINIX 3. 
+
+The standard distribution of MINIX 3 includes many additional source files not discussed in this text.
+In addition to the process manager and file system source code,
+the system source directory \sys{src/servers/} contains source code for the \sys{init} program and the reincarnation server, 
+\sys{rs}, both of which are essential parts of a running MINIX 3 system.
+The network server source code is in \sys{src/servers/inet}.
+\sys{Src/drivers/} has source code for device drivers not discussed in this text,
+including alternative disk drivers, sound cards , and network adapters.
+Since MINIX 3 is an experimental operating system, meant to be modified, 
+there is a \sys{src/test} directory with programs designed to test thoroughly a newly compiled MINIX 3 system.
+An operating system exists, of course, to support commands (programs) that will run on it,
+so there is a large \sys{src/commands/} directory with source code for the utility programs 
+(e.g., \sys{cat}, \sys{cp}, \sys{date}, \sys{ls}, \sys{pwd} and more than 200 others).
+Source code for some major open source applications originally developed by the GNU and BSD projects is here, too.
+
+The ``book'' version of MINIX 3 is configured with many of the optional parts ommitted 
+(trust us: we cannot fit everything into one book or into your head in a semester-long course).
+The ``book'' version is compiled using modified \sys{Makefile}s that do not refer to unnecessary files.
+(A standard \sys{Makefile} requires that files for optional cpmponents be present, even if not to be compiled.)
+Ommitting these files and the conditional statements that select them makes reading the code easier.
+
+For convennience we will usually refer to simple file names when it is clear from the contex what the complete path is.
+However, be aware that some file names appear in more than one directory.
+For instance, there are several files named \sys{const.h}.
+\sys{src/kernel/const.h} defines constants used in the kernel, 
+while \sys{src/servers/pm/const.h} defines constants used by the process manager, etc.
+
+The files in a particular directory will be discussed together,
+so there should not be any confusion.
+The files are listed in Appendix B in the order they are discussed in the text, to make it easy to follw along.
+Acquisition of a couple of bookmarks might be of use at this point,
+so you can go back and forth between the text and the listing.
+To keep the size of the listing reasonable, code for every file is not printed.
+In general, those functions that are described in detail in the text are listed in Appendix B;
+those that are just mentioned in passing are not listed, but the complete source code is on the CD-ROM and Web site,
+both of which also provide an index to functions, definitions, and global variables in the source code.
+
+Appendix C contains an alphabetical list of all files described in Appendix B, i
+divided into sections for headers, drivers, kernel, file system, and process manager. 
+This appendix and Web site and CD-ROM indices reference the listed objects by line number in the source code.
+
+The code for layer 1 is contained in the directory \sys{src/kernel}.
+Files in this directory support process control, the lowest layer of the MINIX 3 structure we saw in Fig. 2-29.
+This layer includes functions which handle system initialization, interrupts, message passing and process shceduling.
+Itimately connected with these are two modules compiled into the same binary,
+but which run as independent processes.
+These are the system task which provides an interface between kernel services and processes in high layers,
+and the clock task which providing timing signals to the kernel.
+In Chap. 3, we will look at files in several of the subdirectories of \sys{src/drivers}, which support various device drivers,
+the second lyer in Fig. 2-29.
+Then in Chap. 3, we will look at the process manager files in \sys{src/servers/pm/}.
+Finally, in Chap. 5, we will study the file system, whise source files are located in \sys{src/servers/fs}.
+
+\subsection{Compiling and Running MINIX 3}
+To compile MINIX 3, run \cmd{make} in \sys{src/tools/}.
+There are several options, for installing MINIX 3 in different ways.
+To see the possibilities run \cmd{make} with no argument.
+The simplest methods is \cmd{make image}.
+
+When \cmd{make image} is executed, a fresh copy of the header files in \sys{src/include/} is copied to \sys{/usr/include}.
+Then source code files in \sys{src/kernel/} and several subdirectories of \sys{src/servers} and \sys{src/drivers} are compiled to object files.
+All the object files in \sys{src/kernel} are linked to form a single executable program, \sys{kernel}.
+The object files in \sys{src/servers/pm/} are also linked to form a single executable program, \sys{pm},
+and all the object files in \sys{src/servers/fs} are linked to form \sys{fs}.
+The additional program listed are part of the boot image in Fig. 2-30 are also compiled and linked in their own directories.
+These includes \sys{rs} and \sys{init} in subdirectories of \sys{src/servers} 
+and \sys{memory/}, \sys{log/}, and \sys{tty} in subdirectories of \sys{src/drivers}.
+The component designated ``driver'' in Fig. 2-30 can be one of several disk drivers;
+we discuss here a MINIX 3 system configured to boot from the hard disk using the standard \sys{at\_wini} driver, 
+which will be compiled in \sys{src/drivers/at\_wini/}.
+Other drivers can be added, but most drivers need not be compiled into the boot image.
+The same is true for networking support;
+compilation of the basic MINIX 3 system is the same whether or not networking will be used.
+
+To install a working MINIX 3 system capable of being booted, 
+a program called \sys{installboot} (whose source is in \sys{src/boot/}) adds names to \sys{kernel}, 
+\sys{pm}, \sys{fs}, \sys{init}, and other components of the boot image,
+pads each one out so that its length is a multiple of the disk sector size 
+(to make it easier to load the parts independently), and concatenates them onto a single file.
+This new file is the boot image and can be copied into the \sys{/boot/} directory or 
+the \sys{/boot/image/} directory of a floppy disk or a hard disk partion.
+Later, the boot monitor program can load the boot image and transfer control to the operating system.
+
+Fig. 2-31 shows the layout of memory after the concatenated programs are separated and loaded.
+The kernel is loaded in low memory, all the other parts of the boot image are loaded above 1 MB.
+When user programs are run, the available memory above the kernel will be used first.
+When a new program will not fit there, it will be loaded in the high memory range, above \sys{init}.
+Details, of course, depend upon the system configuration.
+For instance, the example in the figure is for a MINIX 3 file system configured with a block cached that can hold 512 4-KB disk blocks.
+This is a modest amount; more is recommended if adequate memory is available. 
+On the other hand, if the size of the block cache were reduced drastically 
+it would be possible to make the entire system fit into less than 640K of memory,
+with room for a few user processes as well.
+
+It is important to realize that MINIX 3 consists of several totally independent programs that communicate only by passing messages.
+A procedure called \sys{panic} in the directory \sys{src/servers/fs/} dose not conflict with
+a procedure called \sys{panic} in \sys{src/servers/pm/} because they ultimately are linked into different executable files.
+The only procedures that the three pieces of the operating system have in commom are afew of the library routines in \sys{src/lib/}.
+This modular structure makes it very easy to modify, say, the file system, without having these changes affect the process manager.
+It also makes it straightforward to remove the file system altogether and to put it on a different machine as a file server,
+communicating with user machines by sending messages over a network.
+
+As another example of the modularity of MINIX 3, adding network support makes absolutely no difference to the process manager,
+the file system, or the kernel.
+Both an Ethernet driver and the \sys{inet} server can be actived after the boot image is loaded;
+they would appear in Fig. 2-30 with the processes started by \sys{/etc/rc},
+and they would be loaded into one of the ``Memory available for user programs'' region of Fig. 2-31.
+A MINIX 3 system with networking enabled can be used as a remote terminal or an ftp and web server.
+Only if you want to allow incoming logins to the MINIX 3 system over the network would any part of MINIX as described in the text need modification:
+this is \sys{tty}, the console driver, which would need to be recompiled with pseudo terminals configured to allow remote logins.
+
+\subsection{The Common Header Files}
+The \sys{include/} directory and its subdirectories contain a collection of files defining constants, macros, and types.
+The POSIX standard requires many of these definitions and specifies in which files of the main \sys{include/} directory 
+and its subdirectory \sys{include/sys/} each required definiation is to be found.
+The files in these directories are \kw{header} or \kw{include} files,
+identified by the suffix .h, and used by means of \cmd{\#include} statements in C source files.
+These statements are a built-in feature of the C language.
+Include files make maintanance of a large system easier.
+
+Headers likely to be needed for compiling user programs are mainly found in \sys{include/} 
+whereas \sys{include/sys/} traditonally is used for files that are used primarily for compiling system programs and utilities.
+The distinction is not terribly important, and a typical compilation, whether of a user program or part of the operating system, 
+will include files from both of these directories.
+We will discuss here the files that are needed to compile the standard MINIX 3 system, 
+first treating those in \sys{include/} and then those in \sys{include/sys/}.
+In the next section we will discuss files in the \sys{include/minix/} and \sys{include/ibm/} directories, 
+which, as the directory names indicate, are unique to MINIX 3 and its implementation on IBM-type (really, Intel-type) computers.
+
+The first headers to be considered are truly general purpose ones, 
+so much so that they are not referenced directly by any of the C language source files for the MINIX 3 system.
+Rather, they are themselves included in other header files.
+Each major component of MINIX 3 has a master header file, 
+such as \sys{src/kernel/kernel.h}, \sys{src/servers/pm/pm.h}, and \sys{src/servers/fs/fs.h}.
+These are included in every compilation of these components.
+Source code for each of the device drivers includes a somewhat similar file, \sys{src/drivers/drivers.h}.
+Each master header is tailored to the needs of the corresponding part of the MINIX 3 system,
+but each one starts with a section like the one shown in Fig. 2-32 and includes most of the files shown there.
+The master headers will be discussed again in other sections of this book.
+This preview is to emphasize that headers from several directories are used together.
+In this section and the next one we will mention each of the files referenced in Fig. 2-32.
+
+Let us start with the first header in \sys{include/}, \sys{ansi.h} (line 0000).
+This is the second header that is processed whenever any part of the MINIX 3 system is compiled;
+only \sys{include/minix/config.h} is processed earlier.
+The purpose of \sys{ansi.h} is to test whether the compiler meets the requirements of Standard C,
+as defined by the International Organization for Standards.
+Standard C is also often referred to as ANSI C,
+since the standard was originally developed by the American National Standards Institute before gaining the international recognition.
+A Standard C compiler defines several macros that can then be tested in programs being compiled.
+\sys{\_\_STDC\_\_} is such a macro, and it is defined by a standard compiler to have a value of 1, 
+just as if the C preprocessor had read a line like\\
+\cmd{\#define\_\_STDC\_\_1}
+
+The compiler distributed with current current versions of MINIX 3 conforms to Standard C,
+but older version of MINIX were developed before the adoption of the standard,
+and it is still possible to compile MINIX 3 with a classic (Kernighan \& Ritchie) C compiler.
+It is intended that MINIX 3 should be easy to port to new machines,
+and allowing older compilers is part of this.
+At lines 0023 to 0025 the statement\\
+\cmd{\#define \_ANSI}\\
+is processed if a Standard C compiler is in use.
+\sys{ansi.h} defines several macros in different ways,
+depending upon whether the \sys{\_ANSI} macro is defined.
+This is an example of a \kw{feature test macro}.
+
+Another feature test macro defined here is \sys{\_POSIX\_SOURCE}(line 0065).
+This is required by POSIX.
+Here we ensure it is defined if other macros that imply POSIX comformance are defined.
+
+When compiling a C program the data types of the arguments and the returned values of functions must be known before code 
+that references such data can be generated.
+In a complex system ordering of function definitions to meet this requirement is difficult,
+so C allows use of \kw{function prototypes} to \kw{declare} the arguments and return value types of a function before it is \kw{defined}.
+The most important macro in \sys{ansi.h} is \sys{\_PROTOTYPE}.
+This macro allows us to write function prototypes in the form\\
+\cmd{\_PROTOTYPE (return-type function-name, (argument-type argument, ...))}\\
+and have this transformed by the C preprocessor into\\
+\cmd{return-type function-name (argument-type, argument, ...)}\\
+if the compiler is an ANSI Standard C compiler, or\\
+\cmd{return-type function-name ()}\\
+if the compiler is an old-fashioned (i.e., Kernighan \& Ritchie) compiler.
+
+Before we leave \sys{ansi.h} let us mention one additional feature.
+The entire file (except for initial comments) is enclosed between lines that read\\
+\cmd{\#ifndef \_ANSI\_H}\\
+and\\
+\cmd{\#endif /* \_ANSI\_H */}
+
+On the line immediately following the \cmd{\#ifndef \_ANSI\_H} itself is defined.
+A header file should be included only once in a compilation;
+this construction ensurs that the contents of the file will be ignored if it is included multiple times.
+We will see this technique used in all the header files in the \sys{include/} directory.
+
+Two points about this deserve mention.
+First, in all of the \cmd{\#ifndef ... \#define} sequences for files in the mater header directories,
+the filename is preceded by an underscore,
+Another header with the same name may exist within the C source code directories,
+and the same mechanism will be used there, but underscores will not be used.
+Thus inclusion of a file from the master header directory will not prevent processing of another header file with the same name in local directory.
+Second, note that the comment \cmd{/* \_ANSI\_H */} after the \cmd{\#ifndef} is not required.
+Such comments can be helpful in keeping track of nested \cmd{\#ifndef ... \#endif} and \cmd{\#ifdef ... \#endif} sections.
+However, care is needed in writing such comments: if incorrect they are worse than no comment at all.
+
+The second file in \sys{include/} that is indirectly included in most MINIX 3 source files is the \sys{limits.h} header (line 0100).
+The file defines many basic sizes, both language types such as the number of bits in an integer,
+as well as operating system limits such as the length of a file name.
+
+Note that for convenience, the line numbering in Appendix B is ratcheted up to the next multiple of 100 when a new file is listed.
+Thus do not expect \sys{ansi.h} contain 100 lines (00000 through 00099).
+In this way, small changes to one file will (probably) not affect subsequent files in a revised listing.
+Also note that when a new file is encountered in the listing,
+a special three-line header consisting of a row of + signs, the file name, and another row of + signs is present (without line numbering).
+An example of this header is shown between lines 00068 and 00100.
+
+\sys{Errno.h} (line 0200), is also included by most of the master headers.
+It contains the error numbers that are returned to user programs in the global variable \sys{errno} when a system call fails.
+\sys{Errno} is also used to identify some internal errors, 
+such as trying to send a message to a nonexistent task.
+INternally, it would be inefficient to examine a global variable after a call to a function
+that might generate an error, but functions must often return other integers,
+for instance, the number of bytes transferred during an I/O operation.
+The MINIX 3 solution is to return error numbers as negtive value to mark them as error codes within the system,
+and then to convert them to positive values before being returned to user programs.
+The trick that is used is that each error code is defined in a line like \\
+\cmd{\#define EPERM (\_SIGN 1)}\\
+(line 0236).
+THe master header file for each part of the operating system defines the \sys{\_SYSTEM} macro, 
+but \sys{\_SYSTEM} is never defined when a user program is compiled.
+If \sys{\_SYSTEM} is defined, then \sys{\_SIGN} is defined as ``-''; otherwise it is given a null definition.
+
+The next group of files to be considered are not included in all the master headers,
+but are nevertheless used in many source files in all parts of the MINIX 3 system.
+The most important is \sys{unistd.h} (line 0400).
+THis header defines many constants, most of which are required by POSIX.
+In addition, it includes prototypes for many C functions,
+including all those used to access MINIX 3 system calls.
+Another widely used file is \sys{string.h} (line 0600),
+which provides prototypes for many C functions used for string manipulation.
+The header \sys{signal.h} (line 0700) defines the standard signal names.
+Several MINIX 3-SPECIFIC signals for operating system use are defined, as well.
+The fact that 
+operating systems functions are handle by independent processes rather than within a monolitic kernel
+requires some special signal - like communication between the system components.
+\sys{Signal.h} also contains prototypes for some signal-related functions.
+As well will see later, signal handling involves all parts of MINIX 3.
+
+\sys{Fcntl.h} (line 0900) symbolically defines many parameters used in file control operations.
+For instance, it allows one to use the macro \sys{O\_RDONLY} instead of the numeric value 0 as a parameter to a \sys{open} call.
+Although this file is referenced mostly by the file system,
+its definitions are also needed in a number of places in the kernel and the process manager.
+
+As we will see when we look at the device driver layer in Chap. 3,
+the console and terminal interface of an operating system is complex,
+because many different types of hardware have to interact with the operating system and user programs in a standardized way.
+\sys{Termios.h} (line 1000) defines constants, macros, and function prototypes 
+used for control of terminal-type I/O devices.
+The most important structure is the \sys{termios} structure.
+It contains flags to signal various modes of operation,variables to set input and output transmission speeds,
+and an array to hold special special characters (e.g., the \sys{INTR} and \sys{KILL} characters).
+This structure is required by POSIX,
+as are many of the macros and function prototypes defined in this file.
+
+However, as all-encompassing as the POSIX standard is meant to be, it does not provide everything one might want,
+and the last part of the file, from line 1140 onward, provides extensions to POSIX.
+Some of these are of obvious value, such as extensions to define standard baud rates of 57,600 baud and higher,
+and support for terminal dispaly screen windows.
+The POSIX standard does not forbid extensions, as no reasonable standard can ever be all-inclusive.
+But when writing a program in MINIX 3 environment which is intended to portable to other envionments, 
+some caution is required to avoid the use of definitions specific to MINIX 3.
+This is fairly easy to do.
+In this file and other files that define MINIX 3-specific extensions the use of the extensuins is controlled by the \\
+\cmd{\#ifdef \_MINIX}\\
+statement.
+If the macro \sys{\_MINIX}is not defined, the compiler will not even see the MINIX 3 extensions;
+they will all be completely ignored.
+
+Watchdog timers are supported by \sys{timer.h} (line 1300),
+which is included in the kernel's master header.
+It defines a \sys{struct} timer, as well as prototypes of functions used to operate on lists of timers.
+On line 1321 appears a \sys{typedef} for \sys{tmr\_func\_t}.
+This data type is a pointer to a function.
+At line 1332 its use is seen: within a \sys{timer} structure, used as an element in a list of timers,
+one element is a \sys{tmr\_func\_t} to specify a function to be called when the timer expires.
+
+We will mention four more files in the \sys{include/} directory that are not listed in Appendix B.
+\sys{Stdlib.h} defines types, macros, and function prototypes 
+that are likely to be needed in the compilation of all but the most simple of C programs.
+It is one of the most frequently used headers in compiling user programs,
+although within the MINIX 3 system source it is referenced by only a few files in the kernel.
+\sys{Stdio.h} is familiar to everyone who has started to learn programming in C by writing the famous  ``Hello World!'' program.
+A \sys{out.h} defines the format of the files in which executable programs are stored on disk.
+An \sys{exec} structure is defined here, and the information in this structure is used by the process manager 
+to load a new program image when an \cmd{exec} call is made.
+
+New let us go on to the subdirectory \sys{include/sys}.
+As shown in Fig. 2-32, the master headers fo rthe main parts of the MINIX 3 system 
+all cause \sys{sys/type.h} (line 1400) to be read immediately after reading \sys{ansi.h}.
+\sys{sys/types.h} defines many data types used in MINIX 3.
+Errors 
+that could arise from misunderstanding which fundamental data types are used in a particular situation 
+could avoided by using the definiations provided here.
+Fig2. 33 shows the way the sizes, in bits, of a few types defined in this file differ when compiled for 16-bit or 32-bit processor.
+Note that all type names end with ``\_t''. 
+This is not just a convention; it is a requirement of the POSIX standard.
+This is an example of a \kw{reserved suffix},
+and ``\_t'' should not be used as a suffix of any name which is not a type name.
+
+MINIX 3 currently runs natively on 32-bit microprocessors, but 64-processors will be increasingly important in the future.
+A type that is not provided by the hardware  can be synthesized if necessary.
+On line 1471 the \sys{u64\_t} is defined as \cmd{struct \{u32\_t[2]\}}.
+This type is not needed very often in the current implementation, but it can be useful.
+For instance, all disk and partition data (offsets and sizes) is tored as 64 bit numbers,
+allowing for very large disks.
+
+MINIX 3 uses many type definitions
+that ultimately are interpreted by the compiler as a relatively small number of common types.
+This is intended to help make the code more readable;
+for instance, a variable declared as the type \sys{dev\_t} is recognizable as a variable meant to hold the major and minor device number
+that identify an I/O device.
+For the compiler, declaring such a variable as a \sys{short} would work equally well.
+Another thing to note is that many of the types defined here are matched by corresponding types with the first letter capitalized,
+for instance, \sys{dev\_t} and \sys{Dev\_t}.
+The capitalized variants are all equivalent to type \sys{int} to the compiler;
+these are provided to be used in function prototypes which must use types compatible with the \sys{int} type to support K\&R compilers.
+The comments in \sys{type.h} explain this in more detail.
+
+One other item worth mention is the section of conditional code that starts with\\
+\cmd{\#if \_EM\_WSIZE == 2}\\
+(line 1502 to 1516).
+As noted earlier, most conditional code has been removed from the source as discussed in the text.
+This example was retained so we could point out one way that conditional definitions can be used.
+The macro used , \sys{\_EM\_WSIZE}, is another example of a compiler-defined feature test macro.
+It tells the word size for the target system in bytes.
+The \cmd{\#if ... \#else ... \#endif} sequence is a way of getting some definitions right once and for all,
+to make subsequent code compile correctly whether a 16-bit or 32-bit system is in use.
+
+Several other files in \sys{include/sys/} are widely used in the MINIX 3 system.
+The file \sys{sys/sigcontext.h} (line 1600) defines structures 
+used to preserve and restore normal system operation before and after execution of a signal handling routine 
+and is used both in the kernel and the process manager.
+\sys{Sys/stat.h} (line 1700) defines the structure which we see in Fig. 1-12,
+returned by the \cmd{stat} and \cmd{fstat} system calls,
+as well as the prototypes of the functions \sys{stst} and \sys{fstat} 
+and other functions used to manipulate file properties.
+It is referenced in several parts of the file system and the process manager.
+
+Other files we will disscuss in this section are not as widely referenced as the ones discussed above.
+\sys{Sys/dir.h} (line 1800) defines the structure of a MINIX 3 directory entry.
+It is only referenced directly once, but this reference includes it in another header that widely used in the file system.
+It is important because, among other things, it tells how many characters a file name may contain (60).
+The \sys{sys/wait.h} (line 1900) header defines macros used by the \cmd{wait} and \cmd{waitpid} system calls,
+which are implemented in the process manager.
+
+Several other files in \sys{include/sys/} should be mentioned, although they are not listed in Appendix B.
+MINIX 3 supports tracing executables and analyzing core dumps with a debugger program,
+and \sys{sys/ptrace.h} defines the various operations possible with the \cmd{ptrace} system call.
+\sys{Sys/svrctl.h} defines data structures and macros used by \cmd{svrctl},
+which is not really a system call, but is used like one.
+\cmd{Svrctl} is used to coordinate server-level processes as the system starts up.
+The \cmd{select} system call permits waiting for input on multiple channels,
+for instance, pseudo terminals waiting for network connections.
+Definitions needed by this call are in \sys{sys/select.h}.
+
+We have deliberately left duscussion of \sys{sys/ioctl.h} and related files until last,
+because they cannot be fully understood without also looking at file in the next directory, \sys{minix/ioctl.h}.
+The \cmd{ioctl} system call is used for device control operations.
+The number of devices which can be interfaced with a modern computer system is ever increasing.
+All need various kind of control.
+Indeed, the main difference between MINIX 3 as described in this book and other versions is that
+for purposes of the book we describe MINIX 3 with relatively few input/output devices.
+Many others, such as network interfaces, SCSI controllers, and sound cards, can be added.
+
+To make things more managerable, a number of small files, each containing one group of definitions, are used.
+They are all included by \sys{sys/ioctl.h} (line 2000), which functions similarly to the master header of Fig. 2-32.
+We have listed only one of these included files, \sys{sys/ioc\_disk.h} (line 2100), in Appendix B.
+This and the other files included by \sys{sys\_ioctl.h} are located in the \sys{include/sys/} directory
+because they are considered part of the ``published interface'',
+meaning a programmer can use them in writing any program to be run in the MINIX 3 environment.
+However, they all depend upon additional macro definitions provided in \sys{minix/ioctl.h} (line 2200), which is included by each.
+Minix/ioctl.h should not be used by itself in writing programs,
+which is why it is in \sys{include/minix/} rather than \sys{include/sys/}.
+
+The macros defined together by these files define 
+how the various elements needed for each possible function are picked into a 32 bit integer to be passed to \cmd{ioctl}.
+For instance, disk devices need five types of operations, as can be seen in \sys{sys/ioc\_disk.h} at lines 2110 to 2114.
+The alphabetic 'd' parameter tells \cmd{ioctl} that the operation is for a disk device,
+an integer from 3 through 7 codes for the operation,
+and the third parameter for a write or read operation tells the size of the structure in which data is to be passed.
+In \sys{minix/ioctl.h} lines 2225 to 2231 show that 8 bits of the alphabetic code are shifted 8 bits to the left,
+the 13 least significant bits of the size of the structure are shifted 16 bits to the left,
+and these are then logically ANDed with the small integer operation code.
+Another code in the most significant 3 bits of a 32-bit number encodes the type of return value.
+
+Although this look like a lot of work,
+this work is done at compile time and makes for a much more efficient interface to the system call at run time,
+since the parameter actually passed is the most natural data type for the host machine CPU.
+It does, however, bring to mind a famous comment Ken Thompson put into the source code of an early version of UNIX:\\
+/*You are not expected to understand this*/
+
+\sys{Minix/ioctl.h} also contains the prototype for the \cmd{ioctl} system call at line 2241.
+This call is not directly invoked by programmers in many case,
+since the POSIX defined functions prototyped in \sys{include/termios.h} 
+have replaced many uses of the old \sys{ioctl} library function for dealing with terminals, consoles, and similar devices.
+Nevertheless, it is still necessary.
+In fact, the POSIX functions for control of terminal devices are converted into \cmd{ioctl} system calls by the library.
+
+
+ 
 
 
 
@@ -3005,6 +4894,7 @@ In practice it is not a problem because it is easy to keep track of the state of
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%r
 \end{document}
 
