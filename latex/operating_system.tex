@@ -2408,7 +2408,7 @@ whereas in Fig. 2-6(b) all three of them share the same address space.
 As an example of where multiple threads might be used, consider a web browser process.
 Many web pages contain multiple small images.
 For each image on a web page, the browser must set up a separate connection to the pages's home site and request the image.
-A great deal of time is spent establing and releasing all these connections.
+A great deal of time is spent establishng and releasing all these connections.
 By having multiple threads within the browser, many images can be requested at the same time, 
 greatly speeding up performance in most cases since with small images, 
 the set-up time is the limiting factor, not the speed of the transmission line.
@@ -2439,7 +2439,7 @@ the kernel blockes the entire process, since it is not even aware that other thr
 This fact as well as others argue for doing thread management in the kernel (Boehm, 2005).
 As a consequence, both systems are in use, and various hybrid schemes have been proposed as well (Anderson et al., 1992).
 
-No matter wether threads are managed by the kernel or in user space, they introduce a taft of problems
+No matter whether threads are managed by the kernel or in user space, they introduce a raft of problems
 that must be solved and which change the programming model appreciably.
 To start with, consider the effects of the \cmd{fork} system call.
 If the parent process has multiple threads, should the child also have them?
@@ -2459,8 +2459,8 @@ Suppose that one thread notices that there is too little memory and starts alloc
 Then, part way through, a thread switch occurs, 
 and the new thread also notices that there is too little memory and starts allocating more momery.
 Does the allocation happen once or twice?
-IN nearly all systems that were not designed with threads in mind,
-the libraries (such a s the memory allocation procedure) are not reentrant,
+In nearly all systems that were not designed with threads in mind,
+the libraries (such as the memory allocation procedure) are not reentrant,
 and will crash if a second call is made while the first one still active.
 
 Another problem relates to error reporting.
@@ -2476,7 +2476,7 @@ When the kernel is not aware of threads, the threads package must keep track of 
 An additional complication for user-level threads exists when (as in UNIX) a process may only have one alarm at a time pending
 and several threads call \cmd{alarm} independently.
 
-Other signals, such as a keyboard-initiated SIGINT, are not thread specific?
+Other signals, such as a keyboard-initiated SIGINT, are not thread specific.
 Who should catch them?
 One designated thread?
 All the threads?
@@ -2487,7 +2487,7 @@ Furthermore, what happens if one thread changes the signal handlers without tell
 One last problem introduced by thread is stack management.
 In many systems, when stack overflow occurs, the kernel just provides more stack, automatically.
 When a process has multiple threads, it must also have multiple stacks.
-If the kernel is nor aware of all these stacks, it cannot grow them automatically upon stack fault.
+If the kernel is not aware of all these stacks, it cannot grow them automatically upon stack fault.
 In fact, it may not even realize that a memory fault is related to stack growth.
  
 \section{Interprocess Communication}
@@ -2516,7 +2516,7 @@ but please keep in mind that the same problems and solutions also apply to threa
 \subsection{Race Conditions}
 In some operating systems, processes that we are working together may share some common storage
 that each one can read and write.
-The shared storage may be in main memory (possibly in a kernel data structure) or it may be shared file;
+The shared storage may be in main memory (possibly in a kernel data structure) or it may be a shared file;
 the location of the shared memory does not change the nature of the communication or the problems that arise.
 To see how interprocess communication works in practice, let us consider a simple but common example, a print spooler.
 When a process wants to print a file, it enters the file name in a special \kw{spooler directory}.
@@ -2529,7 +2529,7 @@ Also imagine that there are two shared variables,
 \sys{out}, which points to the next file to be printed,
 and \sys{in}, which points to the next free slot in the directory.
 These two variables might well be kept in a two-word file available to all processes.
-At a certaininstant, sots 0 to 3 are empty (the files have already been printed) and slots 4 to 6 are full (with the names of files to be printed).
+At a certain instant, slots 0 to 3 are empty (the files have already been printed) and slots 4 to 6 are full (with the names of files to be printed).
 More or less simultaneously, process A and B decide they want to queue a file for printing.
 This situation is shown in Fig. 2-8.
 
@@ -2545,7 +2545,7 @@ It looks at \sys{next\_free\_slot}, find a 7 there, and write its file name in s
 Then it computes \sys{next\_free\_slot} + 1, which is 8, and set \sys{in} to 8.
 The spooler directory is now internally consistent, so the printer daemon will not notice anything wrong,
 but process B will never receive any output.
-User B will hang around the printer room for yaers, wistfully hoping for output that never comes.
+User B will hang around the printer room for years, wistfully hoping for output that never comes.
 Situations like this, where two or more processes are reading or writing some shared data 
 and the final result depends on who runs precisely when, called \kw{race conditions}.
 Debugging programs containning race conditions is no fun at all.
@@ -2572,7 +2572,7 @@ this is not sufficient for having parallel processes cooperate correctly and eff
 We need four conditions to hold to have a good solution:
 \begin{enumerate}
   \item No two processes may be simultaneously inside their critical regions.
-  \item No assumptions may be made about soeeds or the number of CPUs.
+  \item No assumptions may be made about speeds or the number of CPUs.
   \item No process running outside its critical region may block other process.
   \item No process should have to wait forever to enter its critical region.
 \end{enumerate}
@@ -2585,7 +2585,7 @@ Consequently, B is temporarily suspended until time \sys{T3} when A leaves its c
 Eventually B leaves (at \sys{T4}) and we are back to the original situation with no processes in their critical regions.
 
 \subsection{Mutual Exclusion with Busy Waiting}
-iIn this section we will examine various proposals for achiving mutual exclusion,
+In this section we will examine various proposals for achiving mutual exclusion,
 so that while one process is busy updating shared memory in its critical region,
 no other process will enter its critical region and cause trouble.
 \subsubsection*{Disabling Interrupt}
@@ -2653,7 +2653,7 @@ Now process 0 executes its whole loop quickly, exiting its critical region and s
 At this point \sys{turn} is 1 and both processes are executing in their noncritical regions.
 
 Suddenly, process 0 finishes its noncritical region and goes back to the top of its loop.
-Unfortunately, it is not it is not permitted to enter its critical region now, 
+Unfortunately, it is not permitted to enter its critical region now, 
 because \sys{turn} is 1 and process 1 is busy with its noncritical region.
 It hangs in its \cmd{while} loop until process 1 sets \sys{turn} to 0.
 Put differently, taking turns is not a good idea when one of the processes is much slower than the other.
@@ -2688,7 +2688,7 @@ After it has finished with the shared variables, the process calls \sys{leave\_r
 and to allow the other process to enter, if so desires.
 
 Let us see how this solution works.
-INitially, neither process is in its critical region.
+Initially, neither process is in its critical region.
 Now process 0 calls \sys{enter\_region}.
 It indicates its interest by setting its array element and set \sys{turn} to 0.
 Since 1 is not interested, \sys{enter\_region} returns immediately.
@@ -2703,7 +2703,7 @@ When both processes come to the \cmd{while} statement, process 0 executes it zer
 Process 1 loops and does not enter its critical region.
 
 \subsubsection*{The TSL Instruction}
-Now that let us look at a proposal that reuires a little help from the hardware.
+Now that let us look at a proposal that requires a little help from the hardware.
 many computers, especially those designed with multiple processors in mind, have an instruction\\
 \cmd{TSL RX, LOCK}\\
 (Test and Set Lock) that works as follows: 
@@ -2819,18 +2819,18 @@ A semaphore could have the value 0, indicating that no wakeups were saves,
 or some positive value if one or more wakeups were pending.
 
 Dijkstra proposed having two operations, \cmd{down} and \cmd{up} 
-(which are generalization of \cmd{sleep} and \sys{wakeup}, respectively).
+(which are generalization of \cmd{sleep} and \cmd{wakeup}, respectively).
 The \cmd{down} operation on a semaphore checks to see if the value is greater than 0.
 If so, it decrements the value (i.e., uses up one stored wakeup) and just continues.
 If the value is 0, the process is put to sleep without completing the \cmd{down} for the moment.
-Checking the value, changing it, and possibly going  to sleep is all dones as a single, indivisible, \kw{atomic action}.
+Checking the value, changing it, and possibly going  to sleep is all done as a single, indivisible, \kw{atomic action}.
 It is guaranteed that once a semaphore operation has started, 
 no other process can access the semaphore untill the operation has completed or blocked.
 This atomicity is absolutely essential to solving synchronization problems and avoiding race condition.
 
 The \cmd{up} operation increments the value of the semaphore addresses.
 If one or more processes were sleeping on that semaphore, unable to complete an earlier \cmd{down} operation,
-one of them is chosen by the system (e.g., at random) and is allowed to complete its \sys{down}.
+one of them is chosen by the system (e.g., at random) and is allowed to complete its \cmd{down}.
 Thus, after an \cmd{up} on a semaphore with processes sleeping on it, the semaphore will still be 0,
 but there will be one fewer process sleeping on it.
 The operation of incrementing the semaphore and waking up one process is also indivisible.
@@ -2849,7 +2849,7 @@ updating it, and putting the process to sleep, if necessary.
 As all of these actions take only a few instructions, no harm is done in disabling interrupts.
 If multiple CPUs are being used, each semaphore should be protected by a lock variable, 
 with the \cmd{TSL} instruction used to make sure that only one CPU at a time examines the semaphore.
-But sure you understand that using \cmd{TSL} to prevent several CPUs from accessing the semaphore at the sime time 
+But sure you understand that using \cmd{TSL} to prevent several CPUs from accessing the semaphore at the same time 
 is quite different from busy waiting by the producer or consumer waiting for the other to empty or fill the buffer.
 The semaphore operation will only take a few microseconds, whereas the producer or consumer might take arbitrarily long.
 
@@ -2892,7 +2892,7 @@ When the semaphore's ability to count is not needed, a simplified version of the
 Mutexes are good only for managing mutual exclusion to some shared resources or piece of code.
 They are easy and efficient to implement, which makes them especially useful in thread packages that are implemented entirely in user space.
 
-A \kw{mutex} is a variable that can be in one of two states: unlocke dor locked.
+A \kw{mutex} is a variable that can be in one of two states: unlocked or locked.
 Consequently, only 1 bit is required to represent it, but in practice an integer often is used, 
 with 0 meaning unlocked and all other values meaning locked.
 Two procedures are used with mutexes.
@@ -2946,7 +2946,6 @@ In any event, the person writing the monitor does not have to be aware of how th
 It is sufficient to know that by turning all the critical regions into monitor procedures, 
 no two processes will ever execute their critical regions at the same time.
 
-
 Although monitors provide an easy way to achieve mutual exlusion, as we have seen above, that is not enough.
 We also need a way for processes to block when they cannot proceed.
 In the producer-consumer problem, it is easy enough to put all the tests for buffer-full and buffer-empty in monitor procedures,
@@ -2962,7 +2961,7 @@ The other process, for example, the consumer, can wake up its sleeping partner -
 by doing a \cmd{signal} on the condition variable that its patner is waiting on.
 To avoid having two active processes in the monitor at the same time, we need a rule telling what happens after a \cmd{signal}.
 Hoare proposed letting the newly awakened process run, suspending the other one.
-Brinch Hansen proposed finessing tthe problem by requiring that a process doing a \cmd{signal} must exit the monitor immediately.
+Brinch Hansen proposed finessing the problem by requiring that a process doing a \cmd{signal} must exit the monitor immediately.
 In other words, a \cmd{signal} statement may appear only as the final statement in a monitor procedure.
 We will use Brinch Hansen's proposal because it is conceptually simpler and also easier to implement.
 If a \cmd{signal} is done on a condition variable on which several processes are waiting, 
@@ -2979,8 +2978,8 @@ This rule makes the implementation much simpler.
 In practice it is not a problem because it is easy to keep track of the state of each process with variables, if need be.
 A process that might otherwise do a \cmd{signal} can see that this operation is not necessary by looking at the variables.
 
-A skeleton of the procecer-consumer problem with monitors is given in Fig. 2-16 in Pidgin Pascal.
-the advantage of using Pidgin Pascal here is that it is pure and simple 
+A skeleton of the producer-consumer problem with monitors is given in Fig. 2-16 in Pidgin Pascal.
+The advantage of using Pidgin Pascal here is that it is pure and simple 
 and follow Hoare/Brinch Hansen model exactly.
 
 You may be thinking that the operations \cmd{wait} and \cmd{signal} look similar to \cmd{sleep} and \cmd{wakeup},
@@ -2996,12 +2995,12 @@ The consumer will not even be let into the monitor at all untill the \cmd{wait} 
 and the producer is marked as no longer runnable.
 
 Although Pidgin Pascal is an imaginary language, some real programming languages also support monitors,
-although not always in the form designed by Hoare and Brinch hansen.
+although not always in the form designed by Hoare and Brinch Hansen.
 One such language is Java.
 Java is an object-oriented language that supports user-level threads and also allows methods (procedures) to be grouped together into classes.
 By adding the keyword \cmd{synchronized} to a method declaration,
 Java guarantees that once any thread has started executing that method,
-no other thread will be alloed to start executing any other \cmd{synchronized} method in that class.
+no other thread will be allowd to start executing any other \cmd{synchronized} method in that class.
 
 Synchronized methods in Java differ from classical monitors in an essential way:
 Java does not have condition variables.
@@ -3021,14 +3020,14 @@ In fact, how could the compiler even known which procedures were in monitors and
 
 These same languages do not have semaphores either, but adding semaphores is easy:
 all you need to do is add two short assembly code routines to the library to issue the \cmd{up} and \cmd{down} system calls.
-the compiler even have to know that they exist.
+The compiler do not even have to know that they exist.
 Of course, the operating systems have to know about the semaphores, 
 but at least if you have a semaphore-based operating system,
 you can still write the user programs for it in C or C++ (or even FORTRAN if you are masochistic enough).
-With monitors, you need a labguage that has them built in.
+With monitors, you need a language that has them built in.
 
 Another problem with monitors, and also with semaphores, 
-is that they were designed for solving the mutual exclusion problem on one or mpore CPUs that all have access to a common memory.
+is that they were designed for solving the mutual exclusion problem on one or more CPUs that all have access to a common memory.
 By putting the semaphores in the shared memory and protecting them with \cmd{TSL} instructions,
 we can avoid races.
 When we go to a distributed system consisting of mutiple CPUs, 
@@ -3061,7 +3060,7 @@ If the sender has not received the acknowledgement within a certain time interva
 
 Now consider what happens if the message itself is received correctly, but the acknowledgement is lost.
 The sender will retransmit the message, so the receiver will get it twice.
-It is essential that the receiver can distinguish a new message from the retransimission of an old one.
+It is essential that the receiver can distinguish a new message from the retransmission of an old one.
 Usually, this problem is solved by putting consecutive sequence numbers in each original message.
 If the receiver gets a message bearing the same sequence number as the previous message,
 it knows that the message is a duplicate that can be ignored.
@@ -3071,22 +3070,22 @@ so that the process specified in a \cmd{send} or \cmd{receive} call is unambiguo
 \kw{Authentication} is also an issue in message systems:
 how can the client tell that he is communicating with the real file sever, and not with an imposter?
 
-As the other end of the spectrun, there are also design issues that are important when the sender and receiver are on the same machine.
+As the other end of the spectrum, there are also design issues that are important when the sender and receiver are on the same machine.
 One of these is performance.
 Copying messages from one process to another is always slower than doing a semaphore operation or entering a monitor.
 Much work has gone into making message passing efficient.
 Cheriton (1984), for example, has suggested limiting message size to what will fit in the machine's registers,
 and then doing message passing using the registers.
 
-\subsubsection*{THe Producer-Consumer Problem with Message Passing}
+\subsubsection*{The Producer-Consumer Problem with Message Passing}
 Now let us see how the producer-consumer problem can be solved with message passing and no shared memory.
 A solution is given in Fig. 2-17.
 We assume that all messages are the same size and that messages sent but not yet received are buffered automatically by the operating system.
 In this solution, a total of N message is used, analogous to the N slots in a shared memory buffer.
 The consumer starts out by sending N empty messages to the producer.
 Whenever the producer has an item to give to the consumer, it takes an empty message and sends back a full one.
-IN this way, the total number of messages in the system remains constant in time, 
-so they can be stored in agiven amount of meory known in advance.
+In this way, the total number of messages in the system remains constant in time, 
+so they can be stored in a given amount of memory known in advance.
 
 If the producer works faster than the consumer, all the messages will end up full, waiting for the consumer;
 the producer will be blocked, waiting for an empty to come back.
@@ -3095,8 +3094,8 @@ all the messages will be empties waiting for the producer to fill them up; the c
 
 Many variants are possible with message passing.
 For starters, let us look at how messages are addresses.
-On eway is to assign each process a unique address and have messages be addressed to processes.
-A different way is to invent a new structurem called a \cmd{mailbox}.
+One way is to assign each process a unique address and have messages be addressed to processes.
+A different way is to invent a new structure, called a \cmd{mailbox}.
 A mailbox is a place to buffer a certain number of messages, typically specified when the mailbox is created.
 When the mailboxes are used, the address parameters in the \cmd{send} and \cmd{receive} calls are mailboxes, not processes.
 When a process tries to send to a mailbox that is full, 
@@ -3116,11 +3115,12 @@ Similarly, if the \cmd{receive} is done first, the receiver is blocked until a \
 This strategy is often known as \kw{rendezvous}.
 It is easy to implement than a buffered message scheme but is less flexible since the sender and receiver are forced to run in lockstep.
 
-The processes that make up the MINIX 3 operating system itself use the rendezvous methods with fixed size messages for communication among themselves.
+The processes that make up the MINIX 3 operating system itself use the rendezvous methods 
+with fixed size messages for communication among themselves.
 User processes also use this method to communicate with operating system components,
 although a programmer does not see this, since library routine mediate systems calls.
 Interprocess communication between user processes in MINIX 3 (and UNIX) is via pipes, which are effectively mailboxes.
-THe only real difference between a message system with mailboxes and the pipe mechanism is that
+The only real difference between a message system with mailboxes and the pipe mechanism is that
 pipes do not preserve message boundaries.
 In other words, if one process write 10 messages of 100 bytes to a pipe and another process reads 1000 bytes from the pipe,
 the reader will get all 10 messages at once.
