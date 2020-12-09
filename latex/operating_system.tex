@@ -3158,21 +3158,21 @@ The key question is: can you write a program for each philosopher that does what
 perhaps we should switch from Italian to Chinese food, substituting rice for spaghetti and chopsticks for forks.)
 
 Fig. 2-19 shows the obvious solution.
-The procedure \sys{take\_foork} waits until the specified fork is available and then sizes it.
+The procedure \sys{take\_fork} waits until the specified fork is available and then seizes it.
 Unfortunately, the obvious solution is wrong.
 Suppose that all five philosophers take their left forks simutaneously.
 None will be able to take their right forks, and there will be a deadlock.
 
 We could modify the program so that after taking the left fork, the program checks to see if the right fork is available.
 If it is not, the philosopher puts down the left one, waits for some time, and then repeats the whole process.
-This proposal too, gails, although for a different reason.
+This proposal too, fails, although for a different reason.
 With a little bit of bad luck, all the philosophers could start the algorithm simultaneously, 
 picking up their left forks, seeing that their right forks were not available, putting down their left forks, waiting, 
 picking up their left forks again simultaneously, and so on, forever.
 A situation like this, in which all the programs continue to run indefinitely but fail to make any process is called \kw{starvation}.
 (It is called starvation even when the problem does not occur in an Italian or a Chinese restaurant.)
 
-Now you might think, "if the philosophers would just wait a random time instead of the same time after failing to acquire the right-hand fork,
+Now you might think,``if the philosophers would just wait a random time instead of the same time after failing to acquire the right-hand fork,
 the chance that everything would continue in lockstep for even an hour is very small."
 This observation is true, and in nearly all applications trying again later is not a problem.
 For example, in a local area network using Ethernet, a computer sends a packet only when it detects no other computer is sending one.
@@ -3190,7 +3190,7 @@ From a theoretical viewpoint, this solution is adequate.
 From a practical one, it has a performance bug: only one philosopher can be eating at any instant.
 With five forks available, we should be able to allow two philosophers to eat at the same time.
 
-THe solution presented in Fig. 2-20 is deadlock-free and allows the maximum parallelism for an arbitrary nuber of philosophers.
+The solution presented in Fig. 2-20 is deadlock-free and allows the maximum parallelism for an arbitrary nuber of philosophers.
 It uses an array, \sys{state}, to keep track of whether a philosopher is eating, thinking, or hungry (trying to acquire forks).
 A philosopher may move into eating state only if neither neighbor is eating.
 Philosopher \sys{i}'s neighbors are defined by the macros \sys{LEFT} and \sys{RIGHT}.
@@ -3198,7 +3198,7 @@ In other words, if \sys{i} is 2, \sys{LEFT} is 1 and \sys{RIGHT} is 3.
 
 The program uses an array of semaphores, one per philosopher, so hungry philosophers can block if the needed forks are busy.
 Note that each process runs the procedure \sys{phylosopher} as its main code, 
-but the other procedures, sys{take\_forks}, \sys{put\_forks}, and \sys{test} are ordinary procedures and not separate processes.
+but the other procedures, \sys{take\_forks}, \sys{put\_forks}, and \sys{test} are ordinary procedures and not separate processes.
 
 \subsection{The Readers and Writers Problem}
 The dining philosophers problem is useful for modeling processes that are competing for exclusive access to a limited number of resources,
@@ -3211,7 +3211,7 @@ The question is how do you program the readers and the writers?
 One solution is shown in Fig. 2-21.
 
 In this solution, the first reader to get access to the database does a \cmd{down} on the semaphore \sys{db}.
-Subsequent readers merely have to increment a counter, sys{rc}.
+Subsequent readers merely have to increment a counter, \sys{rc}.
 As readers leave, they decrement the counter and the last one out does an \cmd{up} on the semaphore, allowing a blocked writer,
 if there is one, to get in.
 

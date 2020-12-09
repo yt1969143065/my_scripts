@@ -1,0 +1,63 @@
+#!/usr/bin/perl
+
+#money per day, days
+$per  = 10;
+$days = 3650;
+
+$total_day   = 0;
+$total_week  = 0;
+$total_month = 0;
+$total_year = 0;
+
+$principal_day   = 0;
+$principal_week  = 0;
+$principal_month = 0;
+$principal_year  = 0;
+
+for($i=1; $i<=$days; $i++)
+{
+  $rate = (rand(40)-20)/10000;
+  #$rate = (rand(20))/10000;
+  #printf "(%4d, %8.2f)\n", $i, $rate*100;
+  
+  #--day-------------------------------------------
+  $principal_day = $principal_day + $per;
+  $total_day = $total_day + $per;
+  $total_day = $total_day* (1 + $rate); 
+
+  #--week-------------------------------------------
+  if($i%7==1)
+  { 
+    $principal_week = $principal_week + $per*7;
+    $total_week = $total_week + $per*7;
+  }
+  $total_week = $total_week * (1 + $rate); 
+
+  #--month-------------------------------------------
+  if($i%30==1)
+  { 
+    $principal_month = $principal_month + $per*30;
+    $total_month = $total_month + $per*30;
+  }
+  $total_month = $total_month * (1 + $rate); 
+
+  #--year-------------------------------------------
+  if($i%365==34)
+  { 
+    $principal_year = $principal_year + $per*365;
+    $total_year = $total_year + $per*365;
+  }
+  $total_year = $total_year * (1 + $rate); 
+}
+
+$profit_day   = $total_day   - $principal_day  ;
+$profit_week  = $total_week  - $principal_week ;
+$profit_month = $total_month - $principal_month;
+$profit_year  = $total_year  - $principal_year;
+
+print"\n";
+printf "days:  [%d, %0.2f, %0.3f\%]\n", $principal_day,   $total_day,   ($profit_day/$principal_day*100);
+printf "week:  [%d, %0.2f, %0.3f\%]\n", $principal_week,  $total_week,  ($profit_week/$principal_week*100);
+printf "month: [%d, %0.2f, %0.3f\%]\n", $principal_month, $total_month, ($profit_month/$principal_month*100);
+printf "year:  [%d, %0.2f, %0.3f\%]\n", $principal_year,  $total_year,  ($profit_year/$principal_year*100);
+
